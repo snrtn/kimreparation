@@ -1,40 +1,52 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import RepairLayout from "./repairLayout";
 
 const RepairBattery = () => {
   const [content] = useState({
     subTitle: "Batterie & Énergie",
-    mainTitle: "Batterie qui gonfle, décharge rapide ou problème de charge",
-    accentColor: "#32d74b",
+    mainTitle: "Vieillissement chimique, gonflement ou instabilité.",
+    accentColor: "#0071e3",
     criticalColor: "#ff3b30",
 
     steps: [
       {
         id: "01",
-        title: "Stopper la charge par précaution",
-        desc: "Si vous remarquez que votre batterie chauffe anormalement ou qu'elle se décharge très vite, le mieux est de débrancher le chargeur. Une batterie fatiguée a besoin de repos ; continuer à lui envoyer du courant peut accentuer sa fatigue interne et fatiguer prématurément les autres composants de votre smartphone.",
-        tip: "Laissez la batterie reposer.",
+        title: "Surchauffe et résistance",
+        desc: "Une batterie qui chauffe anormalement indique une forte résistance interne. Dans cet état, forcer la charge ne fait qu'user prématurément les puces de gestion d'énergie situées sur la carte mère.",
+        tip: "La chaleur excessive est le premier signe d'usure chimique.",
       },
       {
         id: "02",
-        title: "Ne pas forcer sur le boîtier",
-        desc: "Si l'écran ou le dos de l'appareil commence à se soulever légèrement, c'est que la batterie prend un peu de volume à cause d'une réaction chimique naturelle. Surtout, ne tentez pas d'appuyer dessus pour le refermer. L'espace créé permet d'évacuer la pression interne sans abîmer les composants fragiles situés juste au-dessus.",
-        tip: "Laissez l'appareil tel quel.",
+        title: "Gonflement (Réaction gazeuse)",
+        desc: "L'accumulation de gaz à l'intérieur d'une cellule déforme le boîtier. Il ne faut jamais appuyer sur un écran qui se soulève, car la pression peut percer l'enveloppe et libérer des substances chimiques.",
+        tip: "Un boîtier déformé indique une batterie à remplacer d'urgence.",
       },
       {
         id: "03",
-        title: "Sauvegarde tant que l'affichage est actif",
-        desc: "Une batterie instable peut parfois s'arrêter de fournir de l'énergie de manière imprévisible. Si votre écran est allumé, profitez-en pour mettre vos photos et contacts à l'abri sur votre Cloud (Google ou iCloud). Cela permet d'aborder la réparation en toute sérénité, sans crainte pour vos données personnelles.",
-        tip: "Assurez la sécurité de vos données.",
+        title: "Cycles et chutes de tension",
+        desc: "Passé un certain nombre de cycles, la batterie ne peut plus fournir une tension stable. C'est ce qui provoque des extinctions soudaines de l'appareil, même quand il affiche encore 20 ou 30%.",
+        tip: "Le pourcentage affiché ne reflète pas toujours la santé réelle.",
+      },
+      {
+        // ✅ 형님의 핵심 팩트: 수리 시 정상이나 잠재적 균열이 존재함
+        id: "04",
+        title: "Micro-fissures et tests en atelier",
+        desc: "Une nouvelle batterie peut passer tous les tests de contrôle avec succès en atelier. Cependant, des micro-fissures sur la carte mère, causées par des chocs anciens, peuvent laisser passer le courant normalement au début avant de provoquer des pannes aléatoires dues aux variations de température.",
+        tip: "Un appareil peut fonctionner normalement lors du test malgré des failles internes invisibles.",
+      },
+      {
+        id: "05",
+        title: "Usure du port de charge",
+        desc: "Un câble qu'il faut bouger pour charger finit par arracher les micro-soudures internes. Ce jeu mécanique crée des arcs électriques invisibles qui peuvent endommager le nouveau cycle de la batterie.",
+        tip: "Un connecteur instable fatigue prématurément la batterie.",
       },
     ],
 
-    alertTitle: "Conseils de vigilance pour votre batterie",
+    alertTitle: "Réalités techniques à connaître",
     alertDesc:
-      "• Odeur inhabituelle : Si vous sentez une odeur douceâtre ou chimique s'échapper de l'appareil, posez-le simplement dans un endroit sec et aéré. C'est le signe qu'il faut nous le confier rapidement pour un diagnostic de sécurité.\n\n" +
-      "• Chaleur excessive : Un téléphone qui devient très chaud sans raison (même quand vous ne l'utilisez pas) indique souvent une application qui tourne en boucle ou une cellule de batterie fatiguée. Éteignez-le pour le laisser refroidir naturellement.\n\n" +
-      "• Attention au port de charge : Si vous devez bouger le câble pour que la charge démarre, le connecteur est peut-être encrassé ou usé. N'insistez pas trop fort pour éviter d'endommager les soudures internes de la carte mère. Un nettoyage ou un changement de pièce règle souvent le problème très vite.\n\n" +
-      "• Températures extrêmes : Ne mettez jamais un téléphone chaud au réfrigérateur. Le changement de température brusque crée de la condensation (de minuscules gouttes d'eau) à l'intérieur, ce qui peut oxyder les circuits électroniques.",
+      "• Condensation interne : Passer d'un environnement froid à une pièce chaude crée de l'humidité interne. Ces micro-gouttes d'eau sont la cause principale de l'oxydation lente des circuits.\n\n" +
+      "• Qualité du courant : Les chargeurs non certifiés envoient un courant instable qui détruit les cellules de stockage beaucoup plus vite qu'une charge standard.\n\n" +
+      "• Décharge profonde : Laisser un appareil éteint pendant plusieurs mois peut vider la batterie sous son seuil de sécurité, rendant toute recharge ultérieure impossible.",
   });
 
   return <RepairLayout data={content} />;

@@ -2,12 +2,7 @@ import { Grid, Box, Typography, Stack, Button } from "@mui/material";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
-const ScreenContent = ({
-  current,
-  isMobile,
-  formatDescription,
-  onScreenModel,
-}) => {
+const ScreenContent = ({ current, isMobile, formatDescription }) => {
   return (
     <Grid container spacing={isMobile ? 5 : 8}>
       {/* 왼쪽: 설명 및 추천 박스 */}
@@ -111,7 +106,6 @@ const ScreenContent = ({
               >
                 •{" "}
                 <Typography
-                  component="span" // ✅ 에러 원인 해결: 이 줄을 추가해서 <p> 안에 <p>가 들어가는 걸 막았습니다!
                   sx={{
                     color: "#424245",
                     fontSize: "0.9rem",
@@ -126,33 +120,6 @@ const ScreenContent = ({
             ))}
           </Stack>
         </Box>
-
-        {/* --- 여기서부터 사장님이 원하신 버튼 영역입니다 --- */}
-        <Stack
-          direction={isMobile ? "column" : "row"}
-          spacing={2}
-          sx={{ mb: 4 }}
-        >
-          <Button
-            variant="contained"
-            onClick={onScreenModel}
-            sx={{
-              bgcolor: "#0071e3",
-              color: "#fff",
-              borderRadius: "50px",
-              px: { xs: 3, md: 4 },
-              py: { xs: 1.2, md: 1.5 },
-              fontWeight: 600,
-              fontSize: "0.9rem",
-              textTransform: "none",
-              boxShadow: "none",
-              "&:hover": { bgcolor: "#0077ed", boxShadow: "none" },
-            }}
-          >
-            Devis Gratuit
-          </Button>
-        </Stack>
-        {/* ------------------------------------------- */}
       </Grid>
 
       {/* 오른쪽: 포인트 체크리스트 */}

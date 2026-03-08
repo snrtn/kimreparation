@@ -1,153 +1,215 @@
-import { Box, Container, Typography, Button, Stack } from "@mui/material";
+import React, { useState, useRef } from "react";
+import { Box, Container, Typography, Link } from "@mui/material";
 
-const HeroSection = ({ onOpenModal }) => {
+// ✅ 형님이 작성하신 데이터 (토씨 하나 안 틀리고 그대로 유지)
+const slideData = [
+  {
+    id: 0,
+    title: "Réalité Technique",
+    point: "Prévention & Diagnostic",
+    headline: "Les petits gestes qui sauvent votre appareil.",
+    desc: "Quelques conseils simples pour mieux comprendre votre appareil.\nLa majorité des pannes complexes commencent par de petites erreurs du quotidien : mauvaises habitudes de charge, chocs invisibles ou exposition à l'humidité.\nDécouvrez les réflexes essentiels pour prolonger la vie de votre appareil.",
+    path: "/repair",
+  },
+  {
+    id: 1,
+    title: "Écran & Tactile",
+    point: "Symptômes fréquents",
+    headline: "Lignes colorées, taches noires et Face ID en danger.",
+    desc: "C'est la panne la plus fréquente : une vitre cassée finit par blesser l'écran interne, faisant apparaître des lignes colorées ou des taches noires.\nDe plus, les éclats de verre rayent les capteurs du Face ID, ce qui bloque définitivement la reconnaissance faciale de l'appareil.",
+    path: "/repair",
+  },
+  {
+    id: 2,
+    title: "Tombé dans l'eau",
+    point: "Urgence Humidité",
+    headline: "Pas de charge et oubliez le riz.",
+    desc: "Si l'appareil prend l'eau, éteignez-le et ne le branchez surtout pas : le courant aggrave l'oxydation.\nLe riz est inefficace et le sèche-cheveux pousse l'eau plus loin.\nUn séchage naturel est requerido, mais sachez que l'humidité peut laisser des traces invisibles sous les puces.",
+    path: "/repair/repairWater",
+  },
+  {
+    id: 3,
+    title: "Batterie & Charge",
+    point: "Santé Énergie",
+    headline: "Extinctions soudaines et batterie gonflée.",
+    desc: "Si l'appareil s'éteint brusquement à 20%, la batterie est chimiquement fatiguée.\nLa chaleur étant son ennemi, retirez la coque lors d'une charge sur prise murale.\nSi l'écran se soulève, la batterie gonfle : arrêtez immédiatement la charge pour éviter d'aggraver les micro-fissures internes.",
+    path: "/repair/repairBattery",
+  },
+  {
+    id: 4,
+    title: "Système & Logiciel",
+    point: "Sécurité Système",
+    headline: "Mises à jour sur secteur et blocage logo.",
+    desc: "Toute mise à jour doit se faire sur prise murale pour éviter de corrompre l'appareil.\nSoyez prudent avec les nouvelles versions souvent instables.\nEnfin, si l'espace est rempli à 100%, l'appareil reste bloqué sur le logo au démarrage sans possibilité d'accès.",
+    path: "/repair/repairSystem",
+  },
+  {
+    id: 5,
+    title: "Caméra & Son",
+    point: "Optique et Audio",
+    headline: "Vibrations moto et grilles obstruées.",
+    desc: "Les vibrations (supports moto) désalignent les aimants de la caméra, rendant l'image floue.\nPour le son, évitez absolument les aiguilles qui déchirent les membranes : une brosse douce suffit.\nEnfin, sachez que des micro-fissures internes peuvent affecter l'appareil bien après un choc.",
+    path: "/repair/repairHardware",
+  },
+];
+
+const HeroSection = () => {
+  const [current, setCurrent] = useState(0);
+
+  // 1. 추가: 각 탭을 참조하기 위한 Ref 배열
+  const tabRefs = useRef([]);
+
+  // 2. 추가: 클릭 시 중앙 정렬 함수
+  const handleTabClick = (index) => {
+    setCurrent(index);
+    if (tabRefs.current[index]) {
+      tabRefs.current[index].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center", // 가로축 기준 중앙 정렬
+      });
+    }
+  };
+
   return (
     <Box
       sx={{
-        position: "relative",
         width: "100%",
         bgcolor: "#ffffff",
-        pt: { xs: 12, md: 16 },
-        pb: { xs: 10, sm: 2, md: 22 },
+        height: { xs: "580px", sm: "630px", md: "70vh" },
+        minHeight: { xs: "580px", sm: "630px", md: "600px" },
         display: "flex",
-        alignItems: "center",
+        flexDirection: "column",
+        overflow: "hidden",
       }}
     >
-      <Container maxWidth="xl" sx={{ position: "relative", zIndex: 3 }}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            alignItems: "center",
-            textAlign: { xs: "center", md: "left" },
-          }}
-        >
-          {/* 기존 flex: 1.2 레이아웃 유지 */}
-          <Box sx={{ flex: 1.2, width: "100%" }}>
-            <Stack spacing={0}>
-              {/* 상단 포인트 문구 */}
+      {/* 상단 메인 영역 - 원본 그대로 유지 */}
+      <Box sx={{ flex: 1, display: "flex", alignItems: "center" }}>
+        <Container maxWidth="xl">
+          {slideData.map((slide, index) => (
+            <Box
+              key={slide.id}
+              sx={{
+                display: index === current ? "block" : "none",
+                animation: "fadeIn 0.5s ease-out",
+              }}
+            >
               <Typography
                 sx={{
                   fontSize: "0.9rem",
                   fontWeight: 600,
                   color: "#0066cc",
                   mb: 1.5,
-                  letterSpacing: "0.02em",
                 }}
               >
-                Besoin d'aide ?
+                {slide.point}
               </Typography>
-
-              {/* 메인 타이틀: 레이아웃은 그대로, 크기만 적당하게(3.5rem) */}
               <Typography
                 variant="h1"
                 sx={{
-                  fontSize: "3rem",
+                  fontSize: { xs: "2rem", sm: "2.6rem" },
                   fontWeight: 700,
-                  lineHeight: 1.1,
                   color: "#1d1d1f",
-                  letterSpacing: "-0.03em",
-                }}
-              >
-                Obtenez votre
-              </Typography>
-              <Typography
-                variant="h1"
-                sx={{
-                  fontSize: "3rem",
-                  fontWeight: 700,
+                  mb: { xs: 2, md: 3 },
                   lineHeight: 1.1,
-                  color: "#0066cc",
                   letterSpacing: "-0.03em",
                 }}
               >
-                devis gratuit.
+                {slide.headline}
               </Typography>
               <Typography
-                variant="h1"
                 sx={{
-                  fontSize: "3rem",
-                  fontWeight: 700,
-                  lineHeight: 1.1,
-                  color: "#1d1d1f",
-                  letterSpacing: "-0.03em",
-                  mb: 1,
-                }}
-              >
-                En toute clarté.
-              </Typography>
-
-              {/* 설명 영역 */}
-              <Typography
-                sx={{
-                  color: "#86868b",
-                  fontSize: "0.9rem",
+                  color: "#424245",
+                  fontSize: "1rem",
                   fontWeight: 400,
-                  maxWidth: "540px",
-                  mx: { xs: "auto", md: 0 },
-                  lineHeight: 1.5,
-                  letterSpacing: "-0.01em",
+                  lineHeight: 1.6,
+                  maxWidth: "750px",
+                  mb: 4,
+                  whiteSpace: "pre-line",
                 }}
               >
-                Écrans, batteries ou pannes complexes : nous analysons votre
-                appareil avec rigueur. <br /> Profitez d'une estimation claire
-                et transparente pour vous permettre de choisir la meilleure
-                option de remise en état.
+                {slide.desc}
               </Typography>
-
-              {/* 검색 필드 대신 버튼으로만 교체 (레이아웃 위치 고정) */}
-              <Box
-                sx={{
-                  pt: { xs: 4, md: 6 },
-                  width: "100%",
-                }}
-              >
-                <Stack
-                  direction="row"
-                  spacing={3}
-                  justifyContent={{ xs: "center", md: "flex-start" }}
-                  alignItems="center"
-                >
-                  <Button
-                    variant="contained"
-                    onClick={onOpenModal}
-                    sx={{
-                      bgcolor: "#0071e3",
-                      color: "#fff",
-                      borderRadius: "50px",
-                      px: { xs: 3, md: 4 },
-                      py: { xs: 1.2, md: 1.5 },
-                      fontWeight: 600,
-                      fontSize: "0.9rem",
-                      textTransform: "none",
-                      boxShadow: "none",
-                      "&:hover": { bgcolor: "#0077ed", boxShadow: "none" },
-                    }}
-                  >
-                    Devis gratuit
-                  </Button>
-                </Stack>
-
-                <Typography
-                  variant="caption"
+              {index !== 0 && (
+                <Link
+                  href={slide.path}
                   sx={{
-                    color: "#a1a1a6",
-                    fontWeight: 400,
-                    mt: 1,
-                    display: "block",
-                    fontSize: "0.8rem",
+                    fontSize: "1rem",
+                    color: "#0066cc",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                    "&:hover": { textDecoration: "underline" },
                   }}
                 >
-                  * Sans engagement de votre part.
-                </Typography>
-              </Box>
-            </Stack>
-          </Box>
+                  En savoir plus sur ce sujet {">"}
+                </Link>
+              )}
+            </Box>
+          ))}
+        </Container>
+      </Box>
 
-          {/* 기존 flex: 0.8 빈 박스 레이아웃 유지 */}
-          <Box sx={{ flex: 0.8, display: { xs: "none", md: "block" } }} />
-        </Box>
-      </Container>
+      {/* 하단 네비게이션 - 스타일 그대로 유지, 중앙 정렬 로직만 탑재 */}
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          overflowX: "auto",
+          whiteSpace: "nowrap",
+          "&::-webkit-scrollbar": { display: "none" },
+          scrollbarWidth: "none",
+          borderTop: "1px solid #d2d2d7",
+          height: { xs: "100px", md: "120px" },
+          bgcolor: "#ffffff",
+          flexShrink: 0,
+        }}
+      >
+        {slideData.map((slide, index) => (
+          <Box
+            key={slide.id}
+            // 3. 추가: Ref 연결 및 함수 연결
+            ref={(el) => (tabRefs.current[index] = el)}
+            onClick={() => handleTabClick(index)}
+            sx={{
+              height: "100%",
+              flex: { xs: "0 0 160px", md: "1" },
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              borderTop: "3px solid",
+              borderColor: index === current ? "#1d1d1f" : "transparent",
+              marginTop: "-1.5px",
+              bgcolor: index === current ? "#fafafa" : "transparent",
+              transition: "all 0.2s ease-in-out",
+              boxSizing: "border-box",
+              "&:hover": { bgcolor: "#f5f5f7" },
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: { xs: "0.9rem", sm: "0.95rem", lg: "1.05rem" },
+                fontWeight: index === current ? 700 : 500,
+                color: index === current ? "#1d1d1f" : "#86868b",
+                textAlign: "center",
+                whiteSpace: "normal",
+                wordBreak: "keep-all",
+                lineHeight: 1.3,
+                px: 2,
+              }}
+            >
+              {slide.title}
+            </Typography>
+          </Box>
+        ))}
+      </Box>
+
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </Box>
   );
 };

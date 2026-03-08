@@ -18,14 +18,18 @@ const LayoutView = () => {
   const isHome = pathname === "/";
 
   const hasSideMenu =
-    pathname.includes("/screen") ||
-    pathname.includes("/repair") ||
-    pathname.includes("/atelier"); // 아틀리에 추가
+    pathname.startsWith("/screen") ||
+    pathname.startsWith("/repair") ||
+    pathname.startsWith("/devis") ||
+    pathname.startsWith("/atelier") ||
+    pathname.startsWith("/toy"); // ✅ toy 경로일 때도 사이드바 그리라고 추가!
 
   const getGuideType = () => {
-    if (pathname.includes("/screen")) return "screen";
-    if (pathname.includes("/repair")) return "repair";
-    if (pathname.includes("/atelier")) return "atelier"; // 아틀리에 추가
+    if (pathname.startsWith("/screen")) return "screen";
+    if (pathname.startsWith("/repair")) return "repair";
+    if (pathname.startsWith("/devis")) return "devis";
+    if (pathname.startsWith("/atelier")) return "atelier";
+    if (pathname.startsWith("/toy")) return "toy";
     return "";
   };
 
@@ -107,7 +111,7 @@ const LayoutView = () => {
               flexDirection: "column",
             }}
           >
-            {isHome ? (
+            {/* {isHome ? (
               <Box
                 // ✅ 에러 원인 해결: 이 자리에 있던 isHome={isHome} 코드를 삭제했습니다!
                 component="img"
@@ -126,7 +130,7 @@ const LayoutView = () => {
               />
             ) : (
               <></>
-            )}
+            )} */}
 
             <Outlet />
 

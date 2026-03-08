@@ -1,90 +1,100 @@
+import React from "react";
 import { Box, Container, Typography, Stack } from "@mui/material";
-import { Link as RouterLink, useLocation } from "react-router-dom"; // useLocation 추가
 
 const FooterSub = () => {
-  const location = useLocation(); // 현재 경로 가져오기
   const currentYear = new Date().getFullYear();
-
-  // 현재 페이지가 보증/약관 페이지인지 확인
-  const isWarrantyPage = location.pathname === "/atelier/atelierWarranty";
-  const isHorairesPage = location.pathname === "/atelier/atelierHoraires";
 
   return (
     <Box
-      component="div"
       sx={{
         width: "100%",
         bgcolor: "transparent",
-        py: { xs: 4, md: 6 },
+        py: { xs: 6, md: 8 },
         borderTop: "1px solid #f2f2f7",
       }}
     >
       <Container maxWidth="lg">
-        <Stack spacing={2}>
-          {/* 데이터 백업 골든타임 안내 */}
-          <Typography
-            sx={{ fontSize: "0.75rem", color: "#86868b", lineHeight: 1.6 }}
-          >
-            Si votre écran fonctionne encore après une chute ou un contact avec
-            l’eau, <strong>sauvegardez immédiatement vos données</strong>{" "}
-            (iCloud, Google Drive). Un appareil endommagé peut cesser de
-            répondre à tout moment.
-          </Typography>
-
-          {/* 기술적 고지 */}
-          <Typography
-            sx={{ fontSize: "0.75rem", color: "#86868b", lineHeight: 1.6 }}
-          >
-            Note technique : Un choc laisse parfois de{" "}
-            <strong>minuscules fissures invisibles</strong>. Même si tout semble
-            en ordre, ces fragilités peuvent évoluer. C'est un risque structurel
-            que nous partageons en toute transparence.
-          </Typography>
-
-          <Stack
-            direction="row"
-            spacing={3}
-            sx={{ flexWrap: "wrap", gap: 1, mt: 1 }}
-          >
-            {/* 🔥 현재 그 페이지가 아닐 때만 링크를 보여줌 */}
-            {!isWarrantyPage && (
-              <Typography
-                component={RouterLink}
-                to="/atelier/atelierWarranty"
-                sx={{
-                  fontSize: "0.75rem",
-                  color: "#424245",
-                  textDecoration: "none",
-                  fontWeight: 600,
-                  "&:hover": { color: "#1d1d1f" },
-                }}
-              >
-                Garanties & Conditions →
-              </Typography>
-            )}
-
-            {/* 오픈 시간 링크 (이것도 그 페이지에 있으면 숨기고 싶으면 똑같이 처리 가능) */}
-
-            {!isHorairesPage && (
-              <Typography
-                component={RouterLink}
-                to="/atelier/atelierHoraires"
-                sx={{
-                  fontSize: "0.75rem",
-                  color: "#424245",
-                  textDecoration: "none",
-                  "&:hover": { color: "#1d1d1f" },
-                }}
-              >
-                Horaires & Infos Légales
-              </Typography>
-            )}
-
-            {/* 저작권 표시는 어디서든 보여야 하니까 남겨둠 */}
-            <Typography sx={{ fontSize: "0.75rem", color: "#86868b" }}>
-              © {currentYear} KIM REPARATION. TOUS DROITS RÉSERVÉS.
+        <Stack spacing={4}>
+          {/* 데이터 백업 강조 (정중하고 상세하게) */}
+          <Box>
+            <Typography
+              sx={{
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                color: "#1d1d1f",
+                mb: 1.5,
+              }}
+            >
+              AVERTISSEMENT SUR LA SECURITE DE VOS DONNEES PERSONNELLES
             </Typography>
-          </Stack>
+            <Typography
+              sx={{ fontSize: "0.8rem", color: "#86868b", lineHeight: 1.8 }}
+            >
+              Nous tenons a informer notre aimable clientele que la sauvegarde
+              integrale de vos donnees (photographies, contacts, messages) reste
+              sous votre responsabilite exclusive avant toute intervention
+              technique. Un appareil endommage par un choc ou un liquide peut
+              presenter des defaillances imprevisibles.{" "}
+              <strong>Kim Reparation</strong> ne pourra etre tenu responsable de
+              la perte de vos fichiers numeriques lors du processus de
+              maintenance.
+            </Typography>
+          </Box>
+
+          {/* 기술적 한계 및 투명성 고지 */}
+          <Box>
+            <Typography
+              sx={{
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                color: "#1d1d1f",
+                mb: 1.5,
+              }}
+            >
+              TRANSPARENCE SUR LES RISQUES TECHNIQUES ET STRUCTURELS
+            </Typography>
+            <Typography
+              sx={{ fontSize: "0.8rem", color: "#86868b", lineHeight: 1.8 }}
+            >
+              Toute intervention materielle comporte des risques intrinseques
+              lies a l'etat initial de l'appareil. Des dommages invisibles a
+              l'oeil nu, tels que des micro-fissures structurelles, peuvent
+              evoluer lors du demontage. De meme, bien que nous installions
+              systematiquement de nouveaux joints, l'impermeabilite d'origine
+              (normes IP67 ou IP68) ne peut etre garantie a l'identique apres
+              une ouverture. Nous partageons ces informations par souci
+              d'honnetete envers nos clients.
+            </Typography>
+          </Box>
+
+          {/* 독립성 명시 (법적 보호) */}
+          <Box>
+            <Typography
+              sx={{
+                fontSize: "0.8rem",
+                color: "#86868b",
+                lineHeight: 1.8,
+                fontStyle: "italic",
+              }}
+            >
+              Note d'independance : Kim Reparation est un prestataire de
+              services independant. Nous ne sommes ni affilies ni autorises par
+              les societes constructrices (telles que Nintendo, Apple ou
+              Samsung). Les noms de marques sont mentionnes uniquement a titre
+              informatif.
+            </Typography>
+          </Box>
+
+          <Typography
+            sx={{
+              fontSize: "0.75rem",
+              color: "#86868b",
+              pt: 2,
+              borderTop: "1px dashed #e5e5e7",
+            }}
+          >
+            © {currentYear} KIM REPARATION. TOUS DROITS RESERVES.
+          </Typography>
         </Stack>
       </Container>
     </Box>

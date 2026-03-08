@@ -1,67 +1,53 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import RepairLayout from "./repairLayout";
 
 const RepairSystem = () => {
   const [content] = useState({
     subTitle: "Système & Logiciel",
-    mainTitle: "Appareil bloqué, mot de passe oublié ou bug système",
+    mainTitle: "Instabilité logicielle et sécurité des données.",
     accentColor: "#5856d6",
     criticalColor: "#ff3b30",
+
     steps: [
       {
         id: "01",
-        title: "Forcer le redémarrage",
-        desc: `Si l'écran est figé, relancez le cycle électrique :
-
-• Apple (8+) : Vol Up, Vol Down, puis Power maintenu.
-• Samsung/Google/Oppo : Power + Vol Bas (15s).
-• Xiaomi/Huawei : Power maintenu (15s).
-
-⚠️ STOP : Si le logo s'éteint aussitôt, n'essayez pas plus de 2 fois. Forcer un système corrompu peut griller la puce mémoire définitivement.`,
-        tip: "N'insistez pas au-delà de 2 essais.",
+        title: "Alertes de sécurité (OS)",
+        desc: "Les messages 'Surchauffe' ou 'Humidité' sont des protections actives. En respectant ces alertes, vous permettez au système de stabiliser ses composants. Forcer l'utilisation dans ces conditions est la cause principale des pannes matérielles.",
+        tip: "Le système bloque les fonctions pour protéger l'électronique interne.",
       },
       {
+        // ✅ 업데이트 주의사항 + 구형/신형 모델 리스크 반영
         id: "02",
-        title: "Retrait SIM & Carte SD",
-        desc: `Une carte SD défectueuse ou une SIM oxydée suffit à bloquer tout le démarrage d'un smartphone (Bootloop).
-
-Avant de tenter une restauration, retirez le tiroir SIM/SD et la coque. Cela élimine les conflits matériels et les pressions fantômes sur les boutons qui empêchent le système de se charger correctement.`,
-        tip: "Testez l'appareil 'nu' sans accessoires.",
+        title: "Risques des mises à jour majeures",
+        desc: "Un nouveau logiciel n'est jamais parfait à sa sortie, que ce soit sur un modèle ancien ou un dernier fleuron. Installer une mise à jour dès son déploiement peut introduire des bugs critiques ; la prudence est de rigueur avant l'installation.",
+        tip: "Patienter quelques jours permet d'obtenir une version corrigée et stable.",
       },
       {
+        // ✅ 형님이 강조하신 벽면 콘센트 물리기 핵심!
         id: "03",
-        title: "Repos thermique et Charge murale",
-        desc: `Un système crashé a besoin d'un courant 'propre' pour redémarrer. 
-
-Laissez l'appareil refroidir 30 min. Branchez-le ensuite sur une prise murale avec un câble d'origine. Les ports USB d'ordinateur ou de voiture ne délivrent pas assez de tension pour réamorcer un processeur bloqué.`,
-        tip: "Évitez les ports USB de PC.",
+        title: "Alimentation impérative sur secteur",
+        desc: "Toute mise à jour doit impérativement se faire sur une prise murale. Seul le secteur garantit la tension continue nécessaire à l'écriture du système. Les ports USB (PC, voiture) sont instables et peuvent corrompre le logiciel définitivement.",
+        tip: "Branchez toujours votre chargeur sur une prise murale avant de lancer une mise à jour.",
+      },
+      {
+        id: "04",
+        title: "Saturation du stockage (100%)",
+        desc: "Un système sans espace libre ne peut plus traiter les fichiers de démarrage. Ce blocage logique entraîne souvent un 'Bootloop' (blocage au logo), rendant parfois l'accès aux données impossible sans une restauration complète.",
+        tip: "Conservez 10 Go d'espace libre pour la survie de votre système de fichiers.",
+      },
+      {
+        id: "05",
+        title: "Chiffrement et Identifiants",
+        desc: "Les données sont cryptées par une clé matérielle. En cas de blocage sévère, vos accès iCloud ou Google sont techniquement les seuls moyens de déverrouiller l'appareil après une intervention logicielle.",
+        tip: "Vos codes sont les uniques clés de votre jardin numérique.",
       },
     ],
-    alertTitle: "⚠️ DIAGNOSTIC EXPERT : RÉCUPÉRATION ET MÉMOIRE",
-    alertDesc: `Note importante sur nos interventions de haute précision :
 
-1. Stockage saturé (100% plein) :
-Ne tentez rien seul si l'appareil est déjà bloqué. Sans espace libre, le système ne peut plus déchiffrer vos photos. 
-Forcer un "flash" amateur effacera tout définitivement.
-
-⚠️ SI VOTRE APPAREIL S'ALLUME ENCORE (PROCÉDURE D'URGENCE) :
-• ÉTAPE 1 : Supprimez immédiatement vos JEUX MOBILES (ce sont les apps les plus lourdes).
-• ÉTAPE 2 : Supprimez ensuite toutes les applications que vous n'utilisez pas quotidiennement.
-• ÉTAPE 3 : Une fois que vous avez libéré au moins 5 Go d'espace, connectez l'appareil à un ORDINATEUR pour transférer vos VIDÉOS LOURDES.
-• ÉTAPE 4 : Transférez les petites vidéos et photos vers le CLOUD.
-
-📺 [C'est le symptôme quand la capacité est à 100% (Référence)]
-• Vidéo : iPhone Storage Full Fix (Error 1110)
-• Source : Phone Repair Guru
-• Lien : https://www.youtube.com/shorts/uc6aSLTunKA
-
-
-2. Mot de passe et Sécurité :
-Sachez qu'en Apple Store ou centre officiel, sans code, ils formatent tout.
-AUCUNE récupération n'est possible chez eux. De notre côté, l'opération de clonage nécessite impérativement que vous connaissiez votre mot de passe pour déverrouiller les données après l'intervention.
-
-⚠️ ATTENTION :
-Sans vos identifiants iCloud ou Google, l'appareil restera bloqué par le serveur après la réparation.`,
+    alertTitle: "Réalités techniques à connaître",
+    alertDesc:
+      "• Courant propre : La charge murale est la seule protection contre les micro-coupures de tension durant les phases d'écriture NAND.\n\n" +
+      "• Intégrité logicielle : Une mise à jour interrompue par un manque de puissance peut boucher définitivement l'accès à la puce mémoire.\n\n" +
+      "• Vigilance Constructeur : Les logiciels sont déployés par étapes ; l'installation immédiate comporte un risque que seul un environnement électrique stable peut minimiser.",
   });
 
   return <RepairLayout data={content} />;

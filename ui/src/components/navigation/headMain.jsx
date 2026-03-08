@@ -76,22 +76,22 @@ const HeadMain = ({ isHome }) => {
                 textAlign: "center",
               }}
             >
-              Kim Reparation - Réparer d'abord
+              Détails des Écrans
             </Typography>
+            <Box sx={{ mx: 0.5 }}></Box>
+            <Link
+              component={RouterLink}
+              to="/screen/apple"
+              sx={{
+                color: "#fff",
+                fontSize: "0.86rem",
+                fontWeight: 800, // 링크를 더 강조
+                textDecoration: "underline",
+              }}
+            >
+              Les points clés →
+            </Link>
           </Box>
-
-          {/* <Link
-            component={RouterLink}
-            to="/screen/apple"
-            sx={{
-              color: "#fff",
-              fontSize: "0.86rem",
-              fontWeight: 800, // 링크를 더 강조
-              textDecoration: "underline",
-            }}
-          >
-            Les points clés →
-          </Link> */}
         </Box>
       )}
 
@@ -136,7 +136,7 @@ const HeadMain = ({ isHome }) => {
               >
                 {dropdownData.map((menu) => {
                   // ⬇️ 아틀리에 메뉴 색상 조건 (에르메스 오렌지)
-                  const isAtelier = menu.title === "L'Atelier";
+                  const isAtelier = menu.title === "Devis Gratuits";
                   return (
                     <Typography
                       key={menu.title}
@@ -195,7 +195,7 @@ const HeadMain = ({ isHome }) => {
         <Stack spacing={8} sx={{ alignItems: "center" }}>
           {dropdownData.map((menu) => {
             // ⬇️ 모바일에서도 아틀리에만 오렌지
-            const isAtelier = menu.title === "L'Atelier";
+            const isAtelier = menu.title === "Devis Gratuits";
             return (
               <Typography
                 key={menu.title}
@@ -203,7 +203,7 @@ const HeadMain = ({ isHome }) => {
                 to={menu.path}
                 onClick={handleDrawerToggle}
                 sx={{
-                  fontSize: { xs: "2rem", sm: "3rem" },
+                  fontSize: { xs: "1.6rem", sm: "2rem" },
                   fontWeight: 600,
                   textDecoration: "none",
                   color: isAtelier ? "#E65100" : "inherit",

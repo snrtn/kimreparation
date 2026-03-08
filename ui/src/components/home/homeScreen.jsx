@@ -1,103 +1,65 @@
 import React, { useRef, useState, useEffect } from "react";
-import {
-  Box,
-  Container,
-  Typography,
-  Stack,
-  IconButton,
-  Paper,
-} from "@mui/material";
+import { Box, Container, Typography, Stack, IconButton } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import AppleIcon from "@mui/icons-material/Apple";
 import { useNavigate } from "react-router-dom";
 
 const guides = [
   {
-    title: "Apple",
-    path: "/screen/apple",
-    logo: <AppleIcon sx={{ fontSize: 80, color: "#1d1d1f" }} />,
+    title: "Origine (Pull)",
+    tag: "Composant d'origine",
+    // ✅ "성능 유지" 삭제 -> "추출 부품"이라는 물리적 사실만 기재
+    desc: "Écran d'origine récupéré sur un autre appareil de la marque. Conserve le rendu visuel initial du constructeur.",
+    pros: "Rendu visuel et tactile d'origine",
+    cons: "Prix élevé / Selon arrivage",
+    target: "Utilisateurs privilégiant les pièces constructeur.",
+    path: "/screen",
+    serial: "SERIES-O1",
   },
   {
-    title: "Samsung",
-    path: "/guide/samsung/galaxy",
-    logo: (
-      <Typography
-        sx={{
-          fontWeight: 900,
-          fontSize: "1.8rem",
-          color: "#074da1",
-          letterSpacing: "-0.05em",
-        }}
-      >
-        SAMSUNG
-      </Typography>
-    ),
+    title: "Reconditionné",
+    tag: "Dalle d'origine",
+    // ✅ 리스크 방지: 외부 유리가 교체된 제품임을 명확히 고지
+    desc: "Dalle d'origine avec une vitre externe remplacée. L'affichage reste celui du constructeur.",
+    pros: "Affichage d'origine / Prix intermédiaire",
+    cons: "Vitre externe non certifiée constructeur",
+    target: "Alternative à l'écran d'origine pur.",
+    path: "/screen/eco",
+    serial: "SERIES-R1",
   },
   {
-    title: "Xiaomi",
-    path: "/guide/xiaomi",
-    logo: (
-      <Box
-        sx={{
-          p: 1.5,
-          bgcolor: "#ff6700",
-          color: "#fff",
-          borderRadius: "12px",
-          fontWeight: 900,
-          fontSize: "1.2rem",
-        }}
-      >
-        mi
-      </Box>
-    ),
+    title: "Copie Soft OLED",
+    tag: "Compatible (Souple)",
+    // ✅ 팩트: 재질이 유연하다는 성질만 강조
+    desc: "Écran compatible sur base flexible. Technologie conçue pour une meilleure absorption des pressions.",
+    pros: "Meilleure tolérance aux chocs (gamme copie)",
+    cons: "Nuances de couleurs variables",
+    target: "Usage quotidien standard.",
+    path: "/screen/soft",
+    serial: "SERIES-S2",
   },
   {
-    title: "Oppo",
-    path: "/guide/oppo",
-    logo: (
-      <Typography
-        sx={{
-          fontWeight: 800,
-          color: "#008a4e",
-          fontSize: "2.2rem",
-          letterSpacing: "0.02em",
-        }}
-      >
-        oppo
-      </Typography>
-    ),
+    title: "Copie Hard OLED",
+    tag: "Compatible (Rigide)",
+    // ✅ 팩트 폭격: "잘 깨진다"가 아니라 "충격에 취약한 구조"임을 명시
+    desc: "Attention : écran rigide. Structure sensible aux pressions internes. Risque de défaut d'affichage en cas de choc.",
+    pros: "Technologie OLED au prix le plus bas",
+    cons: "Fragilité structurelle élevée",
+    target:
+      "Excellent choix pour ceux qui ne font jamais tomber leur téléphone.",
+    path: "/screen/hard",
+    serial: "SERIES-H2",
   },
   {
-    title: "Google",
-    path: "/guide/google",
-    logo: (
-      <Typography sx={{ fontWeight: 700, color: "#4285F4", fontSize: "2rem" }}>
-        Google
-      </Typography>
-    ),
-  },
-  {
-    title: "Huawei",
-    path: "/guide/huawei",
-    logo: (
-      <Typography
-        sx={{ fontWeight: 800, color: "#ed1c24", fontSize: "1.6rem" }}
-      >
-        HUAWEI
-      </Typography>
-    ),
-  },
-  {
-    title: "Autres",
-    path: "/guide/others",
-    logo: (
-      <Typography
-        sx={{ fontWeight: 600, color: "#86868b", fontSize: "1.5rem" }}
-      >
-        Plus
-      </Typography>
-    ),
+    title: "Copie LCD",
+    tag: "Compatible (In-cell)",
+    // ✅ 리스크 방지: 두께, 전력 소비, 발열 가능성 사전 고지
+    desc: "Technologie LCD. Épaisseur supérieure à l'OLED. Peut impacter l'autonomie et la température de l'appareil.",
+    pros: "Prix le plus accessible",
+    cons: "Écran épais / Consommation d'énergie",
+    target: "Usage secondaire (SMS) / Pour les utilisateurs soigneux.",
+    path: "/screen/lcd",
+    serial: "SERIES-L3",
   },
 ];
 
@@ -105,7 +67,6 @@ const HomeScreen = () => {
   const navigate = useNavigate();
   const scrollRef = useRef(null);
 
-  // 버튼 비활성화 상태 관리
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
@@ -123,170 +84,315 @@ const HomeScreen = () => {
     return () => window.removeEventListener("resize", checkScroll);
   }, []);
 
+  // ✅ 핵심 추가: 기기마다 다른 카드 1장 넓이를 자동으로 계산해서 넘겨주는 함수
+  const handleScroll = (direction) => {
+    if (scrollRef.current && scrollRef.current.children.length > 0) {
+      // 첫 번째 카드의 실제 넓이(px)를 가져옴
+      const cardWidth = scrollRef.current.children[0].offsetWidth;
+      const scrollAmount = direction === "left" ? -cardWidth : cardWidth;
+
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
+
   return (
-    <Box sx={{ width: "100%", bgcolor: "#fff", pt: 20, pb: 12 }}>
+    <Box sx={{ width: "100%", bgcolor: "#ffffff", pt: 15, pb: 12 }}>
       <Container maxWidth="xl">
+        {/* 상단 헤더 섹션 */}
         <Box
           sx={{
             display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            alignItems: { md: "flex-end" },
             justifyContent: "space-between",
-            mb: 4,
-            pl: { md: 1 },
+            alignItems: "flex-end",
+            px: 2,
+            pt: { xs: 10, md: 16 },
+            position: "relative",
+            overflow: "hidden",
           }}
         >
           <Box>
             <Typography
               sx={{
-                color: "#1d1d1f",
-                fontWeight: 800,
-                fontSize: { xs: "2rem", md: "3rem" },
-                letterSpacing: "-0.04em",
+                color: "#86868b",
+                fontSize: "0.9rem",
+                fontWeight: 600,
+                mb: 1.5,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                position: "relative",
+                zIndex: 1,
               }}
             >
-              Choisir mon écran
+              Spécifications de pièces
             </Typography>
             <Typography
               sx={{
-                color: "#86868b",
-                fontSize: "0.9rem",
-                fontWeight: 400,
-                lineHeight: 1.5,
-                letterSpacing: "-0.01em",
-                maxWidth: "600px",
+                color: "#1d1d1f",
+                fontWeight: 700,
+                fontSize: { xs: "2rem", sm: "2.6rem" },
+                letterSpacing: "-0.04em",
+                lineHeight: 1.1,
+                position: "relative",
+                zIndex: 1,
               }}
             >
-              À chaque usage sa priorité : trouvez l'écran adapté à votre
-              quotidien.
+              Détails des Écrans
             </Typography>
           </Box>
 
-          {/* 버튼 영역: 모바일 숨김, 비활성화 로직 추가 */}
-          <Box
+          <Typography
             sx={{
-              display: { xs: "none", md: "flex" },
-              gap: 0.5,
-              mt: { xs: 3, md: 0 },
-              mr: 10,
+              position: "absolute",
+              right: 20,
+              top: { md: "10px", lg: "20px" },
+              fontSize: { md: "5rem", lg: "6.5rem" },
+              fontWeight: 900,
+              opacity: 0.03,
+              userSelect: "none",
+              lineHeight: 0.8,
+              display: { xs: "none", md: "block" },
+              zIndex: 0,
             }}
           >
-            <IconButton
-              disabled={!canScrollLeft}
-              onClick={() =>
-                scrollRef.current.scrollBy({ left: -360, behavior: "smooth" })
-              }
-              sx={{
-                p: 1,
-                "&:disabled": { opacity: 0.2 },
-                "&:hover": { color: "#0066cc" },
-              }}
-            >
-              <ArrowBackIosNewIcon sx={{ fontSize: 20, color: "#1d1d1f" }} />
-            </IconButton>
-            <IconButton
-              disabled={!canScrollRight}
-              onClick={() =>
-                scrollRef.current.scrollBy({ left: 360, behavior: "smooth" })
-              }
-              sx={{
-                p: 1,
-                "&:disabled": { opacity: 0.2 },
-                "&:hover": { color: "#0066cc" },
-              }}
-            >
-              <ArrowForwardIosIcon sx={{ fontSize: 20, color: "#1d1d1f" }} />
-            </IconButton>
-          </Box>
+            HARDWARE
+          </Typography>
         </Box>
 
-        <Box sx={{ position: "relative" }}>
-          <Stack
-            ref={scrollRef}
-            onScroll={checkScroll}
-            direction="row"
-            spacing={3}
+        {/* ✅ 스크롤 버튼 영역 (420 고정값 버리고 handleScroll 함수 적용) */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginLeft: "auto",
+            gap: 1,
+            position: "relative",
+            zIndex: 1,
+            mb: { xs: 1, md: 3 },
+            mt: { xs: 1, md: 0 },
+            pr: 1,
+          }}
+        >
+          <IconButton
+            disableRipple
+            disabled={!canScrollLeft}
+            onClick={() => handleScroll("left")} // ✅ 변경됨
             sx={{
-              overflowX: "auto",
-              pb: 6,
-              px: 1,
-              "::-webkit-scrollbar": { display: "none" },
-              scrollBehavior: "smooth",
+              p: 1.5,
+              "&:hover": { bgcolor: "transparent" },
+              "&:disabled": { bgcolor: "transparent" },
             }}
           >
-            {guides.map((item, index) => (
-              <Paper
-                key={index}
-                elevation={0}
-                onClick={() => navigate(item.path)}
-                sx={{
-                  // 가로 사이즈 줄임 (md: 340px -> 300px)
-                  minWidth: { xs: "280px", md: "320px" },
-                  height: "400px",
-                  display: "flex",
-                  flexDirection: "column",
-                  p: 4,
-                  cursor: "pointer",
-                  borderRadius: "28px",
-                  bgcolor: "#f5f5f7",
-                  position: "relative",
-                  transition: "background-color 0.4s ease",
-                  "&:hover": {
-                    bgcolor: "#e8e8ed",
-                  },
-                }}
-              >
-                <Box
-                  sx={{ position: "absolute", top: 32, left: 32, zIndex: 2 }}
-                >
-                  <Typography
-                    sx={{
-                      color: "#1d1d1f",
-                      fontSize: "1.2rem",
-                      fontWeight: 700,
-                      letterSpacing: "-0.02em",
-                    }}
-                  >
-                    {item.title}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "#0066cc",
-                      fontSize: "0.9rem",
-                      fontWeight: 500,
-                      lineHeight: 1.5,
-                      letterSpacing: "-0.01em",
-                      mt: 0.5,
-                    }}
-                  >
-                    En savoir plus
-                  </Typography>
-                </Box>
+            <ArrowBackIosNewIcon
+              sx={{
+                fontSize: 22,
+                color: canScrollLeft ? "#1d1d1f" : "#d2d2d7",
+                transition: "color 0.3s ease",
+              }}
+            />
+          </IconButton>
 
-                <Box
-                  className="logo-container"
+          <IconButton
+            disableRipple
+            disabled={!canScrollRight}
+            onClick={() => handleScroll("right")} // ✅ 변경됨
+            sx={{
+              p: 1.5,
+              "&:hover": { bgcolor: "transparent" },
+              "&:disabled": { bgcolor: "transparent" },
+            }}
+          >
+            <ArrowForwardIosIcon
+              sx={{
+                fontSize: 22,
+                color: canScrollRight ? "#1d1d1f" : "#d2d2d7",
+                transition: "color 0.3s ease",
+              }}
+            />
+          </IconButton>
+        </Box>
+
+        {/* 메인 스크롤 영역 */}
+        <Stack
+          ref={scrollRef}
+          onScroll={checkScroll}
+          direction="row"
+          spacing={0}
+          sx={{
+            overflowX: "auto",
+            borderTop: "2px solid #1d1d1f",
+            "::-webkit-scrollbar": { display: "none" },
+            WebkitOverflowScrolling: "touch",
+            scrollSnapType: "x mandatory", // ✅ 자석 효과 켜기
+          }}
+        >
+          {guides.map((item, index) => (
+            <Box
+              key={index}
+              onClick={() => navigate(item.path)}
+              sx={{
+                minWidth: { xs: "85vw", sm: "350px", md: "400px" },
+                scrollSnapAlign: "start", // ✅ 왼쪽 경계선에 자석처럼 찰칵 붙게 만듦
+                height: { xs: "550px", md: "520px" },
+                p: { xs: 4, md: 5 },
+                cursor: "pointer",
+                borderRight: "1px solid #d2d2d7",
+                display: "flex",
+                flexDirection: "column",
+                position: "relative",
+                bgcolor: "#ffffff",
+                "&:hover": { bgcolor: "#fbfbfb" },
+              }}
+            >
+              {/* --- 내부 데이터 100% 동일하게 유지 --- */}
+              <Box sx={{ height: "20px", mb: 1 }}>
+                <Typography
                   sx={{
-                    flexGrow: 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    color: "#86868b",
+                    fontSize: "0.7rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.1em",
                   }}
                 >
-                  <Box
+                  CATÉGORIE PIÈCE
+                </Typography>
+              </Box>
+
+              <Box sx={{ height: "70px", mb: 1 }}>
+                <Typography
+                  sx={{
+                    color: "#1d1d1f",
+                    fontSize: { xs: "1.6rem", md: "1.9rem" },
+                    fontWeight: 700,
+                    lineHeight: 1.1,
+                  }}
+                >
+                  {item.title}
+                </Typography>
+              </Box>
+
+              <Box sx={{ height: "90px", mb: 3, overflow: "hidden" }}>
+                <Typography
+                  sx={{
+                    color: "#424245",
+                    fontSize: "0.95rem",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {item.desc}
+                </Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  borderLeft: "2px solid #0066cc",
+                  pl: 3,
+                  mb: 2,
+                  height: "130px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: "0.7rem",
+                    color: "#0066cc",
+                    fontWeight: 900,
+                    mb: 1.5,
+                    letterSpacing: "0.1em",
+                  }}
+                >
+                  POINTS CLÉS (FACTS)
+                </Typography>
+                <Stack spacing={1}>
+                  <Typography
                     sx={{
-                      transition: "transform 0.6s cubic-bezier(0.2, 1, 0.3, 1)",
-                      "Paper:hover &": {
-                        transform: "scale(1.04)",
-                      },
+                      fontSize: "0.9rem",
+                      color: "#1d1d1f",
+                      fontWeight: 500,
                     }}
                   >
-                    {item.logo}
-                  </Box>
-                </Box>
-              </Paper>
-            ))}
-          </Stack>
-        </Box>
+                    (+) {item.pros}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "0.9rem",
+                      color: "#86868b",
+                      fontWeight: 500,
+                    }}
+                  >
+                    (-) {item.cons}
+                  </Typography>
+                </Stack>
+              </Box>
+
+              <Box
+                sx={{ mb: 2, pl: 3.4, display: "flex", alignItems: "center" }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: "0.82rem",
+                    fontWeight: 400,
+                    color: "#1d1d1f",
+                    display: "flex",
+                    alignItems: "center",
+                    textDecoration: "underline",
+                    textUnderlineOffset: "4px",
+                  }}
+                >
+                  En savoir plus{" "}
+                  <ArrowForwardIosIcon
+                    className="arrow-icon"
+                    sx={{
+                      fontSize: "0.65rem",
+                      ml: 1,
+                      transition: "transform 0.2s ease",
+                    }}
+                  />
+                </Typography>
+              </Box>
+
+              <Box
+                sx={{ pt: 3, borderTop: "1px solid #f5f5f7", height: "85px" }}
+              >
+                <Typography
+                  sx={{
+                    color: "#86868b",
+                    fontSize: "0.65rem",
+                    fontWeight: 700,
+                    mb: 0.5,
+                    letterSpacing: "0.05em",
+                  }}
+                >
+                  CONTEXTE D'USAGE
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#1d1d1f",
+                    fontWeight: 700,
+                    fontSize: "0.85rem",
+                    lineHeight: 1.3,
+                  }}
+                >
+                  {item.target}
+                </Typography>
+              </Box>
+
+              <Typography
+                sx={{
+                  position: "absolute",
+                  bottom: 10,
+                  right: 15,
+                  fontSize: "5rem",
+                  fontWeight: 900,
+                  color: "#000",
+                  opacity: 0.02,
+                  fontFamily: "monospace",
+                  pointerEvents: "none",
+                }}
+              >
+                {item.serial.split("-")[1]}
+              </Typography>
+            </Box>
+          ))}
+        </Stack>
       </Container>
     </Box>
   );

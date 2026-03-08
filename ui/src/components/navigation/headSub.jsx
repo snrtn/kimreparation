@@ -21,58 +21,44 @@ import DropDown from "./dropdown";
 import dropdownData from "./dropdown.data";
 import sideMenuData from "./sidemenu.data";
 
+// 💡 hasSideMenu 다시 복구해서 LayoutView랑 완벽 연동
 const HeadSub = ({ onDrawerToggle, hasSideMenu }) => {
   const { pathname } = useLocation();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  // ... 상단 생략
-
   const renderDynamicTitle = () => {
     const pathSegments = pathname.split("/").filter(Boolean);
-    const isScreen = pathname.startsWith("/screen");
-    const isRepair = pathname.startsWith("/repair");
-    const isLocation = pathname.startsWith("/atelier");
+    const rootPath = `/${pathSegments[0] || ""}`;
     const isMobile = window.innerWidth < 1200;
 
-    let mainTitleText = isRepair ? "Dépannage" : "Écrans";
-    if (isLocation) mainTitleText = "L'Atelier";
-    if (isMobile && isScreen) mainTitleText = "Écran";
+    const currentDrop = dropdownData.find((m) => pathname.startsWith(m.path));
+    let mainTitleText = currentDrop ? currentDrop.title : "KIM REPARATION";
 
-    const middleTitle = pathSegments[1]
-      ? pathSegments[1].charAt(0).toUpperCase() + pathSegments[1].slice(1)
-      : "";
+    if (isMobile) {
+      if (rootPath === "/screen") mainTitleText = "Écrans";
+      if (rootPath === "/repair") mainTitleText = "Technique";
+      if (rootPath === "/atelier") mainTitleText = "L'Atelier";
+      if (rootPath === "/devis") mainTitleText = "Devis";
+      if (rootPath === "/toy") mainTitleText = "Jouets";
+    }
 
     let subTitle = "";
-    const typeKey = isScreen ? "screen" : isRepair ? "repair" : null;
+    // 💡 이제 URL이랑 데이터 이름이 일치하니까 꼼수 쓸 필요 없이 바로 맵핑!
+    const typeKey = pathSegments[0];
 
     if (typeKey && sideMenuData[typeKey]) {
-      const allItems = sideMenuData[typeKey].flatMap(
-        (group) => group.children || [group],
+      const target = sideMenuData[typeKey].find(
+        (item) => item.path === pathname,
       );
-      const target = allItems.find((item) => item.path === pathname);
       if (target) {
-        subTitle = target.title.split("/")[0].trim();
+        subTitle = target.title;
       }
     }
 
-    // ✅ 1. 여기에 Atelier용 서브타이틀 로직 추가
-    if (isLocation) {
-      if (pathname.includes("atelierDomicile")) subTitle = "Déplacement";
-      if (pathname.includes("atelierWarranty")) subTitle = "Engagement";
-      if (pathname.includes("atelierHoraires")) subTitle = "Horaires & Infos";
-      if (pathSegments.length === 1) subTitle = "L'Atelier";
-    }
-
-    // 기본값 iPhone 처리
-    if (isScreen && pathSegments.length === 2 && !subTitle) subTitle = "iPhone";
-
-    // ✅ 수정: repair의 첫 번째 항목(/repair)인 경우에도 subTitle이 있으면 DeepPath로 인정
-    const isDeepPath =
-      subTitle !== "" && (pathSegments.length >= 2 || isRepair || isLocation);
+    const isDeepPath = Boolean(subTitle);
 
     if (!isMobile) {
-      // 데스크탑 로직 (사장님 요청 유지: 화살표 X, 드롭다운 O)
       return (
         <Box
           onClick={(e) => setAnchorEl(e.currentTarget)}
@@ -102,42 +88,32 @@ const HeadSub = ({ onDrawerToggle, hasSideMenu }) => {
       );
     }
 
-    // 모바일 로직 (회색 계층 + 검정 굵게 + 화살표 보강)
     return (
       <Box
         onClick={(e) => {
           if (!isDeepPath) setAnchorEl(e.currentTarget);
         }}
-        sx={{ display: "flex", alignItems: "center", py: 0.5, px: 1 }}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          py: 0.5,
+          px: 1,
+          cursor: "pointer",
+        }}
       >
         <Stack direction="row" alignItems="center" spacing={0.3}>
           <Typography
             sx={{
-              fontSize: "0.8rem",
+              fontSize: { xs: "0.75rem", md: "0.8rem" },
               fontWeight: 500,
               color: isDeepPath ? "#86868b" : "#000",
             }}
           >
             {mainTitleText}
           </Typography>
+
           {isDeepPath && (
             <>
-              {isScreen && middleTitle && (
-                <>
-                  <ChevronRightIcon
-                    sx={{ fontSize: "0.8rem", color: "#ccc" }}
-                  />
-                  <Typography
-                    sx={{
-                      fontSize: "0.8rem",
-                      color: "#86868b",
-                      fontWeight: 500,
-                    }}
-                  >
-                    {middleTitle}
-                  </Typography>
-                </>
-              )}
               <ChevronRightIcon sx={{ fontSize: "0.8rem", color: "#ccc" }} />
               <Typography
                 sx={{ fontSize: "0.85rem", fontWeight: 800, color: "#000" }}
@@ -147,6 +123,7 @@ const HeadSub = ({ onDrawerToggle, hasSideMenu }) => {
             </>
           )}
         </Stack>
+
         {!isDeepPath && (
           <ExpandMoreIcon
             sx={{
@@ -154,6 +131,7 @@ const HeadSub = ({ onDrawerToggle, hasSideMenu }) => {
               fontSize: "1rem",
               color: "#666",
               transform: open ? "rotate(180deg)" : "none",
+              transition: "transform 0.2s",
             }}
           />
         )}
@@ -161,9 +139,6 @@ const HeadSub = ({ onDrawerToggle, hasSideMenu }) => {
     );
   };
 
-  // const dropdownMenus = dropdownData.filter(
-  //   (m) => !pathname.startsWith(m.path),
-  // );
   const dropdownMenus = dropdownData;
 
   return (
@@ -179,6 +154,7 @@ const HeadSub = ({ onDrawerToggle, hasSideMenu }) => {
       }}
     >
       <Toolbar sx={{ height: "64px", minHeight: "64px !important" }}>
+        {/* 💡 사이드 메뉴가 있는 페이지면 무조건 햄버거 노출! */}
         {hasSideMenu && (
           <IconButton
             color="inherit"
@@ -188,6 +164,7 @@ const HeadSub = ({ onDrawerToggle, hasSideMenu }) => {
             <MenuIcon />
           </IconButton>
         )}
+
         <Box
           component={Link}
           to="/"

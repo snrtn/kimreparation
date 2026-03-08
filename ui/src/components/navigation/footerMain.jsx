@@ -1,16 +1,60 @@
-import {
-  Box,
-  Container,
-  Typography,
-  Stack,
-  Button,
-  Divider,
-} from "@mui/material";
+import React from "react";
+import { Box, Container, Typography, Stack, Divider } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
 
 const FooterMain = () => {
   const currentYear = new Date().getFullYear();
+
+  const footerMap = [
+    {
+      title: "REALITE TECHNIQUE",
+      links: [
+        { name: "Écran & Tactile", path: "/repair" },
+        { name: "Tombé dans l'eau", path: "/repair/repairWater" },
+        { name: "Batterie & Charge", path: "/repair/repairBattery" },
+        { name: "Système & Logiciel", path: "/repair/repairSystem" },
+        { name: "Caméra & Son", path: "/repair/repairHardware" },
+        { name: "Réalité Technique", path: "/repair/repairLimit" },
+        { name: "Étanchéité", path: "/repair/waterproof" },
+      ],
+    },
+    {
+      title: "DETAILS DES ECRANS",
+      links: [
+        { name: "Écran Origine", path: "/screen" },
+        { name: "Écran ECO / Refurb", path: "/screen/eco" },
+        { name: "Écran Soft OLED", path: "/screen/soft" },
+        { name: "Écran Hard OLED", path: "/screen/hard" },
+        { name: "Écran LCD / Incell", path: "/screen/lcd" },
+        { name: "Écran Pliable", path: "/screen/foldable" },
+      ],
+    },
+    {
+      title: "DEVIS GRATUITS",
+      links: [
+        { name: "Devis Téléphone", path: "/devis" },
+        { name: "Devis Autres", path: "/devis/other" },
+      ],
+    },
+    {
+      title: "ATELIER ET INFORMATIONS",
+      links: [
+        { name: "L'Atelier", path: "/atelier" },
+        { name: "Excellence & Qualité", path: "/atelier/atelierConditions" },
+        { name: "Conditions d'Usage", path: "/atelier/atelierExcellence" },
+        { name: "Mentions Légales", path: "/atelier/atelierLegal" },
+      ],
+    },
+    {
+      title: "REPARATION JOUETS",
+      links: [
+        { name: "Prise en charge", path: "/toy" },
+        { name: "Réalité Technique", path: "/toy/repair" },
+        { name: "Joy-Con", path: "/toy/joycon" },
+      ],
+    },
+  ];
 
   return (
     <Box
@@ -18,93 +62,106 @@ const FooterMain = () => {
       sx={{
         width: "100%",
         bgcolor: "#FCFCFC",
-        py: { xs: 6, md: 8 },
+        pt: { xs: 8, md: 10 },
+        pb: 4,
         borderTop: "1px solid #d2d2d7",
-        zIndex: 1200,
       }}
     >
       <Container maxWidth="lg">
-        <Stack spacing={4}>
-          {/* 1. 상단: 부품 수급 팩트 안내 */}
-          <Box sx={{ maxWidth: "850px" }}>
-            <Stack
-              direction="row"
-              spacing={1}
-              alignItems="center"
-              sx={{ mb: 2, color: "#1d1d1f" }}
-            >
-              <VerifiedUserOutlinedIcon sx={{ fontSize: "1.2rem" }} />
-              <Typography sx={{ fontSize: "0.9rem", fontWeight: 700 }}>
-                Engagement de qualité et traçabilité
-              </Typography>
-            </Stack>
-            <Typography
-              sx={{ fontSize: "0.85rem", color: "#424245", lineHeight: 1.7 }}
-            >
-              Nos composants sont exclusivement sélectionnés auprès de{" "}
-              <strong>
-                réseaux de distribution agréés et de fournisseurs certifiés
-              </strong>
-              . Cette rigueur nous permet de garantir la conformité technique de
-              chaque pièce installée et d'assurer une traçabilité totale.
+        {/* 상단: 품질 약속 섹션 */}
+        <Box sx={{ mb: 8 }}>
+          <Stack
+            direction="row"
+            spacing={1.5}
+            alignItems="center"
+            sx={{ mb: 2, color: "#1d1d1f" }}
+          >
+            <VerifiedUserOutlinedIcon sx={{ fontSize: "1.3rem" }} />
+            <Typography sx={{ fontSize: "1rem", fontWeight: 700 }}>
+              Engagement de qualité et traçabilité des composants
             </Typography>
-          </Box>
+          </Stack>
+          <Typography
+            sx={{
+              fontSize: "0.95rem",
+              color: "#424245",
+              lineHeight: 1.8,
+              maxWidth: "1000px",
+            }}
+          >
+            Chez <strong>Kim Reparation</strong>, nous apportons une attention
+            particulière à la provenance de nos pièces détachées. Nos composants
+            sont exclusivement sélectionnés auprès de réseaux de distribution
+            agréés garantissant une traçabilité totale. Notre démarche est
+            fondée sur la transparence technique et le respect des standards
+            constructeurs afin de prolonger la durée de vie de vos appareils.
+          </Typography>
+        </Box>
 
-          {/* 2. 중간: 메인 버튼 (Garantie/Médiation 다 포함된 페이지로 연결) */}
-          <Box>
-            <Typography sx={{ fontSize: "0.8rem", color: "#86868b", mb: 2 }}>
-              Consultez notre engagement, vos garanties et droits :
-            </Typography>
-            <Button
-              component={RouterLink}
-              to="/atelier/atelierWarranty"
-              variant="text"
+        {/* 📌 해결: Flexbox를 사용하여 열의 시작 위치를 완벽하게 고정 */}
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            width: "100%",
+            mb: 6,
+          }}
+        >
+          {footerMap.map((section) => (
+            <Box
+              key={section.title}
               sx={{
-                color: "#0066cc",
-                p: 0,
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                textTransform: "none",
-                "&:hover": {
-                  textDecoration: "underline",
-                  bgcolor: "transparent",
+                flex: {
+                  xs: "0 0 50%",
+                  sm: "0 0 33.33%",
+                  md: "0 0 20%",
                 },
+                mb: { xs: 5, md: 0 }, // 모바일 줄바꿈 시 간격
               }}
             >
-              Engagement, Garanties & Médiation (CGS) →
-            </Button>
-          </Box>
-
-          <Divider sx={{ borderColor: "#d2d2d7", my: 2 }} />
-
-          {/* 3. 하단: 저작권 및 형님이 만드실 Mentions Légales */}
-          <Stack
-            direction={{ xs: "column", md: "row" }}
-            justifyContent="space-between"
-            alignItems={{ xs: "flex-start", md: "center" }}
-            spacing={2}
-          >
-            <Typography sx={{ fontSize: "0.75rem", color: "#86868b" }}>
-              Copyright © {currentYear} KIM REPARATION. TOUS DROITS RÉSERVÉS.
-            </Typography>
-
-            <Stack direction="row" spacing={3}>
-              {/* 중복되던 Garanties 링크는 삭제함. 아래는 형님이 작업하실 링크! */}
               <Typography
-                component={RouterLink}
-                to="/atelier/atelierHoraires"
                 sx={{
                   fontSize: "0.75rem",
-                  color: "#424245",
-                  textDecoration: "none",
-                  "&:hover": { color: "#1d1d1f" },
+                  fontWeight: 700,
+                  color: "#1d1d1f",
+                  mb: 2.5,
+                  letterSpacing: "0.05em",
                 }}
               >
-                Horaires & Infos Légales
+                {section.title}
               </Typography>
-            </Stack>
-          </Stack>
-        </Stack>
+              <Stack spacing={1.5}>
+                {section.links.map((link) => (
+                  <Typography
+                    key={link.name}
+                    component={RouterLink}
+                    to={link.path}
+                    sx={{
+                      fontSize: "0.8rem",
+                      color: "#424245",
+                      textDecoration: "none",
+                      display: "block",
+                      "&:hover": {
+                        color: "#0066cc",
+                        textDecoration: "underline",
+                      },
+                    }}
+                  >
+                    {link.name}
+                  </Typography>
+                ))}
+              </Stack>
+            </Box>
+          ))}
+        </Box>
+
+        <Divider sx={{ mb: 4 }} />
+
+        <Typography
+          sx={{ fontSize: "0.75rem", color: "#86868b", textAlign: "center" }}
+        >
+          Copyright © {currentYear} KIM REPARATION. TOUS DROITS RÉSERVÉS.
+        </Typography>
       </Container>
     </Box>
   );
