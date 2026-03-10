@@ -3,7 +3,6 @@ import React, { useState, useRef } from "react";
 import {
   Typography,
   Box,
-  Divider,
   Paper,
   Stack,
   Button,
@@ -20,7 +19,6 @@ import HomeIcon from "@mui/icons-material/Home";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-// 💡 형님이 보내주신 파일들에서 직접 추출한 100% 동일한 라벨 텍스트입니다.
 const labels = {
   global: {
     none: "Aucun",
@@ -89,7 +87,7 @@ const labels = {
   },
   battery: {
     no_charge: "Il ne charge plus du tout (rien ne se passe)",
-    intermittent: "Le câble bouge ou se 대접necte tout seul",
+    intermittent: "Le câble bouge ou se déconnecte tout seul",
     slow: "La charge est anormalement longue",
     fast_drain: "La batterie descend beaucoup trop vite",
     shutdown: "Le téléphone s'éteint tout seul (ex: à 20%)",
@@ -140,8 +138,7 @@ const labels = {
 };
 
 const getLabel = (cat, val) => {
-  if (Array.isArray(val))
-    return val.map((v) => labels[cat]?.[v] || v).join(", ");
+  if (Array.isArray(val)) return val.map((v) => labels[cat]?.[v] || v);
   return labels[cat]?.[val] || labels.global[val] || val;
 };
 
@@ -150,25 +147,20 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
   const [refNumber] = useState(() => Math.floor(Math.random() * 90000));
   const pdfRef = useRef();
 
-  // 🔥 PDF 저장 기능 (짤림 방지: A4 세로 길이에 맞춰 자동 축소)
   const handleDownloadPDF = async () => {
     const element = pdfRef.current;
     const canvas = await html2canvas(element, { scale: 2, useCORS: true });
     const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
-
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
     const imgProps = pdf.getImageProperties(imgData);
-
-    // 💡 세로 길이를 기준으로 비율을 계산해 A4 한 장에 쏙 들어가게 축소 (여백 15mm 제외)
     const ratio = Math.min(
       pdfWidth / imgProps.width,
       (pdfHeight - 15) / imgProps.height,
     );
     const finalWidth = imgProps.width * ratio;
     const finalHeight = imgProps.height * ratio;
-
     pdf.addImage(
       imgData,
       "PNG",
@@ -177,83 +169,118 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
       finalWidth,
       finalHeight,
     );
-    pdf.save(`Devis_KIM_REPARATION_${refNumber}.pdf`);
+    pdf.save(`Diagnostic_KIM_REPARATION_${refNumber}.pdf`);
   };
 
   const Row = ({ label, value, category }) => {
     if (!value || (Array.isArray(value) && value.length === 0)) return null;
+    const content = getLabel(category, value);
     return (
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
-          mb: 0.4,
+          alignItems: "flex-start",
+          mb: 1.2,
           borderBottom: "1px dotted #e5e5e7",
+          pb: 1,
         }}
       >
         <Typography
-          sx={{ fontSize: "0.6rem", color: "#86868b", fontWeight: 700 }}
+          sx={{
+            width: "25%",
+            fontSize: "0.75rem",
+            color: "#636366",
+            fontWeight: 700,
+            pr: 1,
+            flexShrink: 0,
+            textTransform: "uppercase",
+          }}
         >
           {label}
         </Typography>
-        <Typography
-          sx={{
-            fontSize: "0.65rem",
-            color: "#1d1d1f",
-            fontWeight: 800,
-            textAlign: "right",
-            maxWidth: "70%",
-          }}
-        >
-          {getLabel(category, value)}
-        </Typography>
+        <Box sx={{ width: "75%", pl: 0.5 }}>
+          {Array.isArray(content) ? (
+            content.map((item, i) => (
+              <Typography
+                key={i}
+                sx={{
+                  fontSize: "0.95rem",
+                  color: "#1d1d1f",
+                  fontWeight: 800,
+                  lineHeight: 1.4,
+                }}
+              >
+                • {item}
+              </Typography>
+            ))
+          ) : (
+            <Typography
+              sx={{
+                fontSize: "0.95rem",
+                color: "#1d1d1f",
+                fontWeight: 800,
+                lineHeight: 1.4,
+              }}
+            >
+              {content}
+            </Typography>
+          )}
+        </Box>
       </Box>
     );
   };
 
   return (
     <Box sx={{ textAlign: "left" }}>
-      <Typography variant="h5" sx={{ fontWeight: 800, mb: 2 }}>
-        Finalisation du Devis
+      <Typography
+        variant="h4"
+        sx={{ fontWeight: 900, mb: 3, fontSize: "1.8rem", color: "#1d1d1f" }}
+      >
+        Récapitulatif & Signature
       </Typography>
 
       <Paper
         ref={pdfRef}
-        elevation={0}
+        elevation={4}
         sx={{
-          p: { xs: 1.5, md: 2.5 },
+          p: { xs: 3, md: 5 },
           bgcolor: "#fff",
           borderRadius: "0px",
-          border: "1.5px solid #1d1d1f",
+          border: "2px solid #1d1d1f",
           fontFamily: "monospace",
-          mb: 2,
+          mb: 4,
         }}
       >
         <Box
           sx={{
             textAlign: "center",
-            mb: 2,
-            borderBottom: "1.5px solid #1d1d1f",
-            pb: 0.5,
+            mb: 4,
+            borderBottom: "2.5px solid #1d1d1f",
+            pb: 2,
           }}
         >
-          <Typography sx={{ fontWeight: 900, fontSize: "1rem" }}>
-            BON DE DIAGNOSTIC TECHNIQUE
+          <Typography
+            sx={{ fontWeight: 900, fontSize: "1.3rem", letterSpacing: "1px" }}
+          >
+            RÉCAPITULATIF DE VOTRE PANNE
           </Typography>
-          <Typography variant="caption" sx={{ fontWeight: 700 }}>
+          <Typography
+            sx={{ fontWeight: 700, fontSize: "0.85rem", color: "#636366" }}
+          >
             Réf: #{refNumber} | Date: {todayDate}
           </Typography>
         </Box>
 
-        <Box sx={{ mb: 1.5 }}>
+        <Box sx={{ mb: 4 }}>
           <Typography
             sx={{
-              fontSize: "0.65rem",
+              fontSize: "0.8rem",
               fontWeight: 900,
               bgcolor: "#1d1d1f",
               color: "#fff",
-              px: 1,
-              mb: 0.5,
+              px: 1.5,
+              py: 0.5,
+              mb: 2,
             }}
           >
             1. CLIENT & APPAREIL
@@ -272,18 +299,19 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
           <Row label="N° MODÈLE" value={data.modelNumber} />
         </Box>
 
-        <Box sx={{ mb: 1.5 }}>
+        <Box sx={{ mb: 4 }}>
           <Typography
             sx={{
-              fontSize: "0.65rem",
+              fontSize: "0.8rem",
               fontWeight: 900,
               bgcolor: "#1d1d1f",
               color: "#fff",
-              px: 1,
-              mb: 0.5,
+              px: 1.5,
+              py: 0.5,
+              mb: 2,
             }}
           >
-            2. DÉTAILS DU DIAGNOSTIC
+            2. BILAN TECHNIQUE
           </Typography>
           <Row label="État écran" value={data.status} category="status" />
           <Row
@@ -295,12 +323,11 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
           <Row label="Incident" value={data.incident} category="incident" />
           <Row label="Liquide" value={data.waterType} category="waterType" />
           <Row label="Délai eau" value={data.waterTime} category="waterTime" />
-          <Row label="Objectif" value={data.waterGoal} category="waterGoal" />
           <Row label="Châssis" value={data.frame} category="frame" />
           <Row label="Batterie" value={data.battery} category="battery" />
           <Row label="Tactile" value={data.touchWorks} category="touchWorks" />
           <Row
-            label="Défauts tactile"
+            label="Détails"
             value={data.touchIssues}
             category="touchIssues"
           />
@@ -312,83 +339,191 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
             category="connection"
           />
           <Row label="Stockage" value={data.storage} category="storage" />
-          <Row label="Usage" value={data.environment} category="environment" />
+          <Row
+            label="Vibrations"
+            value={data.environment}
+            category="environment"
+          />
         </Box>
 
         <Box
           sx={{
-            mb: 1.5,
-            p: 1,
-            border: "1px solid #1d1d1f",
-            bgcolor: "#f9f9f9",
+            p: 2,
+            mb: 4,
+            bgcolor: "#fbfbfd",
+            borderRadius: "12px",
+            border: "1px solid #d2d2d7",
           }}
         >
-          <Typography
-            sx={{ fontSize: "0.55rem", lineHeight: 1.2, color: "#424245" }}
+          <Stack
+            direction="row"
+            spacing={1.5}
+            alignItems="center"
+            sx={{ mb: 1.5 }}
           >
-            • Engagement : Je confirme l'exactitude de ce bilan.
+            <FactCheckOutlinedIcon sx={{ fontSize: 22, color: "#0071e3" }} />
+            <Typography
+              sx={{ fontWeight: 900, fontSize: "1rem", color: "#1d1d1f" }}
+            >
+              Notre engagement de transparence :
+            </Typography>
+          </Stack>
+          <Typography
+            sx={{
+              fontSize: "0.85rem",
+              color: "#424245",
+              lineHeight: 1.5,
+              mb: 2,
+            }}
+          >
+            • <strong>Données :</strong> Une sauvegarde préalable est
+            recommandée. L'Atelier décline toute responsabilité en cas de perte
+            de données.
             <br />
-            • Garantie : L'ouverture annule la garantie constructeur.
-            <br />• Données : Sauvegarde client recommandée.
-          </Typography>
-        </Box>
-
-        <Box>
-          <Typography sx={{ fontSize: "0.6rem", fontWeight: 900, mb: 0.5 }}>
-            SIGNATURE CLIENT
+            <br />• <strong>Fragilité :</strong> L'ouverture d'un appareil
+            endommagé comporte un risque de panne définitive inhérent à son état
+            initial.
+            <br />
+            <br />• <strong>Garantie :</strong> Notre intervention annule la
+            garantie constructeur. Un forfait diagnostic s'applique même si
+            l'appareil est irréparable.
           </Typography>
           <Box
             sx={{
-              border: "1px solid #1d1d1f",
-              height: "90px",
-              bgcolor: "#fff",
+              p: 1,
+              bgcolor: "white",
+              borderRadius: "10px",
+              border: "1.5px solid #e5e5e7",
+            }}
+          >
+            <FormControlLabel
+              sx={{ ml: 0.5 }}
+              control={
+                <Checkbox
+                  checked={data.finalTermsAgreed || false}
+                  onChange={(e) =>
+                    onUpdate({ finalTermsAgreed: e.target.checked })
+                  }
+                  size="small"
+                  sx={{
+                    color: "#0071e3",
+                    "&.Mui-checked": { color: "#0071e3" },
+                  }}
+                />
+              }
+              label={
+                <Typography
+                  sx={{
+                    fontSize: "0.75rem",
+                    fontWeight: 800,
+                    color: "#1d1d1f",
+                  }}
+                >
+                  J'accepte ces conditions et j'autorise le diagnostic.
+                </Typography>
+              }
+            />
+          </Box>
+        </Box>
+
+        <Box>
+          <Typography sx={{ fontWeight: 900, fontSize: "1rem", mb: 1 }}>
+            Signature du Client :
+          </Typography>
+          <Box
+            sx={{
+              border: "2px dashed #0066cc",
+              borderRadius: "12px",
+              bgcolor: "#f0f8ff",
+              overflow: "hidden",
             }}
           >
             <SignatureCanvas
               ref={sigCanvasRef}
               penColor="#0000ff"
-              canvasProps={{ width: 400, height: 90, className: "sigCanvas" }}
+              canvasProps={{ width: 600, height: 160, className: "sigCanvas" }}
               onEnd={() => onUpdate({ signatureDone: true })}
             />
           </Box>
+          <Button
+            data-html2canvas-ignore
+            size="small"
+            onClick={() => {
+              sigCanvasRef.current.clear();
+              onUpdate({ signatureDone: false });
+            }}
+            sx={{
+              mt: 1,
+              color: "#d32f2f",
+              fontSize: "0.75rem",
+              fontWeight: 800,
+            }}
+          >
+            Effacer et recommencer
+          </Button>
         </Box>
       </Paper>
 
-      {/* ✅ 체크박스 이름을 finalTermsAgreed로 수정 (DevisPhone 버튼 활성화와 연동) */}
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={data.finalTermsAgreed || false}
-            onChange={(e) => onUpdate({ finalTermsAgreed: e.target.checked })}
-          />
-        }
-        label={
-          <Typography sx={{ fontSize: "0.75rem", fontWeight: 700 }}>
-            J'atteste l'exactitude du diagnostic.
-          </Typography>
-        }
-      />
+      {/* ✅ 추가 요청하신 최종 전송 확인 체크박스 (강력 추천 가시성) */}
+      <Box
+        sx={{
+          p: 2.5,
+          bgcolor: "#eff7ff",
+          borderRadius: "16px",
+          border: "2px solid #0071e3",
+          mb: 5,
+        }}
+      >
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={data.finalConfirm || false}
+              onChange={(e) => onUpdate({ finalConfirm: e.target.checked })}
+              sx={{ color: "#0071e3", "&.Mui-checked": { color: "#0071e3" } }}
+            />
+          }
+          label={
+            <Typography
+              sx={{
+                fontSize: "0.95rem",
+                fontWeight: 900,
+                color: "#004080",
+                lineHeight: 1.4,
+              }}
+            >
+              Je confirme que ces informations sont exactes et j'envoie ma
+              demande de devis
+            </Typography>
+          }
+        />
+      </Box>
 
+      {/* 완료 모달 */}
       <Dialog
         open={isSubmitted}
-        PaperProps={{ sx: { borderRadius: "24px", p: 2, textAlign: "center" } }}
+        PaperProps={{ sx: { borderRadius: "28px", p: 3, textAlign: "center" } }}
       >
         <DialogContent>
-          <CheckCircleIcon sx={{ fontSize: 50, color: "#34c759", mb: 1 }} />
-          <Typography variant="h6" sx={{ fontWeight: 800 }}>
+          <CheckCircleIcon sx={{ fontSize: 70, color: "#34c759", mb: 2 }} />
+          <Typography variant="h5" sx={{ fontWeight: 900, mb: 1 }}>
             Demande Envoyée !
           </Typography>
-          <Typography variant="body2" sx={{ color: "#424245", mb: 3 }}>
+          <Typography sx={{ color: "#424245", fontSize: "1rem", mb: 4 }}>
             Merci ! Nous vous recontacterons <strong>très rapidement</strong>.
-            <br /> Pensez à sauvegarder votre devis.
           </Typography>
-          <Stack spacing={1.5}>
+          <Stack spacing={2}>
             <Button
               fullWidth
               variant="contained"
               startIcon={<PictureAsPdfIcon />}
               onClick={handleDownloadPDF}
-              sx={{ py: 1.2, borderRadius: "12px", bgcolor: "#0071e3" }}
+              sx={{
+                py: 1.8,
+                borderRadius: "14px",
+                bgcolor: "#0071e3",
+                fontWeight: 900,
+                fontSize: "1rem",
+              }}
             >
               Sauvegarder en PDF
             </Button>
@@ -398,10 +533,10 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
               startIcon={<HomeIcon />}
               onClick={() => window.location.reload()}
               sx={{
-                py: 1.2,
-                borderRadius: "12px",
+                py: 1.5,
+                borderRadius: "14px",
                 color: "#1d1d1f",
-                borderColor: "#d2d2d7",
+                fontWeight: 700,
               }}
             >
               Retour à l'accueil

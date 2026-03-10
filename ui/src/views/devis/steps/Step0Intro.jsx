@@ -11,22 +11,22 @@ import {
 import SmartphoneIcon from "@mui/icons-material/Smartphone";
 import MobileOffIcon from "@mui/icons-material/MobileOff";
 import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined"; // '투명한 확인'을 상징하는 아이콘
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"; // 안내용 아이콘
 
 const Step0Intro = ({ onUpdate, onNext }) => {
   const [agreed, setAgreed] = useState(false);
+  const [scrollConfirmed, setScrollConfirmed] = useState(false); // 스크롤 확인 체크 상태
   const [selectedStatus, setSelectedStatus] = useState(null); // 어떤 버튼을 눌렀는지 기억하는 상태
 
-  // 시작 버튼을 눌렀을 때 실행되는 함수 (전체화면 + 다음 단계)
-  // 시작 버튼을 눌렀을 때 실행되는 함수 (전체화면 + 다음 단계)
+  // 시작 버튼을 눌렀을 때 실행되는 함수
   const handleStart = () => {
-    if (!agreed || !selectedStatus) return;
+    // 모든 조건(동의 + 상태 선택 + 스크롤 확인)이 충족되어야 함
+    if (!agreed || !selectedStatus || !scrollConfirmed) return;
 
     const elem = document.documentElement;
 
-    // 1. 네이티브 전체화면 시도 (PC, 안드로이드, 호환 브라우저용)
     try {
       if (elem.requestFullscreen) {
-        // catch를 비워둬서 에러 로그도 안 뜨게 조용히 처리합니다.
         elem.requestFullscreen().catch(() => {});
       } else if (elem.mozRequestFullScreen) {
         elem.mozRequestFullScreen();
@@ -36,14 +36,9 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         elem.msRequestFullscreen();
       }
     } catch (error) {
-      // 2. 전체화면을 지원하지 않는 기기(아이폰 등)는
-      // 에러를 무시하고 그냥 아래 코드로 넘어갑니다.
       console.log("null", error);
     }
 
-    // 3. 🔥 상태 업데이트 및 다음 스텝 이동
-    // 이 코드가 실행되면 부모 컴포넌트의 <Dialog fullScreen>이 켜지면서
-    // 전체화면 미지원 기기라도 브라우저 화면을 100% 꽉 채우게 됩니다!
     onUpdate({ status: selectedStatus, agreedToTerms: true });
     onNext();
   };
@@ -66,7 +61,7 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         d'intervention avant de commencer.
       </Typography>
 
-      {/* 🛡️ 법적 방어막 : '투명한 안내'로 친절하게 포장 */}
+      {/* 🛡️ 법적 방어막 섹션 */}
       <Box
         sx={{
           p: 3,
@@ -147,7 +142,7 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         </Stack>
       </Box>
 
-      {/* 📌 상황 선택 버튼 (동의해야 클릭 가능) */}
+      {/* 📌 상황 선택 버튼 */}
       <Box
         sx={{
           opacity: agreed ? 1 : 0.4,
@@ -163,7 +158,6 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         </Typography>
 
         <Stack spacing={2} sx={{ mb: 4 }}>
-          {/* 🔥 화면 켜짐 버튼 */}
           <Button
             fullWidth
             variant="outlined"
@@ -191,7 +185,6 @@ const Step0Intro = ({ onUpdate, onNext }) => {
             </Box>
           </Button>
 
-          {/* 🔥 화면 꺼짐 버튼 */}
           <Button
             fullWidth
             variant="outlined"
@@ -221,11 +214,46 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         </Stack>
       </Box>
 
-      {/* ==========================================
-          🔥 전체화면 안내 (크게 강조) 및 시작 버튼 (항상 렌더링되나 조건부 활성화)
-          ========================================== */}
+      {/* 🔥 파란색 스크롤 확인 안내 섹션 (진단 단계 명시) */}
+      <Box sx={{ mb: 4 }}>
+        <Paper
+          elevation={0}
+          sx={{
+            p: 2,
+            bgcolor: "#f0f7ff",
+            border: "1px solid #cce3ff",
+            borderRadius: "14px",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <InfoOutlinedIcon sx={{ color: "#0071e3", mr: 1.5 }} />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={scrollConfirmed}
+                onChange={(e) => setScrollConfirmed(e.target.checked)}
+                sx={{
+                  color: "#0071e3",
+                  "&.Mui-checked": { color: "#0071e3" },
+                }}
+              />
+            }
+            label={
+              <Typography
+                variant="body2"
+                sx={{ color: "#004080", fontWeight: 700, lineHeight: 1.4 }}
+              >
+                Je m'engage à faire défiler l'écran (scroll) pour vérifier tous
+                les choix et messages d'aide lors des étapes du diagnostic.
+              </Typography>
+            }
+          />
+        </Paper>
+      </Box>
+
+      {/* 시작 버튼 영역 */}
       <Box sx={{ mt: 2, textAlign: "center" }}>
-        {/* 경고 박스 크게 강조 */}
         <Paper
           elevation={0}
           sx={{
@@ -238,51 +266,36 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         >
           <Typography
             sx={{
-              fontSize: "1",
+              fontSize: "0.9rem",
               color: "#664d03",
               fontWeight: 600,
               lineHeight: 1.4,
             }}
           >
             ⚠️ Note : L'interface va basculer en plein écran pour une meilleure
-            expérience. Ne soyez pas surpris !
+            expérience.
           </Typography>
         </Paper>
 
-        {/* 시작 버튼 (선택 안 하면 회색 비활성화, 선택 시 파란색 활성화) */}
         <Button
           variant="contained"
           fullWidth
-          disabled={!selectedStatus} // 카드를 선택해야 활성화됨
+          disabled={!selectedStatus || !agreed || !scrollConfirmed}
           onClick={handleStart}
           sx={{
             py: 2.5,
             borderRadius: "12px",
-            bgcolor: "#0071e3", // 튀는 검은색 대신 전문적인 파란색 적용
+            bgcolor: "#0071e3",
             color: "white",
             fontWeight: 800,
             fontSize: "1.1rem",
             "&:hover": { bgcolor: "#005bb5" },
-            "&.Mui-disabled": { bgcolor: "#e5e5e7", color: "#a1a1a6" }, // 비활성화 스타일
+            "&.Mui-disabled": { bgcolor: "#e5e5e7", color: "#a1a1a6" },
           }}
         >
           COMMENCER LE DIAGNOSTIC
         </Button>
       </Box>
-
-      {!agreed && (
-        <Typography
-          sx={{
-            mt: 3,
-            color: "#ff3b30",
-            fontSize: "0.85rem",
-            textAlign: "center",
-            fontWeight: 600,
-          }}
-        >
-          Veuillez accepter les conditions pour lancer le diagnostic.
-        </Typography>
-      )}
     </Box>
   );
 };

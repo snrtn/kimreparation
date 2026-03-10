@@ -123,7 +123,8 @@ const DevisPhone = () => {
     emailDomain: "@gmail.com",
     customDomain: "",
     signatureDone: false,
-    finalTermsAgreed: false,
+    finalTermsAgreed: false, // 서류 내 동의
+    finalConfirm: false, // 🔥 하단 파란색 최종 확인 (추가)
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -134,7 +135,7 @@ const DevisPhone = () => {
       if (newData.status && newData.status !== prev.status)
         return { ...initialFormData, status: newData.status };
       if (newData.incident) {
-        const hasWater = ["water_low", "water_high", "bathroom"].some((v) =>
+        const hasWater = ["water_low", "water_high"].some((v) =>
           newData.incident.includes(v),
         );
         if (!hasWater) {
@@ -159,7 +160,7 @@ const DevisPhone = () => {
   const getActiveFlow = () => {
     if (!formData.status) return [];
     const steps = ["brand", "model"];
-    const hasWater = ["water_low", "water_high", "bathroom"].some((v) =>
+    const hasWater = ["water_low", "water_high"].some((v) =>
       formData.incident.includes(v),
     );
     if (formData.status === "working") {
@@ -184,22 +185,73 @@ const DevisPhone = () => {
     switch (currentStepId) {
       case "brand":
         return formData.brand === "other"
-          ? !formData.customBrand
+          ? !formData.customBrand?.trim()
           : !formData.brand;
+
       case "model":
         return !(
-          (formData.modelName || formData.unknownName) &&
-          (formData.modelNumber || formData.unknownNumber)
+          (formData.modelName?.trim() || formData.unknownName) &&
+          (formData.modelNumber?.trim() || formData.unknownNumber)
         );
+
+      case "appearance":
+        return formData.appearance.length === 0;
+
+      case "display":
+        return formData.display.length === 0;
+
+      case "incident":
+        return formData.incident.length === 0;
+
+      case "waterType":
+        return !formData.waterType;
+
+      case "waterDetails":
+        return !formData.waterTime || !formData.waterGoal;
+
+      case "frame":
+        return formData.frame.length === 0;
+
+      case "battery":
+        return formData.battery.length === 0;
+
+      case "touchCheck":
+        return !formData.touchWorks;
+
+      case "touchIssues":
+        return formData.touchIssues.length === 0;
+
+      case "camera":
+        return formData.camera.length === 0;
+
+      case "audio":
+        return formData.audio.length === 0;
+
+      case "connection":
+        return formData.connection.length === 0;
+
+      case "storage":
+        return !formData.storage;
+
+      case "environment":
+        return formData.environment.length === 0;
+
       case "contact":
         return (
-          !formData.userName ||
+          !formData.userName?.trim() ||
           (formData.contactType === "phone"
-            ? !formData.userPhone
-            : !formData.emailUser)
+            ? formData.userPhone.replace(/\D/g, "").length < 10 // 전화번호 10자리 미만이면 비활성화
+            : !formData.emailUser?.trim())
         );
+
       case "summary":
-        return !formData.signatureDone || !formData.finalTermsAgreed;
+        // 🔥 서명 + 서류 내 체크 + 하단 파란색 최종 확인박스까지 전부 완료되어야 전송 가능
+        return (
+          !formData.signatureDone ||
+          !formData.finalTermsAgreed ||
+          !formData.finalConfirm
+        );
+
       default:
         return false;
     }
