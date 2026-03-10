@@ -1,8 +1,8 @@
 import React from "react";
 import { Typography, Stack, Button, Box, Collapse, Paper } from "@mui/material";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import FireplaceIcon from "@mui/icons-material/Fireplace";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const StepFrame = ({ selected = [], onUpdate }) => {
   const options = [
@@ -27,137 +27,177 @@ const StepFrame = ({ selected = [], onUpdate }) => {
     <Box sx={{ textAlign: "left" }}>
       <Typography
         variant="h4"
-        sx={{ fontWeight: 800, mb: 1, color: "#1d1d1f" }}
+        sx={{
+          fontWeight: 800,
+          mb: 1,
+          color: "#1d1d1f",
+          fontSize: { xs: "1.6rem", md: "2.125rem" },
+        }}
       >
         L'état du cadre
       </Typography>
       <Typography
-        sx={{ color: "#424245", fontSize: "1.05rem", mb: 4, lineHeight: 1.6 }}
+        sx={{
+          color: "#424245",
+          fontSize: { xs: "0.95rem", md: "1.05rem" },
+          mb: 4,
+          lineHeight: 1.6,
+        }}
       >
         Le tour de l'appareil (châssis) est-il déformé ou abîmé ?
       </Typography>
 
-      <Stack spacing={1.5} sx={{ mb: 3 }}>
-        {options.map((opt) => (
-          <Button
-            key={opt.id}
-            variant="outlined"
-            onClick={() => handleToggle(opt.id)}
-            sx={{
-              p: 2.5,
-              borderRadius: "16px",
-              justifyContent: "flex-start",
-              textAlign: "left",
-              borderColor: selected.includes(opt.id) ? "#0071e3" : "#d2d2d7",
-              bgcolor: selected.includes(opt.id) ? "#f5faff" : "white",
-              textTransform: "none",
-              color: "#1d1d1f",
-              fontWeight: 600,
-              "&:hover": { borderColor: "#0071e3", bgcolor: "#f5faff" },
-            }}
-          >
-            {opt.label}
-          </Button>
-        ))}
+      <Stack spacing={1.5} sx={{ mb: 4 }}>
+        {options.map((opt) => {
+          const isSelected = selected.includes(opt.id);
+          return (
+            <Button
+              key={opt.id}
+              variant="outlined"
+              onClick={() => handleToggle(opt.id)}
+              sx={{
+                p: { xs: 2, md: 2.5 },
+                borderRadius: "16px",
+                justifyContent: "space-between",
+                textAlign: "left",
+                border: isSelected ? "2px solid #0071e3" : "1px solid #d2d2d7",
+                bgcolor: isSelected ? "#eff7ff" : "white",
+                textTransform: "none",
+                color: isSelected ? "#0071e3" : "#1d1d1f",
+                fontWeight: 700,
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  borderColor: "#0071e3",
+                  bgcolor: "#eff7ff",
+                },
+              }}
+            >
+              <Typography
+                sx={{
+                  fontWeight: 700,
+                  fontSize: { xs: "0.9rem", md: "1rem" },
+                }}
+              >
+                {opt.label}
+              </Typography>
+              {isSelected && (
+                <CheckCircleIcon
+                  sx={{ color: "#0071e3", fontSize: { xs: 20, md: 24 } }}
+                />
+              )}
+            </Button>
+          );
+        })}
       </Stack>
 
-      {/* 🚨 배터리 팽창 시: 초긴급 안전 행동 요령 (방패 + 생존 지침) */}
       <Collapse in={isSwollen}>
         <Paper
           elevation={0}
           sx={{
-            p: 3,
+            p: { xs: 2, md: 2.5 },
             mb: 2,
             bgcolor: "#fff4f4",
-            borderRadius: "16px",
-            border: "2px solid #d32f2f",
+            borderRadius: "12px",
+            border: "1px solid #ffcccc",
           }}
         >
-          <Stack direction="row" spacing={1.5} sx={{ mb: 2 }}>
-            <ErrorOutlineIcon sx={{ color: "#d32f2f", fontSize: 28 }} />
+          <Stack direction="row" spacing={1.5} sx={{ mb: 1.5 }}>
+            <WarningAmberIcon
+              sx={{ color: "#d32f2f", fontSize: { xs: 22, md: 24 } }}
+            />
             <Typography
-              variant="body1"
-              sx={{ color: "#d32f2f", fontWeight: 900 }}
+              variant="body2"
+              sx={{
+                color: "#d32f2f",
+                fontWeight: 800,
+                fontSize: { xs: "0.9rem", md: "0.95rem" },
+              }}
             >
-              DANGER DE FEU ET D'EXPLOSION !
+              Mesures de précaution
             </Typography>
           </Stack>
 
-          <Stack spacing={1.5}>
+          <Stack spacing={1}>
             <Typography
               variant="body2"
-              sx={{ color: "#601a1a", fontWeight: 700, lineHeight: 1.5 }}
+              sx={{
+                color: "#601a1a",
+                lineHeight: 1.5,
+                fontSize: { xs: "0.85rem", md: "0.9rem" },
+              }}
             >
-              Votre batterie est instable. Pour votre sécurité, suivez ces
-              instructions immédiatement :
+              Une batterie qui gonfle indique une usure chimique. Pour votre
+              sécurité et celle de l'appareil, voici quelques bons réflexes
+              avant votre visite :
             </Typography>
 
             <Box sx={{ pl: 1 }}>
               <Typography
-                variant="caption"
-                sx={{ color: "#601a1a", display: "block", mb: 0.5 }}
+                variant="body2"
+                sx={{
+                  color: "#601a1a",
+                  display: "block",
+                  mb: 0.5,
+                  fontSize: { xs: "0.85rem", md: "0.9rem" },
+                }}
               >
-                • <strong>NE PAS CHARGER :</strong> Débranchez l'appareil
-                immédiatement.
+                • <strong>Ne le chargez plus :</strong> Débranchez l'appareil.
               </Typography>
               <Typography
-                variant="caption"
-                sx={{ color: "#601a1a", display: "block", mb: 0.5 }}
+                variant="body2"
+                sx={{
+                  color: "#601a1a",
+                  display: "block",
+                  mb: 0.5,
+                  fontSize: { xs: "0.85rem", md: "0.9rem" },
+                }}
               >
-                • <strong>STOCKAGE :</strong> Placez l'appareil dans un endroit
-                aéré, loin de votre lit et de toute matière inflammable (livres,
-                tissus).
-              </Typography>
-              <Typography
-                variant="caption"
-                sx={{ color: "#601a1a", display: "block", mb: 0.5 }}
-              >
-                • <strong>NE PAS ENFERMER :</strong> Ne le placez pas dans un
-                endroit clos ou hermétique.
-              </Typography>
-              <Typography
-                variant="caption"
-                sx={{ color: "#c10000", display: "block", fontWeight: 800 }}
-              >
-                • <strong>TRANSPORT :</strong> Si vous nous l'apportez,
-                transportez-le à l'intérieur d'une casserole métallique (sans
-                couvercle scellé).
+                • <strong>Transport sécurisé :</strong> Si vous vous déplacez
+                avec, placez-le idéalement dans un contenant métallique (comme
+                une boîte sans couvercle scellé).
               </Typography>
             </Box>
           </Stack>
         </Paper>
       </Collapse>
 
-      {/* ⚠️ 프레임 휨 경고 */}
       <Collapse in={isBent}>
         <Paper
           elevation={0}
           sx={{
-            p: 2,
+            p: { xs: 2, md: 2.5 },
             mb: 2,
-            bgcolor: "#fff9e6",
+            bgcolor: "#f0f7ff",
             borderRadius: "12px",
-            border: "1px solid #ffcc00",
+            display: "flex",
+            alignItems: "flex-start",
+            border: "1px solid #0071e3",
           }}
         >
-          <Stack direction="row" spacing={1.5}>
-            <WarningAmberIcon sx={{ color: "#856404" }} />
-            <Box>
-              <Typography
-                variant="body2"
-                sx={{ color: "#856404", fontWeight: 700, mb: 0.5 }}
-              >
-                ATTENTION : CADRE TORDU
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ color: "#856404", fontSize: "0.9rem", lineHeight: 1.4 }}
-              >
-                Un châssis plié exerce une pression sur l'écran. Cela peut
-                entraîner une fissure ou un décollement de la nouvelle pièce.
-              </Typography>
-            </Box>
-          </Stack>
+          <InfoOutlinedIcon
+            sx={{
+              color: "#0071e3",
+              mr: 1.5,
+              mt: 0.2,
+              fontSize: { xs: 20, md: 22 },
+            }}
+          />
+          <Typography
+            variant="body2"
+            sx={{
+              color: "#004080",
+              lineHeight: 1.5,
+              fontWeight: 500,
+              fontSize: { xs: "0.85rem", md: "0.9rem" },
+            }}
+          >
+            <strong>Le saviez-vous ?</strong>
+            <br />
+            Un châssis déformé exerce une pression continue sur le verre. Lors
+            de la réparation, un redressage de la coque pourra être nécessaire
+            pour éviter que le nouvel écran ne se décolle ou ne se fissure par
+            la suite.
+          </Typography>
         </Paper>
       </Collapse>
     </Box>

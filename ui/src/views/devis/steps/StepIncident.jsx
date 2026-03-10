@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography, Stack, Button, Box, Collapse, Paper } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const StepIncident = ({ selected = [], onUpdate }) => {
   const options = [
@@ -23,105 +23,204 @@ const StepIncident = ({ selected = [], onUpdate }) => {
     });
   };
 
-  // 1. 충격 관련 항목을 선택했는지 체크
+  // 💡 세 가지로 분리했습니다.
   const hasPhysicalShock = selected.some((id) =>
     ["drop_low", "drop_high"].includes(id),
   );
-  // 2. 물 관련 항목을 선택했는지 체크
   const hasLiquidDamage = selected.some((id) =>
-    ["water_low", "water_high", "bathroom"].includes(id),
+    ["water_low", "water_high"].includes(id),
   );
+  const hasBathroom = selected.includes("bathroom");
 
   return (
     <Box sx={{ textAlign: "left" }}>
       <Typography
         variant="h4"
-        sx={{ fontWeight: 800, mb: 1, color: "#1d1d1f" }}
+        sx={{
+          fontWeight: 800,
+          mb: 1,
+          color: "#1d1d1f",
+          fontSize: { xs: "1.6rem", md: "2.125rem" },
+        }}
       >
         L'origine du problème
       </Typography>
       <Typography
-        sx={{ color: "#424245", fontSize: "1.05rem", mb: 4, lineHeight: 1.6 }}
+        sx={{
+          color: "#424245",
+          fontSize: { xs: "0.95rem", md: "1.05rem" },
+          mb: 3,
+          lineHeight: 1.6,
+        }}
       >
         Que s'est-il passé avec votre téléphone ?
       </Typography>
 
-      <Stack spacing={1.5} sx={{ mb: 3 }}>
-        {options.map((opt) => (
-          <Button
-            key={opt.id}
-            variant="outlined"
-            onClick={() => handleToggle(opt.id)}
-            sx={{
-              p: 2.5,
-              borderRadius: "16px",
-              justifyContent: "flex-start",
-              textAlign: "left",
-              borderColor: selected.includes(opt.id) ? "#0071e3" : "#d2d2d7",
-              bgcolor: selected.includes(opt.id) ? "#f5faff" : "white",
-              textTransform: "none",
-              color: "#1d1d1f",
-              fontWeight: 600,
-              "&:hover": { borderColor: "#0071e3", bgcolor: "#f5faff" },
-            }}
-          >
-            {opt.label}
-          </Button>
-        ))}
+      <Stack spacing={1.5} sx={{ mb: 4 }}>
+        {options.map((opt) => {
+          const isSelected = selected.includes(opt.id);
+          return (
+            <Button
+              key={opt.id}
+              variant="outlined"
+              onClick={() => handleToggle(opt.id)}
+              sx={{
+                p: { xs: 2, md: 2.5 },
+                borderRadius: "16px",
+                justifyContent: "space-between",
+                textAlign: "left",
+                border: isSelected ? "2px solid #0071e3" : "1px solid #d2d2d7",
+                bgcolor: isSelected ? "#eff7ff" : "white",
+                textTransform: "none",
+                color: isSelected ? "#0071e3" : "#1d1d1f",
+                fontWeight: 700,
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  borderColor: "#0071e3",
+                  bgcolor: "#eff7ff",
+                },
+              }}
+            >
+              <Typography
+                sx={{
+                  fontWeight: 700,
+                  fontSize: { xs: "0.9rem", md: "1rem" },
+                }}
+              >
+                {opt.label}
+              </Typography>
+              {isSelected && (
+                <CheckCircleIcon
+                  sx={{ color: "#0071e3", fontSize: { xs: 20, md: 24 } }}
+                />
+              )}
+            </Button>
+          );
+        })}
       </Stack>
 
-      {/* 충격을 선택했을 때만 나오는 경고 (메인보드 금 방어용) */}
+      {/* 🔵 충격 관련 인지 */}
       <Collapse in={hasPhysicalShock}>
-        <Box
+        <Paper
+          elevation={0}
           sx={{
-            p: 2,
+            p: { xs: 2, md: 2.5 },
             mb: 2,
-            bgcolor: "#fff4f4",
+            bgcolor: "#f0f7ff",
             borderRadius: "12px",
-            border: "1px solid #ffcccc",
             display: "flex",
             alignItems: "flex-start",
+            border: "1px solid #0071e3",
           }}
         >
-          <WarningAmberIcon sx={{ color: "#d32f2f", mr: 1.5, mt: 0.2 }} />
+          <InfoOutlinedIcon
+            sx={{
+              color: "#0071e3",
+              mr: 1.5,
+              mt: 0.2,
+              fontSize: { xs: 20, md: 22 },
+            }}
+          />
           <Typography
             variant="body2"
-            sx={{ color: "#601a1a", lineHeight: 1.5 }}
+            sx={{
+              color: "#004080",
+              lineHeight: 1.5,
+              fontWeight: 500,
+              fontSize: { xs: "0.85rem", md: "0.9rem" },
+            }}
           >
-            <strong>Risque de choc :</strong> Un impact peut créer des
-            micro-fissures sur la carte mère qui s'aggravent avec le temps.
+            <strong>Le saviez-vous ?</strong>
+            <br />
+            Un impact peut créer des micro-fissures sur la carte mère. Ces
+            fragilités internes peuvent parfois évoluer avec le temps.
           </Typography>
-        </Box>
+        </Paper>
       </Collapse>
 
-      {/* 물/욕실 선택했을 때만 나오는 경고 (부식/녹 방어용) */}
+      {/* 🔵 직접적인 침수(물) 관련 인지 */}
       <Collapse in={hasLiquidDamage}>
-        <Box
+        <Paper
+          elevation={0}
           sx={{
-            p: 2,
+            p: { xs: 2, md: 2.5 },
             mb: 2,
-            bgcolor: "#e8f2fc",
+            bgcolor: "#f0f7ff",
             borderRadius: "12px",
-            border: "1px solid #b6d4f0",
             display: "flex",
             alignItems: "flex-start",
+            border: "1px solid #0071e3",
           }}
         >
-          <InfoOutlinedIcon sx={{ color: "#0071e3", mr: 1.5, mt: 0.2 }} />
+          <InfoOutlinedIcon
+            sx={{
+              color: "#0071e3",
+              mr: 1.5,
+              mt: 0.2,
+              fontSize: { xs: 20, md: 22 },
+            }}
+          />
           <Typography
             variant="body2"
-            sx={{ color: "#004080", lineHeight: 1.5 }}
+            sx={{
+              color: "#004080",
+              lineHeight: 1.5,
+              fontWeight: 500,
+              fontSize: { xs: "0.85rem", md: "0.9rem" },
+            }}
           >
-            <strong>Risque d'oxydation :</strong> L'humidité crée de la rouille
-            interne qui continue d'attaquer les composants même après séchage.
+            <strong>Le saviez-vous ?</strong>
+            <br />
+            L'humidité crée une oxydation qui continue parfois d'affecter les
+            composants internes même après un séchage apparent.
           </Typography>
-        </Box>
+        </Paper>
+      </Collapse>
+
+      {/* 🔵 🔥 욕실(습기) 전용 부드러운 인지 추가 🔥 */}
+      <Collapse in={hasBathroom}>
+        <Paper
+          elevation={0}
+          sx={{
+            p: { xs: 2, md: 2.5 },
+            mb: 2,
+            bgcolor: "#f0f7ff",
+            borderRadius: "12px",
+            display: "flex",
+            alignItems: "flex-start",
+            border: "1px solid #0071e3",
+          }}
+        >
+          <InfoOutlinedIcon
+            sx={{
+              color: "#0071e3",
+              mr: 1.5,
+              mt: 0.2,
+              fontSize: { xs: 20, md: 22 },
+            }}
+          />
+          <Typography
+            variant="body2"
+            sx={{
+              color: "#004080",
+              lineHeight: 1.5,
+              fontWeight: 500,
+              fontSize: { xs: "0.85rem", md: "0.9rem" },
+            }}
+          >
+            <strong>Le saviez-vous ?</strong>
+            <br />
+            La vapeur d'eau d'une salle de bain s'infiltre facilement dans
+            l'appareil et peut créer une lente oxydation, même sans contact
+            direct avec l'eau.
+          </Typography>
+        </Paper>
       </Collapse>
 
       <Paper
         elevation={0}
         sx={{
-          p: 2,
+          p: { xs: 2, md: 2.5 },
           bgcolor: "#f5f5f7",
           borderRadius: "12px",
           display: "flex",
@@ -130,11 +229,23 @@ const StepIncident = ({ selected = [], onUpdate }) => {
         }}
       >
         <InfoOutlinedIcon
-          sx={{ color: "#86868b", mr: 1.5, mt: 0.2, fontSize: 20 }}
+          sx={{
+            color: "#86868b",
+            mr: 1.5,
+            mt: 0.2,
+            fontSize: { xs: 20, md: 22 },
+          }}
         />
-        <Typography variant="body2" sx={{ color: "#424245", lineHeight: 1.5 }}>
-          <strong>Note :</strong> Ces précisions nous aident à réaliser un
-          diagnostic plus sûr pour vos données.
+        <Typography
+          variant="body2"
+          sx={{
+            color: "#424245",
+            lineHeight: 1.5,
+            fontSize: { xs: "0.85rem", md: "0.9rem" },
+          }}
+        >
+          Ces précisions nous aident à réaliser un diagnostic plus sûr et à
+          mieux protéger vos données.
         </Typography>
       </Paper>
     </Box>

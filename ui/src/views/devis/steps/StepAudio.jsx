@@ -1,11 +1,10 @@
 import React from "react";
 import { Typography, Stack, Button, Box, Collapse, Paper } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-const StepAudio = ({ selected = [], onUpdate, touchWorks }) => {
-  const isTouchBroken = touchWorks === "no";
-  const isUnknown = selected.includes("unknown");
+const StepAudio = ({ selected = [], onUpdate }) => {
+  const isUnknown = selected.includes("unknown"); // 확인 불가 선택 여부
 
   const options = [
     { id: "mic", label: "On ne m'entend pas (Microphone)" },
@@ -37,80 +36,59 @@ const StepAudio = ({ selected = [], onUpdate, touchWorks }) => {
       </Typography>
 
       <Stack spacing={1.5} sx={{ mb: 3 }}>
-        {options.map((opt) => (
-          <Button
-            key={opt.id}
-            variant="outlined"
-            onClick={() => handleToggle(opt.id)}
-            sx={{
-              p: 2.5,
-              borderRadius: "16px",
-              justifyContent: "flex-start",
-              textAlign: "left",
-              borderColor: selected.includes(opt.id) ? "#0071e3" : "#d2d2d7",
-              bgcolor: selected.includes(opt.id) ? "#f5faff" : "white",
-              textTransform: "none",
-              color: "#1d1d1f",
-              fontWeight: 600,
-            }}
-          >
-            {opt.label}
-          </Button>
-        ))}
+        {options.map((opt) => {
+          const isSelected = selected.includes(opt.id);
+          return (
+            <Button
+              key={opt.id}
+              variant="outlined"
+              onClick={() => handleToggle(opt.id)}
+              sx={{
+                p: 2.5,
+                borderRadius: "16px",
+                justifyContent: "space-between",
+                textAlign: "left",
+                border: isSelected ? "2px solid #0071e3" : "1px solid #d2d2d7",
+                bgcolor: isSelected ? "#eff7ff" : "white",
+                textTransform: "none",
+                color: isSelected ? "#0071e3" : "#1d1d1f",
+                fontWeight: 700,
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  borderColor: "#0071e3",
+                  bgcolor: "#eff7ff",
+                },
+              }}
+            >
+              <Typography sx={{ fontWeight: 700 }}>{opt.label}</Typography>
+              {isSelected && <CheckCircleIcon sx={{ color: "#0071e3" }} />}
+            </Button>
+          );
+        })}
       </Stack>
 
-      {/* 🔵 부드러운 인지 안내 */}
-      <Collapse in={isUnknown && !isTouchBroken}>
+      {/* 🔵 부드러운 인지 안내 (무서운 빨간 카드 완전 삭제) */}
+      <Collapse in={isUnknown}>
         <Paper
           elevation={0}
           sx={{
-            p: 2,
+            p: 2.5,
             mb: 2,
             bgcolor: "#f0f7ff",
             borderRadius: "12px",
             border: "1px solid #0071e3",
+            display: "flex",
+            alignItems: "center",
+            gap: 1.5,
           }}
         >
-          <Stack direction="row" spacing={1.5} alignItems="center">
-            <InfoOutlinedIcon sx={{ color: "#0071e3" }} />
-            <Typography
-              variant="body2"
-              sx={{ color: "#004080", fontWeight: 600 }}
-            >
-              Note : Les fonctions audio seront testées une fois le nouvel écran
-              installé.
-            </Typography>
-          </Stack>
-        </Paper>
-      </Collapse>
-
-      {/* 🔴 터치 불량 방패 */}
-      <Collapse in={isTouchBroken}>
-        <Paper
-          elevation={0}
-          sx={{
-            p: 3,
-            mb: 2,
-            bgcolor: "#fff4f4",
-            borderRadius: "16px",
-            border: "2px solid #d32f2f",
-          }}
-        >
-          <Stack direction="row" spacing={1.5} sx={{ mb: 1.5 }}>
-            <ErrorOutlineIcon sx={{ color: "#d32f2f" }} />
-            <Typography
-              variant="body1"
-              sx={{ color: "#d32f2f", fontWeight: 900 }}
-            >
-              TEST AUDIO COMPLIQUÉ
-            </Typography>
-          </Stack>
+          <InfoOutlinedIcon sx={{ color: "#0071e3" }} />
           <Typography
             variant="body2"
-            sx={{ color: "#601a1a", fontSize: "0.9rem", lineHeight: 1.5 }}
+            sx={{ color: "#004080", fontWeight: 600, lineHeight: 1.4 }}
           >
-            Sans tactile, il est difficile de tester les micros. Nous
-            vérifierons tout cela lors de l'intervention.
+            Rassurez-vous : les fonctions audio seront testées une fois le
+            nouvel écran installé.
           </Typography>
         </Paper>
       </Collapse>

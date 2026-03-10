@@ -1,17 +1,17 @@
 import React from "react";
 import { Typography, Stack, Button, Box, Collapse, Paper } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const StepBattery = ({ selected = [], onUpdate }) => {
   const options = [
-    { id: "no_charge", label: "Il ne charge plus du tout (rien ne se passe)" }, // 충전 아예 안됨
-    { id: "intermittent", label: "Le câble bouge ou se déconnecte tout seul" }, // 헐거움, 접촉 불량
-    { id: "slow", label: "La charge est anormalement longue" }, // 충전 너무 느림
-    { id: "fast_drain", label: "La batterie descend beaucoup trop vite" }, // 배터리 광탈
-    { id: "shutdown", label: "Le téléphone s'éteint tout seul (ex: à 20%)" }, // 갑자기 꺼짐
-    { id: "hot", label: "Le téléphone chauffe beaucoup en charge" }, // 🔥 추가: 충전 중 발열
-    { id: "none", label: "La batterie tient bien la route" }, // 상태 좋음
+    { id: "no_charge", label: "Il ne charge plus du tout (rien ne se passe)" },
+    { id: "intermittent", label: "Le câble bouge ou se déconnecte tout seul" },
+    { id: "slow", label: "La charge est anormalement longue" },
+    { id: "fast_drain", label: "La batterie descend beaucoup trop vite" },
+    { id: "shutdown", label: "Le téléphone s'éteint tout seul (ex: à 20%)" },
+    { id: "hot", label: "Le téléphone chauffe beaucoup en charge" },
+    { id: "none", label: "La batterie tient bien la route" },
   ];
 
   const handleToggle = (id) => {
@@ -31,104 +31,146 @@ const StepBattery = ({ selected = [], onUpdate }) => {
     <Box sx={{ textAlign: "left" }}>
       <Typography
         variant="h4"
-        sx={{ fontWeight: 800, mb: 1, color: "#1d1d1f" }}
+        sx={{
+          fontWeight: 800,
+          mb: 1,
+          color: "#1d1d1f",
+          fontSize: { xs: "1.6rem", md: "2.125rem" },
+        }}
       >
         Batterie & Charge
       </Typography>
       <Typography
-        sx={{ color: "#424245", fontSize: "1.05rem", mb: 4, lineHeight: 1.6 }}
+        sx={{
+          color: "#424245",
+          fontSize: { xs: "0.95rem", md: "1.05rem" },
+          mb: 4,
+          lineHeight: 1.6,
+        }}
       >
         Votre téléphone a-t-il du mal à garder son énergie ?
       </Typography>
 
-      <Stack spacing={1.5} sx={{ mb: 3 }}>
-        {options.map((opt) => (
-          <Button
-            key={opt.id}
-            variant="outlined"
-            onClick={() => handleToggle(opt.id)}
-            sx={{
-              p: 2.5,
-              borderRadius: "16px",
-              justifyContent: "flex-start",
-              textAlign: "left",
-              borderColor: selected.includes(opt.id) ? "#0071e3" : "#d2d2d7",
-              bgcolor: selected.includes(opt.id) ? "#f5faff" : "white",
-              textTransform: "none",
-              color: "#1d1d1f",
-              fontWeight: 600,
-              "&:hover": { borderColor: "#0071e3", bgcolor: "#f5faff" },
-            }}
-          >
-            {opt.label}
-          </Button>
-        ))}
+      <Stack spacing={1.5} sx={{ mb: 4 }}>
+        {options.map((opt) => {
+          const isSelected = selected.includes(opt.id);
+          return (
+            <Button
+              key={opt.id}
+              variant="outlined"
+              onClick={() => handleToggle(opt.id)}
+              sx={{
+                p: { xs: 2, md: 2.5 },
+                borderRadius: "16px",
+                justifyContent: "space-between",
+                textAlign: "left",
+                border: isSelected ? "2px solid #0071e3" : "1px solid #d2d2d7",
+                bgcolor: isSelected ? "#eff7ff" : "white",
+                textTransform: "none",
+                color: isSelected ? "#0071e3" : "#1d1d1f",
+                fontWeight: 700,
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  borderColor: "#0071e3",
+                  bgcolor: "#eff7ff",
+                },
+              }}
+            >
+              <Typography
+                sx={{
+                  fontWeight: 700,
+                  fontSize: { xs: "0.9rem", md: "1rem" },
+                }}
+              >
+                {opt.label}
+              </Typography>
+              {isSelected && (
+                <CheckCircleIcon
+                  sx={{ color: "#0071e3", fontSize: { xs: 20, md: 24 } }}
+                />
+              )}
+            </Button>
+          );
+        })}
       </Stack>
 
-      {/* ⚠️ 1. 배터리 광탈/꺼짐 선택 시 (보드 문제 가능성 방패) */}
+      {/* 🔵 배터리 광탈/꺼짐 방어막 (메인보드 문제 가능성 인지) */}
       <Collapse in={isFastDrain}>
         <Paper
           elevation={0}
           sx={{
-            p: 2,
+            p: { xs: 2, md: 2.5 },
             mb: 2,
-            bgcolor: "#fff9e6",
+            bgcolor: "#f0f7ff",
             borderRadius: "12px",
-            border: "1px solid #ffcc00",
+            display: "flex",
+            alignItems: "flex-start",
+            border: "1px solid #0071e3",
           }}
         >
-          <Stack direction="row" spacing={1.5}>
-            <WarningAmberIcon sx={{ color: "#856404" }} />
-            <Box>
-              <Typography
-                variant="body2"
-                sx={{ color: "#856404", fontWeight: 700, mb: 0.5 }}
-              >
-                INFO : BATTERIE OU CARTE MÈRE ?
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ color: "#856404", fontSize: "0.9rem", lineHeight: 1.4 }}
-              >
-                Une batterie qui se vide vite peut aussi être le signe d'un
-                <strong> défaut sur la carte mère</strong>. Le test nous dira si
-                la batterie doit être changée.
-              </Typography>
-            </Box>
-          </Stack>
+          <InfoOutlinedIcon
+            sx={{
+              color: "#0071e3",
+              mr: 1.5,
+              mt: 0.2,
+              fontSize: { xs: 20, md: 22 },
+            }}
+          />
+          <Typography
+            variant="body2"
+            sx={{
+              color: "#004080",
+              lineHeight: 1.5,
+              fontWeight: 500,
+              fontSize: { xs: "0.85rem", md: "0.9rem" },
+            }}
+          >
+            <strong>Le saviez-vous ?</strong>
+            <br />
+            Une batterie qui se vide anormalement vite peut parfois être le
+            signe d'une surconsommation de la carte mère. Le test en atelier
+            nous permettra d'identifier l'origine exacte du problème.
+          </Typography>
         </Paper>
       </Collapse>
 
-      {/* ⚠️ 2. 충전 불량 선택 시 (정품 케이블 경고) */}
+      {/* 🔵 충전 불량 방어막 (정품 케이블 지참 안내 및 인지) */}
       <Collapse in={isChargingIssue}>
         <Paper
           elevation={0}
           sx={{
-            p: 2,
+            p: { xs: 2, md: 2.5 },
             mb: 2,
-            bgcolor: "#f5f5f7",
+            bgcolor: "#f0f7ff",
             borderRadius: "12px",
-            border: "1px solid #d2d2d7",
+            display: "flex",
+            alignItems: "flex-start",
+            border: "1px solid #0071e3",
           }}
         >
-          <Stack direction="row" spacing={1.5}>
-            <InfoOutlinedIcon sx={{ color: "#86868b" }} />
-            <Box>
-              <Typography
-                variant="body2"
-                sx={{ color: "#1d1d1f", fontWeight: 700, mb: 0.5 }}
-              >
-                VÉRIFICATION DU PORT
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ color: "#424245", fontSize: "0.9rem", lineHeight: 1.4 }}
-              >
-                L'utilisation de câbles non-officiels peut endommager le port de
-                charge. Veuillez apporter votre câble habituel pour le test.
-              </Typography>
-            </Box>
-          </Stack>
+          <InfoOutlinedIcon
+            sx={{
+              color: "#0071e3",
+              mr: 1.5,
+              mt: 0.2,
+              fontSize: { xs: 20, md: 22 },
+            }}
+          />
+          <Typography
+            variant="body2"
+            sx={{
+              color: "#004080",
+              lineHeight: 1.5,
+              fontWeight: 500,
+              fontSize: { xs: "0.85rem", md: "0.9rem" },
+            }}
+          >
+            <strong>Le saviez-vous ?</strong>
+            <br />
+            L'utilisation de câbles non originaux peut parfois fragiliser le
+            port de charge. N'hésitez pas à apporter votre câble habituel lors
+            de votre visite pour que nous puissions le vérifier.
+          </Typography>
         </Paper>
       </Collapse>
     </Box>

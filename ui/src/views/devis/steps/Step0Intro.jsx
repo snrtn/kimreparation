@@ -44,7 +44,7 @@ const Step0Intro = ({ onUpdate, onNext }) => {
     // 3. 🔥 상태 업데이트 및 다음 스텝 이동
     // 이 코드가 실행되면 부모 컴포넌트의 <Dialog fullScreen>이 켜지면서
     // 전체화면 미지원 기기라도 브라우저 화면을 100% 꽉 채우게 됩니다!
-    onUpdate({ status: selectedStatus });
+    onUpdate({ status: selectedStatus, agreedToTerms: true });
     onNext();
   };
 
@@ -238,9 +238,9 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         >
           <Typography
             sx={{
-              fontSize: "1.1rem",
+              fontSize: "1",
               color: "#664d03",
-              fontWeight: 800,
+              fontWeight: 600,
               lineHeight: 1.4,
             }}
           >
