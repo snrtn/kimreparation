@@ -10,6 +10,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 // ✅ Icones MUI
 import SecurityIcon from "@mui/icons-material/Security";
@@ -298,7 +299,8 @@ const HomeRepair = () => {
                       fontWeight: 700,
                       textTransform: "none",
                     }}
-                    href="/screen"
+                    component={RouterLink} // 💡 Redirection interne sans rechargement
+                    to={slide.link}
                   >
                     Consulter le guide
                   </Button>

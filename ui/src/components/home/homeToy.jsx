@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Container, Typography, Button, Stack } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 // 📌 텍스트 데이터: '전자' 장난감(Jouets Électroniques)임을 명확히 명시
 const toysContent = {
@@ -156,7 +157,8 @@ const HomeToy = () => {
             {/* 버튼 */}
             <Box>
               <Button
-                href="/toy"
+                component={RouterLink} // 💡 MUI 버튼을 리액트 라우터 링크로 변환
+                to="/toy"
                 disableRipple
                 sx={{
                   color: "#1d1d1f",

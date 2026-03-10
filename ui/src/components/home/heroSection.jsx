@@ -140,7 +140,7 @@ const HeroSection = () => {
               </Typography>
 
               <Link
-                href={slide.path}
+                to={slide.path}
                 sx={{
                   fontSize: "1rem",
                   color: "#0066cc",

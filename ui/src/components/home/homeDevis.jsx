@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Container, Stack, Typography, Button } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 const HomeDevis = () => {
   return (
@@ -58,7 +59,8 @@ const HomeDevis = () => {
           </Typography>
 
           <Button
-            href="/devis"
+            component={RouterLink} // 💡 MUI 버튼을 리액트 라우터 링크로 변환
+            to="/devis"
             disableRipple
             sx={{
               p: 0,
