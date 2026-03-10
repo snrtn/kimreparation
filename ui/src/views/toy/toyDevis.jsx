@@ -40,6 +40,7 @@ const ToyDevis = () => {
     name: "",
     city: "",
     toyName: "",
+    isJoycon: false, // 👈 이거 추가
     contactType: "phone",
     phoneValue: "",
     emailUser: "",
@@ -48,6 +49,7 @@ const ToyDevis = () => {
   });
 
   const [agreements, setAgreements] = useState({
+    fraisPieces: false,
     voisin: false,
     priority: false,
     delai: false,
@@ -56,6 +58,9 @@ const ToyDevis = () => {
     abandon: false,
     engagement: false,
   });
+
+  const joyconText =
+    "Frais de Pieces : Le client reconnait etre informe que seul le service de main-d'oeuvre est gratieux. Tout composant materiel installe dans la manette fera l'objet d'une facturation prealablement acceptee par le client.";
 
   const allDefenseLines = [
     {
@@ -159,7 +164,9 @@ const ToyDevis = () => {
         (!isCustomDomain || formData.customDomain.trim() !== "");
 
   const isComplete =
-    Object.values(agreements).every(Boolean) &&
+    Object.keys(agreements).every((k) =>
+      k === "fraisPieces" ? !formData.isJoycon || agreements[k] : agreements[k],
+    ) &&
     formData.name.trim() !== "" &&
     formData.city !== "" &&
     formData.toyName.trim() !== "" &&
@@ -370,14 +377,46 @@ const ToyDevis = () => {
                 </Stack>
               )}
             </Stack>
-            <TextField
-              variant="standard"
-              label="Désignation du Jouet"
-              fullWidth
-              onChange={(e) =>
-                setFormData({ ...formData, toyName: e.target.value })
-              }
-            />
+            <Box>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={formData.isJoycon}
+                    onChange={(e) => {
+                      const isChecked = e.target.checked;
+                      setFormData({
+                        ...formData,
+                        isJoycon: isChecked,
+                        toyName: isChecked ? "Nintendo switch joycon" : "",
+                      });
+                      if (!isChecked) {
+                        setAgreements((prev) => ({
+                          ...prev,
+                          fraisPieces: false,
+                        }));
+                      }
+                    }}
+                    size="small"
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: "0.85rem", fontWeight: 600 }}>
+                    Nintendo switch joycon
+                  </Typography>
+                }
+                sx={{ mb: 1 }}
+              />
+              <TextField
+                variant="standard"
+                label="Désignation du Jouet"
+                fullWidth
+                value={formData.toyName}
+                disabled={formData.isJoycon}
+                onChange={(e) =>
+                  setFormData({ ...formData, toyName: e.target.value })
+                }
+              />
+            </Box>
           </Stack>
         </Box>
 
@@ -393,6 +432,41 @@ const ToyDevis = () => {
             CLIQUEZ SUR CHAQUE CARTE POUR ACCEPTER LES CONDITIONS DE BÉNÉVOLAT :
           </Typography>
           <Stack spacing={1.5} sx={{ mb: 6 }}>
+            {/* 👇 새로 추가되는 조이콘 전용 항목 (여기에 끼워넣기!) */}
+            {formData.isJoycon && (
+              <Paper
+                variant="outlined"
+                onClick={() => toggleAgreement("fraisPieces")}
+                sx={{
+                  p: 2,
+                  borderRadius: "12px",
+                  cursor: "pointer",
+                  borderColor: agreements.fraisPieces ? "#0066cc" : "#e5e5e7",
+                  bgcolor: agreements.fraisPieces ? "#f5faff" : "transparent",
+                  transition: "0.2s",
+                  display: "flex",
+                  alignItems: "center",
+                  "&:hover": { borderColor: "#0066cc" },
+                }}
+              >
+                <Checkbox
+                  size="small"
+                  checked={agreements.fraisPieces}
+                  readOnly
+                />
+                <Typography
+                  sx={{
+                    fontSize: "0.85rem",
+                    fontWeight: 600,
+                    ml: 1,
+                    color: agreements.fraisPieces ? "#003366" : "#424245",
+                  }}
+                >
+                  {joyconText}
+                </Typography>
+              </Paper>
+            )}
+
             {allDefenseLines
               .filter((l) => l.isCritical)
               .map((item) => (
@@ -557,6 +631,13 @@ const ToyDevis = () => {
             <Box
               sx={{ display: "flex", flexDirection: "column", gap: 1, mb: 4 }}
             >
+              {/* 👇 이거 한 줄만 기존 map 위에 추가하시면 됩니다 */}
+              {formData.isJoycon && (
+                <Typography sx={{ fontSize: "0.75rem", lineHeight: 1.3 }}>
+                  • {joyconText}
+                </Typography>
+              )}
+
               {allDefenseLines.map((line) => (
                 <Typography
                   key={line.id}
@@ -611,7 +692,7 @@ const ToyDevis = () => {
                       ref={sigCanvas}
                       penColor="#0000ff"
                       canvasProps={{
-                        width: 350,
+                        width: 600,
                         height: 150,
                         className: "sigCanvas",
                       }}
@@ -664,7 +745,7 @@ const ToyDevis = () => {
             <Button
               variant="outlined"
               onClick={() => setIsPreviewOpen(false)}
-              sx={{ borderRadius: "30px", px: 4 }}
+              sx={{ px: 4 }}
             >
               RETOUR
             </Button>
@@ -672,7 +753,7 @@ const ToyDevis = () => {
               variant="contained"
               disabled={!hasSignature || !finalConfirm}
               onClick={handleSendEmail}
-              sx={{ bgcolor: "#0066cc", borderRadius: "30px", px: 4 }}
+              sx={{ bgcolor: "#0066cc", px: 4 }}
             >
               ENVOYER LA DEMANDE
             </Button>
