@@ -19,16 +19,22 @@ import {
   AppBar,
   Toolbar,
 } from "@mui/material";
-// 🔥 서명 라이브러리 임포트 (npm install react-signature-canvas 필요)
 import SignatureCanvas from "react-signature-canvas";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import HomeIcon from "@mui/icons-material/Home";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const ToyDevis = () => {
   const todayDate = new Date().toLocaleDateString("fr-FR");
-  const sigCanvas = useRef({});
+  const sigCanvas = useRef(null);
+  const pdfRef = useRef(null);
 
-  // 상태 추가
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [hasSignature, setHasSignature] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [finalConfirm, setFinalConfirm] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -164,6 +170,7 @@ const ToyDevis = () => {
 
   const handleOpenPreview = () => {
     setHasSignature(false);
+    setFinalConfirm(false);
     setIsPreviewOpen(true);
   };
 
@@ -172,13 +179,48 @@ const ToyDevis = () => {
     setHasSignature(false);
   };
 
+  const handleDownloadPDF = async () => {
+    const element = pdfRef.current;
+    if (!element) return;
+
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      scrollY: 0,
+      windowHeight: element.scrollHeight,
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    const pdfWidth = 210;
+    const pdfHeight = 297;
+    const margin = 0;
+
+    const imgProps = pdf.getImageProperties(imgData);
+    const availableWidth = pdfWidth - margin * 2;
+    const availableHeight = pdfHeight - margin * 2;
+
+    const ratio = Math.min(
+      availableWidth / imgProps.width,
+      availableHeight / imgProps.height,
+    );
+
+    const finalWidth = imgProps.width * ratio;
+    const finalHeight = imgProps.height * ratio;
+
+    const x = (pdfWidth - finalWidth) / 2;
+    const y = margin;
+
+    pdf.addImage(imgData, "PNG", x, y, finalWidth, finalHeight);
+    pdf.save(
+      `CONTRAT_KIM_REPARATION_${formData.name.replace(/\s+/g, "_")}.pdf`,
+    );
+  };
+
   const handleSendEmail = () => {
-    const signatureImage = sigCanvas.current
-      .getTrimmedCanvas()
-      .toDataURL("image/png");
-    console.log("서명 데이터:", signatureImage);
-    console.log("폼 데이터:", formData);
-    alert("Prêt pour l'envoi d'e-mail ! (Logique à ajouter)");
+    setIsSubmitted(true);
   };
 
   return (
@@ -204,18 +246,10 @@ const ToyDevis = () => {
           >
             Bienvenue chez Kim Reparation. Ce service de réparation de jouets
             est une <strong>initiative personnelle et bénévole</strong> que
-            j'offre à mes voisins. Pour que ce projet puisse durer sans impacter
-            mon activité professionnelle, il repose sur un contrat de confiance
-            mutuelle.
-            <br />
-            <br />
-            En générant ce bon, vous acceptez que je travaille sur votre objet
-            pendant mon temps libre, sans garantie de résultat, mais avec toute
-            ma passion technique.
+            j'offre à mes voisins.
           </Typography>
         </Paper>
 
-        {/* --- 폼 영역 (기존과 동일) --- */}
         <Box sx={{ py: 4 }}>
           <Stack spacing={3} sx={{ mt: 2 }}>
             <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
@@ -226,7 +260,6 @@ const ToyDevis = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
-                InputLabelProps={{ shrink: true }}
               />
               <FormControl variant="standard" fullWidth>
                 <InputLabel>Votre Commune</InputLabel>
@@ -344,7 +377,6 @@ const ToyDevis = () => {
               onChange={(e) =>
                 setFormData({ ...formData, toyName: e.target.value })
               }
-              InputLabelProps={{ shrink: true }}
             />
           </Stack>
         </Box>
@@ -442,9 +474,6 @@ const ToyDevis = () => {
         </Box>
       </Box>
 
-      {/* ==========================================
-          🔥 모달: 계약서 미리보기 및 전자 서명 패드
-      ========================================== */}
       <Dialog
         fullScreen
         open={isPreviewOpen}
@@ -453,7 +482,7 @@ const ToyDevis = () => {
       >
         <AppBar sx={{ position: "relative", bgcolor: "#1d1d1f" }}>
           <Toolbar>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
               Vérification et Signature
             </Typography>
             <Button color="inherit" onClick={() => setIsPreviewOpen(false)}>
@@ -463,23 +492,33 @@ const ToyDevis = () => {
         </AppBar>
 
         <DialogContent
-          sx={{ display: "flex", justifyContent: "center", py: 5 }}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            py: 5,
+            bgcolor: "#f5f5f7",
+          }}
         >
           <Paper
+            ref={pdfRef}
             sx={{
-              p: { xs: 3, md: 6 },
+              p: { xs: 3, md: 5 },
               width: "100%",
-              maxWidth: "800px",
+              maxWidth: "900px",
+              minHeight: { xs: "auto", md: "1400px" },
+              display: "flex",
+              flexDirection: "column",
               bgcolor: "#fff",
               boxShadow: 3,
+              border: "1.5px solid #000",
             }}
           >
-            {/* 🔥 제목 및 줄바꿈 처리 영역 */}
             <Box
               sx={{
                 borderBottom: "3px solid #000",
                 pb: 2,
                 mb: 3,
+                pt: 10,
                 textAlign: "center",
               }}
             >
@@ -488,30 +527,40 @@ const ToyDevis = () => {
                 <br />
                 KIM REPARATION
               </Typography>
-
-              <Stack spacing={0.5} sx={{ color: "#424245" }}>
-                <Typography sx={{ fontSize: "0.9rem", fontWeight: 700 }}>
-                  Service Bénévole
+              <Box sx={{ mb: 6 }}>
+                <Typography
+                  sx={{
+                    fontSize: "0.95rem",
+                    fontWeight: 900,
+                    color: "#0066cc",
+                  }}
+                >
+                  Prestataire : Kim Reparation (Service Bénévole)
+                </Typography>
+              </Box>
+              <Stack spacing={0.5} sx={{ color: "#424245", textAlign: "left" }}>
+                <Typography sx={{ fontSize: "0.85rem" }}>
+                  <strong>Propriétaire (Client) :</strong> {formData.name}
                 </Typography>
                 <Typography sx={{ fontSize: "0.85rem" }}>
-                  Propriétaire : {formData.name}
+                  <strong>Contact :</strong> {finalContact}
                 </Typography>
                 <Typography sx={{ fontSize: "0.85rem" }}>
-                  Contact : {finalContact}
+                  <strong>Commune :</strong> {formData.city}
                 </Typography>
                 <Typography sx={{ fontSize: "0.85rem" }}>
-                  Commune : {formData.city}
+                  <strong>Désignation du Jouet :</strong> {formData.toyName}
                 </Typography>
               </Stack>
             </Box>
 
             <Box
-              sx={{ display: "flex", flexDirection: "column", gap: 1.5, mb: 4 }}
+              sx={{ display: "flex", flexDirection: "column", gap: 1, mb: 4 }}
             >
               {allDefenseLines.map((line) => (
                 <Typography
                   key={line.id}
-                  sx={{ fontSize: "0.83rem", lineHeight: 1.3 }}
+                  sx={{ fontSize: "0.75rem", lineHeight: 1.3 }}
                 >
                   • {line.text}
                 </Typography>
@@ -529,109 +578,146 @@ const ToyDevis = () => {
             >
               <Typography sx={{ fontSize: "0.8rem", fontWeight: 900 }}>
                 "Je soussigné(e) {formData.name}, accepte que mon objet (
-                {formData.toyName}) soit traité bénévolement par Kim Reparation.
-                Je renonce à tout recours en cas d'impossibilité de réparation
-                ou de dégradation."
+                {formData.toyName}) soit traité bénévolement par Kim
+                Reparation."
               </Typography>
             </Box>
 
-            <Stack
-              direction={{ xs: "column", md: "row" }}
-              justifyContent="space-between"
-              spacing={5}
-              sx={{ mt: 4 }}
-            >
-              <Box sx={{ flex: 1 }}>
-                <Typography sx={{ fontWeight: 800, fontSize: "0.9rem", mb: 1 }}>
-                  Lieu et Date :
-                </Typography>
-                <Typography variant="body1">
-                  Fait à {formData.city}, <br /> le {todayDate}
-                </Typography>
-              </Box>
-
-              <Box sx={{ flex: 1 }}>
-                <Typography sx={{ fontWeight: 800, fontSize: "0.9rem", mb: 1 }}>
-                  Signature du Client :
-                </Typography>
-                <Typography
-                  sx={{ fontSize: "0.7rem", color: "#86868b", mb: 1 }}
-                >
-                  (Veuillez signer dans le cadre ci-dessous)
-                </Typography>
-
-                <Box
-                  sx={{
-                    border: "2px dashed #0066cc",
-                    borderRadius: "8px",
-                    bgcolor: "#f0f8ff",
-                  }}
-                >
-                  <SignatureCanvas
-                    ref={sigCanvas}
-                    canvasProps={{
-                      width: 300,
-                      height: 150,
-                      className: "sigCanvas",
-                    }}
-                    onEnd={() => setHasSignature(true)}
-                  />
+            <Box sx={{}}>
+              <Stack
+                direction={{ xs: "column", md: "row" }}
+                justifyContent="space-between"
+                spacing={5}
+              >
+                <Box sx={{ flex: 1 }}>
+                  <Typography sx={{ fontWeight: 600, fontSize: "1rem" }}>
+                    Fait à {formData.city},<br /> le {todayDate}
+                  </Typography>
                 </Box>
-                <Button
-                  size="small"
-                  onClick={clearSignature}
-                  sx={{ mt: 1, color: "#d32f2f" }}
-                >
-                  Effacer et recommencer
-                </Button>
-              </Box>
-            </Stack>
+                <Box sx={{ flex: 2 }}>
+                  <Typography
+                    sx={{ fontWeight: 800, fontSize: "0.9rem", mb: 1 }}
+                  >
+                    Signature :
+                  </Typography>
+                  <Box
+                    sx={{
+                      border: "2px dashed #0066cc",
+                      borderRadius: "8px",
+                      bgcolor: "#f0f8ff",
+                    }}
+                  >
+                    <SignatureCanvas
+                      ref={sigCanvas}
+                      penColor="#0000ff"
+                      canvasProps={{
+                        width: 350,
+                        height: 150,
+                        className: "sigCanvas",
+                      }}
+                      onEnd={() => setHasSignature(true)}
+                    />
+                  </Box>
+                  <Button
+                    data-html2canvas-ignore
+                    size="small"
+                    onClick={clearSignature}
+                    sx={{ mt: 1, color: "#d32f2f" }}
+                  >
+                    Effacer et recommencer
+                  </Button>
+                </Box>
+              </Stack>
+            </Box>
           </Paper>
         </DialogContent>
 
         <DialogActions
-          sx={{
-            p: 3,
-            justifyContent: "center",
-            bgcolor: "#fff",
-            borderTop: "1px solid #eee",
-            gap: 2,
-            flexWrap: "wrap",
-          }}
+          sx={{ p: 3, flexDirection: "column", bgcolor: "#fff", gap: 2 }}
         >
-          <Button
-            variant="outlined"
-            size="large"
-            onClick={() => setIsPreviewOpen(false)}
+          <Box
             sx={{
-              px: 4,
-              py: 1.5,
-              borderRadius: "30px",
-              fontWeight: 700,
-              color: "#424245",
-              borderColor: "#d2d2d7",
+              p: 1,
+              bgcolor: "#eff7ff",
+              borderRadius: "10px",
+              border: "1px solid #0071e3",
+              width: "100%",
+              maxWidth: "600px",
             }}
           >
-            RETOUR
-          </Button>
-
-          <Button
-            variant="contained"
-            size="large"
-            disabled={!hasSignature}
-            onClick={handleSendEmail}
-            sx={{
-              bgcolor: "#0066cc",
-              px: 6,
-              py: 1.5,
-              fontWeight: 800,
-              borderRadius: "30px",
-              "&.Mui-disabled": { bgcolor: "#e5e5e7", color: "#a1a1a6" },
-            }}
-          >
-            {hasSignature ? "ENVOYER LA DEMANDE" : "VEUILLEZ SIGNER D'ABORD"}
-          </Button>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={finalConfirm}
+                  onChange={(e) => setFinalConfirm(e.target.checked)}
+                  sx={{ color: "#0071e3" }}
+                />
+              }
+              label={
+                <Typography sx={{ fontSize: "0.85rem", fontWeight: 700 }}>
+                  Je confirme que ces informations sont exactes
+                </Typography>
+              }
+            />
+          </Box>
+          <Stack direction="row" spacing={2}>
+            <Button
+              variant="outlined"
+              onClick={() => setIsPreviewOpen(false)}
+              sx={{ borderRadius: "30px", px: 4 }}
+            >
+              RETOUR
+            </Button>
+            <Button
+              variant="contained"
+              disabled={!hasSignature || !finalConfirm}
+              onClick={handleSendEmail}
+              sx={{ bgcolor: "#0066cc", borderRadius: "30px", px: 4 }}
+            >
+              ENVOYER LA DEMANDE
+            </Button>
+          </Stack>
         </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={isSubmitted}
+        PaperProps={{ sx: { borderRadius: "24px", p: 3, textAlign: "center" } }}
+      >
+        <DialogContent>
+          <CheckCircleIcon sx={{ fontSize: 70, color: "#34c759", mb: 2 }} />
+          <Typography variant="h5" sx={{ fontWeight: 900 }}>
+            Demande Reçue !
+          </Typography>
+          <Typography sx={{ color: "#424245", my: 3 }}>
+            Nous vous recontacterons très rapidement.
+          </Typography>
+          <Stack spacing={2}>
+            <Button
+              fullWidth
+              variant="contained"
+              startIcon={<PictureAsPdfIcon />}
+              onClick={handleDownloadPDF}
+              sx={{
+                py: 1.5,
+                borderRadius: "12px",
+                bgcolor: "#0071e3",
+                fontWeight: 900,
+              }}
+            >
+              Sauvegarder en PDF
+            </Button>
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<HomeIcon />}
+              onClick={() => window.location.reload()}
+              sx={{ py: 1.5, borderRadius: "12px" }}
+            >
+              Retour à l'accueil
+            </Button>
+          </Stack>
+        </DialogContent>
       </Dialog>
     </Container>
   );
