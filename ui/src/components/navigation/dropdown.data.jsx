@@ -1,6 +1,6 @@
 const dropdownData = [
   {
-    title: "Réalité Technique",
+    title: "Besoin d'aide ?",
     desc: "Comprendre les pannes.",
     path: "/repair",
   },
@@ -10,12 +10,12 @@ const dropdownData = [
     path: "/screen",
   },
   {
-    title: "Devis Gratuits",
-    desc: "Estimation claire avant toute intervention.",
+    title: "Votre Devis Personnalisé",
+    desc: "Diagnostic complet et sur-mesure pour votre appareil.",
     path: "/devis",
   },
   {
-    title: "Atelier & Infos",
+    title: "L'Atelier & Infos",
     // ✅ 쓸데없는 소리 빼고 "공간 안내 및 우리의 약속(보증)"으로 담백하게 수정
     desc: "Découvrez notre espace et nos engagements.",
     path: "/atelier",

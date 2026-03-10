@@ -21,13 +21,13 @@ const sidemenuData = {
   ],
 
   devis: [
-    { title: "Devis Téléphone", path: "/devis" },
-    { title: "Devis Autres", path: "/devis/other" },
+    { title: "Diagnostic Téléphone", path: "/devis" },
+    { title: "Diagnostic Autres", path: "/devis/other" },
   ],
 
   // ✅ 아뜰리에 그룹
   atelier: [
-    { title: "L'Atelier", path: "/atelier" }, // 아뜰리에 정보 (영업시간 등)
+    { title: "Horaires d'ouverture", path: "/atelier" }, // 아뜰리에 정보 (영업시간 등)
     { title: "Excellence & Qualité", path: "/atelier/atelierConditions" }, // 1번: 품질/신뢰/영상
     { title: "Conditions d'Usage", path: "/atelier/atelierExcellence" }, // 2번: 방수/보증주의사항
     { title: "Mentions Légales", path: "/atelier/atelierLegal" }, // 3번: 법적면책/데이터/소비자법
@@ -36,8 +36,8 @@ const sidemenuData = {
   // ✅ 장난감 그룹 (💡 toys 가 아니라 toy 로 수정완료!)
   toy: [
     { title: "Prise en charge", path: "/toy" },
-    { title: "Réalité Technique", path: "/toy/repair" },
-    { title: "Joy-Con", path: "/toy/joycon" },
+    { title: "Jouets Electroniques", path: "/toy/repair" },
+    { title: "Nintendo switch joycon", path: "/toy/joycon" },
   ],
 };
 

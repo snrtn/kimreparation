@@ -60,6 +60,7 @@ const ScreenContent = ({ current, isMobile, formatDescription }) => {
                 fontWeight: 500,
                 lineHeight: 1.5,
                 letterSpacing: "-0.01em",
+                whiteSpace: "pre-line",
               }}
             >
               {formatDescription(current.description)}
@@ -73,7 +74,7 @@ const ScreenContent = ({ current, isMobile, formatDescription }) => {
             p: { xs: 3.5, md: 4 },
             bgcolor: "#f5f5f7",
             borderRadius: "20px",
-            mb: 4,
+            my: 4,
             minHeight: { md: "180px" },
           }}
         >

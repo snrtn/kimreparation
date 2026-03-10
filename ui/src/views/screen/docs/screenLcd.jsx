@@ -4,22 +4,23 @@ import { SCREEN_NAV } from "./screenNav";
 
 const ScreenLcd = () => {
   const content = {
-    title: "Copie LCD",
-    subtitle: "Compatible (In-cell)",
+    title: "In-Cell LCD (Copie)",
+    subtitle: "Technologie à cristaux liquides avec rétroéclairage",
     recommendation:
-      "Solution alternative pour un usage principalement fonctionnel.",
+      "Solution d'entrée de gamme privilégiant le coût minimal pour une remise en état fonctionnelle.",
     description:
-      "Utilise la technologie à cristaux liquides avec un système de lumière arrière. Cette structure est physiquement plus épaisse que les technologies organiques, ce qui peut influencer l'autonomie de la batterie et la température de fonctionnement de l'appareil lors d'un usage prolongé.",
+      "L'écran LCD In-Cell est une technologie radicalement différente des dalles organiques. Contrairement à l'OLED, il nécessite un rétroéclairage permanent (Backlight), ce qui rend le composant physiquement plus épais et entraîne une consommation d'énergie nettement supérieure. Sur les appareils conçus à l'origine pour l'OLED, l'installation d'un LCD peut provoquer une légère chauffe de l'appareil et une réduction de l'autonomie de la batterie. Le rendu des noirs est également moins profond car la lumière traverse toute la dalle.\n\nNote technique Apple : Comme pour tout changement d'écran tiers, le message 'Pièce inconnue' apparaîtra en raison de la sérialisation logicielle. Le transfert des données (ex: True Tone) est tenté par programmateur, mais la notification peut persister si la puce IC d'origine n'est pas transférée.",
     forWhom: [
-      "Utilisateurs privilégiant l'aspect fonctionnel (SMS, appels)",
-      "Appareil destiné à un usage secondaire",
-      "Utilisation soignée sans contrainte d'épaisseur",
+      "Budget restreint cherchant le prix le plus bas possible",
+      "Usage basique de l'appareil (appels, SMS, consultation rapide)",
+      "Appareil de secours ou destiné à un usage secondaire",
     ],
     features: [
-      "Technologie d'affichage à cristaux liquides (In-cell)",
-      "Consommation d'énergie supérieure",
-      "Épaisseur de dalle plus importante",
-      "Rétroéclairage constant",
+      "Technologie d'affichage In-Cell LCD (Cristaux liquides)",
+      "Présence d'un rétroéclairage constant (consommation d'énergie élevée)",
+      "Épaisseur de dalle supérieure pouvant affecter l'ajustement au châssis",
+      "Luminosité et contrastes inférieurs aux technologies OLED",
+      "Possibilité de chauffe accrue de l'appareil lors d'un usage prolongé",
     ],
     color: "#86868b",
   };

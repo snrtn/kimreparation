@@ -8,7 +8,7 @@ const FooterMain = () => {
 
   const footerMap = [
     {
-      title: "REALITE TECHNIQUE",
+      title: "Besoin d'aide ?",
       links: [
         { name: "Écran & Tactile", path: "/repair" },
         { name: "Tombé dans l'eau", path: "/repair/repairWater" },
@@ -20,7 +20,7 @@ const FooterMain = () => {
       ],
     },
     {
-      title: "DETAILS DES ECRANS",
+      title: "Détails des Écrans",
       links: [
         { name: "Écran Origine", path: "/screen" },
         { name: "Écran ECO / Refurb", path: "/screen/eco" },
@@ -31,27 +31,27 @@ const FooterMain = () => {
       ],
     },
     {
-      title: "DEVIS GRATUITS",
+      title: "Votre Devis Personnalisé",
       links: [
-        { name: "Devis Téléphone", path: "/devis" },
-        { name: "Devis Autres", path: "/devis/other" },
+        { name: "Diagnostic Téléphone", path: "/devis" },
+        { name: "Diagnostic Autres", path: "/devis/other" },
       ],
     },
     {
-      title: "ATELIER ET INFORMATIONS",
+      title: "L'Atelier & Infos",
       links: [
-        { name: "L'Atelier", path: "/atelier" },
+        { name: "Horaires d'ouverture", path: "/atelier" },
         { name: "Excellence & Qualité", path: "/atelier/atelierConditions" },
         { name: "Conditions d'Usage", path: "/atelier/atelierExcellence" },
         { name: "Mentions Légales", path: "/atelier/atelierLegal" },
       ],
     },
     {
-      title: "REPARATION JOUETS",
+      title: "Réparation Jouets",
       links: [
         { name: "Prise en charge", path: "/toy" },
-        { name: "Réalité Technique", path: "/toy/repair" },
-        { name: "Joy-Con", path: "/toy/joycon" },
+        { name: "Jouets Electroniques", path: "/toy/repair" },
+        { name: "Nintendo Joy-Con", path: "/toy/joycon" },
       ],
     },
   ];

@@ -4,22 +4,23 @@ import { SCREEN_NAV } from "./screenNav";
 
 const ScreenHard = () => {
   const content = {
-    title: "Copie Hard OLED",
-    subtitle: "Compatible (Rigide)",
+    title: "Hard OLED (Copie)",
+    subtitle: "Technologie organique sur substrat rigide",
     recommendation:
-      "Solution d'affichage claire nécessitant une manipulation très soigneuse.",
+      "Solution économique pour un affichage OLED, nécessitant une protection accrue contre les chocs.",
     description:
-      "Cette technologie repose sur un support en verre fixe. Sa structure rigide la rend particulièrement sensible aux pressions internes. En cas de choc, même sans bris de vitre externe, le système d'affichage interne peut présenter des défauts définitifs.",
+      "L'écran 'Hard OLED' repose sur un support en verre rigide. Contrairement aux technologies Soft ou Originales, sa structure ne permet aucune flexion. Cette rigidité rend la dalle interne extrêmement vulnérable aux pressions et aux impacts : un choc léger peut briser l'affichage interne (lignes verticales, écran noir) même si la vitre externe reste intacte. Les bordures d'affichage sont généralement plus larges en raison de cette contrainte technique.\n\nNote technique Apple : Comme pour tout écran tiers, un message 'Pièce inconnue' apparaît dans les réglages en raison de la sérialisation logicielle. Le transfert des données (ex: True Tone) est effectué par programmateur, mais la notification peut persister si la puce IC d'origine n'est pas transférée.",
     forWhom: [
-      "Utilisateurs extrêmement soigneux avec leur matériel",
-      "Besoin d'une image contrastée sur support fixe",
-      "Remise en état fonctionnelle immédiate",
+      "Budget restreint privilégiant le contraste OLED",
+      "Utilisateurs très soigneux protégeant leur appareil avec une coque robuste",
+      "Remise en état fonctionnelle au coût le plus bas en OLED",
     ],
     features: [
-      "Dalle à technologie organique rigide",
-      "Affichage net et contrasté",
-      "Structure sensible aux impacts directs",
-      "Réactivité tactile standard",
+      "Dalle à technologie organique rigide (substrat verre)",
+      "Sensibilité élevée aux pressions internes et aux chutes",
+      "Bordures d'affichage (bezels) plus épaisses que l'original",
+      "Consommation énergétique supérieure aux dalles Soft/Originales",
+      "Option OLED la plus abordable du marché",
     ],
     color: "#515154",
   };

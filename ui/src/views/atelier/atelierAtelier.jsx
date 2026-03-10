@@ -29,6 +29,7 @@ const AtelierAtelier = () => {
         }}
       >
         <Box sx={{ mb: 3 }}>
+          {/* 🔥 파란색 소제목: Horaires (시간) */}
           <Typography
             sx={{
               fontSize: "0.9rem",
@@ -38,9 +39,10 @@ const AtelierAtelier = () => {
               letterSpacing: "-0.01em",
             }}
           >
-            Infos Pratiques
+            Horaires
           </Typography>
 
+          {/* 🔥 메인 제목: Horaires d'ouverture. (영업 시간) */}
           <Typography
             sx={{
               fontWeight: 800,
@@ -50,7 +52,7 @@ const AtelierAtelier = () => {
               color: "#1d1d1f",
             }}
           >
-            Horaires & Infos
+            Horaires d'ouverture.
           </Typography>
         </Box>
 
@@ -139,7 +141,7 @@ const AtelierAtelier = () => {
               p: { xs: 3, md: 4 },
               bgcolor: "#f9f9fb",
               borderRadius: "20px",
-              borderLeft: "4px solid #f2f2f7",
+              borderLeft: "4px solid #ff0000",
             }}
           >
             {infoNotes.map((text, i) => (

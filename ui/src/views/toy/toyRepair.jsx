@@ -17,7 +17,7 @@ const ToyRepair = () => {
         <Typography
           sx={{ fontSize: "0.9rem", fontWeight: 600, color: "#0066cc", mb: 1 }}
         >
-          Service Gratieux pour Objets de Loisirs
+          Réalité Technique
         </Typography>
         <Typography
           sx={{
@@ -28,7 +28,7 @@ const ToyRepair = () => {
             letterSpacing: "-0.04em",
           }}
         >
-          Jouets Electroniques et Gadgets
+          Jouets Electroniques
         </Typography>
 
         {/* --- 섹션 1: 제조 공정의 현실 --- */}

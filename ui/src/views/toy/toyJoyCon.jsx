@@ -17,7 +17,7 @@ const ToyJoyCon = () => {
         <Typography
           sx={{ fontSize: "0.9rem", fontWeight: 600, color: "#0066cc", mb: 1 }}
         >
-          Service de Maintenance pour Materiel de Jeu
+          Réalité Technique
         </Typography>
         <Typography
           sx={{
@@ -28,32 +28,57 @@ const ToyJoyCon = () => {
             letterSpacing: "-0.04em",
           }}
         >
-          Reparation des Manettes Joy-Con
+          Nintendo switch joycon
         </Typography>
 
         {/* --- 섹션 1: 조이콘 제조 현실 --- */}
         <Box sx={{ py: 6, borderTop: "1px solid #e5e5e7" }}>
           <Typography sx={labelStyle}>
-            LA REALITE DE LA CONCEPTION INDUSTRIELLE
+            LA RÉALITÉ DE LA CONCEPTION INDUSTRIELLE
           </Typography>
+
+          <Typography
+            sx={{ color: "#424245", lineHeight: 1.8, fontSize: "1rem", mb: 2 }}
+          >
+            Il est important de comprendre que les manettes Nintendo switch
+            joycon sont des objets de haute technologie produits à très grande
+            échelle. Pour répondre à des impératifs de compacité et de coûts de
+            fabrication, le mécanisme interne du joystick repose sur un système
+            de balais métalliques qui frottent contre des pistes de carbone.
+            Cette friction constante, inhérente à leur fonctionnement, finit
+            naturellement par générer des micro-poussières conductrices ou par
+            user la piste elle-même.{" "}
+            <strong>
+              Ce phénomène d'usure, communément appelé "Drift", est aujourd'hui
+              un fait technologique largement documenté qui a même fait l'objet
+              de recours collectifs (class actions) à l'international.
+            </strong>
+          </Typography>
+
           <Typography
             sx={{ color: "#424245", lineHeight: 1.8, fontSize: "1rem", mb: 4 }}
           >
-            Il est important de comprendre que les manettes Joy-Con sont des
-            objets de haute technologie produits a tres grande echelle. Pour
-            repondre a des imperatifs de compacite et de couts de fabrication,
-            le mecanisme interne du joystick repose sur un systeme de balais
-            metalliques qui frottent contre des pistes de carbone. Cette
-            friction constante, necessaire au fonctionnement, finit par generer
-            des micro-poussieres conductrices ou par user la piste elle-meme.
+            Une autre fragilité souvent constatée concerne les loquets de
+            verrouillage (les attaches fixant la manette à l'écran). Conçus
+            d'origine en plastique, ils peuvent s'user avec le temps et les
+            glissements répétés, provoquant parfois le détachement des manettes
+            en pleine utilisation.{" "}
+            <strong>
+              Face à ces limites matérielles, de nombreux utilisateurs
+              passionnés en viennent même à chercher des pièces de modification
+              "custom" (comme des loquets en métal ou des joysticks magnétiques)
+              pour pallier cette usure.
+            </strong>
           </Typography>
+
           <Typography
             sx={{ color: "#86868b", lineHeight: 1.8, fontSize: "0.95rem" }}
           >
-            Cette usure mecanique est la cause physique du phenomene de "drift".
-            Chez <strong>Kim Reparation</strong>, nous proposons une solution de
-            remise en etat en remplacant le module mecanique use par un
-            composant neuf afin de prolonger l'usage de votre manette actuelle.
+            Cette usure mécanique est la cause physique principale des
+            dysfonctionnements rencontrés. Chez <strong>Kim Réparation</strong>,
+            nous proposons une solution fiable de remise en état en remplaçant
+            le module mécanique usé par un composant neuf de qualité, afin de
+            prolonger durablement l'usage de votre manette actuelle.
           </Typography>
         </Box>
 
@@ -161,7 +186,7 @@ const ToyJoyCon = () => {
               <strong>Independance :</strong> Kim Reparation est une structure
               de service totalement independante. Nous n'avons aucun lien
               d'affiliation avec la societe Nintendo. L'utilisation du nom
-              Joy-Con est faite exclusivement a titre informatif.
+              Nintendo switch joycon est faite exclusivement a titre informatif.
             </Typography>
             <Typography
               sx={{ fontSize: "0.85rem", color: "#424245", lineHeight: 1.6 }}

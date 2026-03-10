@@ -6,50 +6,58 @@ const slideData = [
   {
     id: 0,
     title: "Réalité Technique",
-    point: "Prévention & Diagnostic",
-    headline: "Les petits gestes qui sauvent votre appareil.",
-    desc: "Quelques conseils simples pour mieux comprendre votre appareil.\nLa majorité des pannes complexes commencent par de petites erreurs du quotidien : mauvaises habitudes de charge, chocs invisibles ou exposition à l'humidité.\nDécouvrez les réflexes essentiels pour prolonger la vie de votre appareil.",
-    path: "/repair",
+    point: "Expertise & Vérité",
+    headline: "L'envers du décor de l'électronique.",
+    desc: "Alliages rigides sans plomb, stress thermique à 350°C et fragilité structurelle du PCB : découvrez la réalité physique de vos composants.\nUne approche transparente pour comprendre pourquoi une réparation dépend avant tout de l'état résiduel de la matière.",
+    path: "/repair/repairLimit",
   },
   {
     id: 1,
     title: "Écran & Tactile",
-    point: "Symptômes fréquents",
-    headline: "Lignes colorées, taches noires et Face ID en danger.",
-    desc: "C'est la panne la plus fréquente : une vitre cassée finit par blesser l'écran interne, faisant apparaître des lignes colorées ou des taches noires.\nDe plus, les éclats de verre rayent les capteurs du Face ID, ce qui bloque définitivement la reconnaissance faciale de l'appareil.",
+    point: "Structure & Précision",
+    headline: "Plus qu'une vitre, un équilibre fragile.",
+    desc: "Les éclats de verre brisé exercent une pression destructrice sur la dalle OLED/LCD interne.\nUn châssis tordu ou des micro-fissures invisibles sur la carte mère peuvent compromettre la survie d'un écran neuf bien après l'intervention.",
     path: "/repair",
   },
   {
     id: 2,
     title: "Tombé dans l'eau",
-    point: "Urgence Humidité",
-    headline: "Pas de charge et oubliez le riz.",
-    desc: "Si l'appareil prend l'eau, éteignez-le et ne le branchez surtout pas : le courant aggrave l'oxydation.\nLe riz est inefficace et le sèche-cheveux pousse l'eau plus loin.\nUn séchage naturel est requerido, mais sachez que l'humidité peut laisser des traces invisibles sous les puces.",
+    point: "Urgence & Oxydation",
+    headline: "L'oxydation, une réaction chimique invisible.",
+    desc: "Le courant de la batterie combiné à l'eau crée des micro-étincelles destructrices.\nLe riz et le sèche-cheveux aggravent la situation ; seul un traitement technique peut stopper la gangrène de l'oxydation qui progresse sous les puces.",
     path: "/repair/repairWater",
   },
   {
     id: 3,
-    title: "Batterie & Charge",
-    point: "Santé Énergie",
-    headline: "Extinctions soudaines et batterie gonflée.",
-    desc: "Si l'appareil s'éteint brusquement à 20%, la batterie est chimiquement fatiguée.\nLa chaleur étant son ennemi, retirez la coque lors d'une charge sur prise murale.\nSi l'écran se soulève, la batterie gonfle : arrêtez immédiatement la charge pour éviter d'aggraver les micro-fissures internes.",
+    title: "Batterie & Énergie",
+    point: "Chimie & Sécurité",
+    headline: "Gonflement gazeux et instabilité de tension.",
+    desc: "Une batterie gonflée est une réaction chimique dangereuse qui ne doit jamais être pressée.\nLes micro-fissures internes peuvent fausser les tests en atelier, provoquant des pannes aléatoires malgré une batterie neuve.",
     path: "/repair/repairBattery",
   },
   {
     id: 4,
     title: "Système & Logiciel",
-    point: "Sécurité Système",
-    headline: "Mises à jour sur secteur et blocage logo.",
-    desc: "Toute mise à jour doit se faire sur prise murale pour éviter de corrompre l'appareil.\nSoyez prudent avec les nouvelles versions souvent instables.\nEnfin, si l'espace est rempli à 100%, l'appareil reste bloqué sur le logo au démarrage sans possibilité d'accès.",
+    point: "Stabilité & NAND",
+    headline: "Le secteur, unique garant de vos données.",
+    desc: "100% de stockage saturé mène au 'Bootloop' définitif.\nToute mise à jour système doit impérativement se faire sur prise murale pour éviter de corrompre la puce mémoire NAND lors de l'écriture.",
     path: "/repair/repairSystem",
   },
   {
     id: 5,
     title: "Caméra & Son",
-    point: "Optique et Audio",
-    headline: "Vibrations moto et grilles obstruées.",
-    desc: "Les vibrations (supports moto) désalignent les aimants de la caméra, rendant l'image floue.\nPour le son, évitez absolument les aiguilles qui déchirent les membranes : une brosse douce suffit.\nEnfin, sachez que des micro-fissures internes peuvent affecter l'appareil bien après un choc.",
+    point: "Optique & Acoustique",
+    headline: "Vibrations mécaniques et membranes fragiles.",
+    desc: "Les vibrations (supports moto) désalignent les aimants de stabilisation optique.\nPour l'audio, évitez les objets pointus : les grilles obstruées nécessitent un nettoyage doux pour ne pas déchirer l'étanchéité des haut-parleurs.",
     path: "/repair/repairHardware",
+  },
+  {
+    id: 6,
+    title: "Étanchéité",
+    point: "Isolation & Limites",
+    headline: "L'étanchéité n'est pas une barrière éternelle.",
+    desc: "Les joints adhésifs sèchent naturellement avec la chaleur et le temps.\nLa vapeur d'eau traverse là où le liquide s'arrête, et aucune intervention ne peut restaurer l'indice IP68 certifié en usine à 100%.",
+    path: "/repair/waterproof",
   },
 ];
 
@@ -76,8 +84,8 @@ const HeroSection = () => {
       sx={{
         width: "100%",
         bgcolor: "#ffffff",
-        height: { xs: "580px", sm: "630px", md: "70vh" },
-        minHeight: { xs: "580px", sm: "630px", md: "600px" },
+        height: { xs: "580px", sm: "620px", md: "69vh" },
+        minHeight: { xs: "580px", sm: "620px", md: "690px" },
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
@@ -130,20 +138,19 @@ const HeroSection = () => {
               >
                 {slide.desc}
               </Typography>
-              {index !== 0 && (
-                <Link
-                  href={slide.path}
-                  sx={{
-                    fontSize: "1rem",
-                    color: "#0066cc",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                    "&:hover": { textDecoration: "underline" },
-                  }}
-                >
-                  En savoir plus sur ce sujet {">"}
-                </Link>
-              )}
+
+              <Link
+                href={slide.path}
+                sx={{
+                  fontSize: "1rem",
+                  color: "#0066cc",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  "&:hover": { textDecoration: "underline" },
+                }}
+              >
+                En savoir plus sur ce sujet {">"}
+              </Link>
             </Box>
           ))}
         </Container>
@@ -188,7 +195,7 @@ const HeroSection = () => {
           >
             <Typography
               sx={{
-                fontSize: { xs: "0.9rem", sm: "0.95rem", lg: "1.05rem" },
+                fontSize: "0.8rem",
                 fontWeight: index === current ? 700 : 500,
                 color: index === current ? "#1d1d1f" : "#86868b",
                 textAlign: "center",

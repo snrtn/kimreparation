@@ -24,7 +24,7 @@ import RepairBattery from "./views/repair/repairBattery";
 import RepairHardware from "./views/repair/repairHardware";
 import RepairSystem from "./views/repair/repairSystem";
 import RepairLimit from "./views/repair/repairLimit";
-import Waterproof from "./views/repair/waterproof";
+import Waterproof from "./views/repair/Waterproof";
 
 // Atelier
 import AtelierAtelier from "./views/atelier/atelierAtelier";

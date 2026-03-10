@@ -3,21 +3,27 @@ import { Box, Container, Typography, Button, Stack } from "@mui/material";
 
 // 📌 텍스트 데이터: '전자' 장난감(Jouets Électroniques)임을 명확히 명시
 const toysContent = {
-  label: "Beaumetz-lès-Loges",
+  // ✅ 마을 이름은 여기에만 리스트업
+  label:
+    "Beaumetz-lès-Loges, Basseux, Rivière, Berneville, Simencourt, Bailleulval, Warlus, Monchiet",
+
   title: "L'Atelier des Jouets Électroniques.\nRéparation & Recyclage.",
 
+  // ✅ 요청하신 대로 건드리지 않고 유지
   description:
-    "Un jouet électronique en panne ? Je lance un programme pilote de réparation gratuite pour les jouets électroniques (valeur neuve max. 60€) des enfants de Beaumetz-lès-Loges et des communes voisines. Cette initiative bénévole me permet de tester ce service localement avant d'envisager de l'étendre, le tout en complément de mon activité principale.",
+    "Un jouet électronique en panne ? \n" +
+    "Je lance un programme pilote de réparation gratuite pour les jouets électroniques (valeur neuve max. 60€) des enfants de Beaumetz-lès-Loges et des communes voisines(Basseux, Rivière, Berneville, Simencourt, Bailleulval, Warlus, Monchiet).\n" +
+    "Cette initiative bénévole me permet de tester ce service localement avant d'envisager de l'étendre, le tout en complément de mon activité principale.",
 
   button: "En savoir plus",
 
-  // 📌 defense: 기증 요청 절차(solliciter)와 분리 시 기스 발생 가능성 명시
+  // 📌 defense: 도미실(거주증명) 추가 및 지역 한정 이유(테스트 중) 명시
   defense:
-    "* Service bénévole (Aucun achat de pièces neuves).\n" +
-    "* Si le processeur (MCU) est HS après diagnostic, nous vous contacterons pour solliciter le don du jouet.\n" +
-    "* Les composants (Audio, Drivers, Haut-parleurs, CMS) sont récupérés pour servir de pièces de rechange sur d'autres réparations.\n" + // ✅ '다른 수리 시 부품으로 쓰기 위해 수거한다'고 명시
-    "* L'aspect extérieur reste globalement identique, mais des rayures ou traces d'ouverture peuvent apparaître lors du démontage.\n" + // ✅ 기스/흔적 남을 수 있다고 팩트 강조
-    "* La coque ou l'enveloppe vide peut être récupérée sur demande.",
+    "* Ce service bénévole étant réservé aux habitants des communes citées, une simple vérification de votre adresse (facture ou pièce d'identité) sera effectuée lors du dépôt pour confirmer que nous sommes voisins.\n" +
+    "* Initiative personnelle : Ce programme pilote est une démarche privée et bénévole visant à tester la faisabilité technique du projet de recyclage.\n" +
+    "* Priorité à mon activité principale : Les prestations professionnelles (payantes) sont traitées en priorité. Ce service gratuit est effectué sur mon temps libre et peut être suspendu selon ma charge de travail.\n" +
+    "* Accueil sur rendez-vous : S'agissant d'un atelier privé, aucun objet ne sera accepté sans demande de prise en charge préalable.\n" +
+    "* Service bénévole (Aucun achat de pièces) : Je fonctionne uniquement sur la base de la réparation ou du recyclage de composants existants. Aucun engagement de résultat ou de délai ne peut être garanti.",
 };
 
 const HomeToy = () => {
@@ -91,7 +97,7 @@ const HomeToy = () => {
 
           <Stack
             spacing={0}
-            sx={{ maxWidth: "800px", position: "relative", zIndex: 1 }}
+            sx={{ maxWidth: "900px", position: "relative", zIndex: 1 }}
           >
             {/* 상단 라벨 */}
             <Typography
@@ -140,6 +146,7 @@ const HomeToy = () => {
                 fontSize: "1rem",
                 fontWeight: 400,
                 lineHeight: 1.6,
+                whiteSpace: "pre-line",
                 mb: 6,
               }}
             >

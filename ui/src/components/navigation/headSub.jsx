@@ -36,10 +36,10 @@ const HeadSub = ({ onDrawerToggle, hasSideMenu }) => {
     let mainTitleText = currentDrop ? currentDrop.title : "KIM REPARATION";
 
     if (isMobile) {
+      if (rootPath === "/repair") mainTitleText = "L'Aide";
       if (rootPath === "/screen") mainTitleText = "Écrans";
-      if (rootPath === "/repair") mainTitleText = "Technique";
-      if (rootPath === "/atelier") mainTitleText = "L'Atelier";
       if (rootPath === "/devis") mainTitleText = "Devis";
+      if (rootPath === "/atelier") mainTitleText = "L'Atelier";
       if (rootPath === "/toy") mainTitleText = "Jouets";
     }
 

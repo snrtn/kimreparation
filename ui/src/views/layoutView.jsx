@@ -17,6 +17,8 @@ const LayoutView = () => {
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
   const isHome = pathname === "/";
 
+  const isToyPage = pathname.startsWith("/toy");
+
   const hasSideMenu =
     pathname.startsWith("/screen") ||
     pathname.startsWith("/repair") ||
@@ -134,7 +136,7 @@ const LayoutView = () => {
 
             <Outlet />
 
-            {!isHome && <FooterSub />}
+            {!isHome && !isToyPage && <FooterSub />}
           </Container>
         </Box>
       </Box>
