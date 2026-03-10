@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Box, Container, Typography, Link } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 // ✅ 형님이 작성하신 데이터 (토씨 하나 안 틀리고 그대로 유지)
 const slideData = [
@@ -140,6 +141,7 @@ const HeroSection = () => {
               </Typography>
 
               <Link
+                component={RouterLink} // 💡 Ajoute cette ligne
                 to={slide.path}
                 sx={{
                   fontSize: "1rem",
