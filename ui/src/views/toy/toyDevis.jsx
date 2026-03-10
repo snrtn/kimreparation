@@ -691,7 +691,8 @@ const ToyDevis = () => {
                       ref={sigCanvas}
                       penColor="#0000ff"
                       canvasProps={{
-                        maxWidth: "600px",
+                        maxWidth: 600,
+                        width: 600,
                         height: 150,
                         className: "sigCanvas",
                       }}
