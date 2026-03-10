@@ -567,8 +567,6 @@ const ToyDevis = () => {
 
         <DialogContent
           sx={{
-            display: "flex",
-            justifyContent: "center",
             py: 5,
             bgcolor: "#f5f5f7",
           }}
@@ -576,6 +574,7 @@ const ToyDevis = () => {
           <Paper
             ref={pdfRef}
             sx={{
+              margin: "0 auto",
               p: { xs: 3, md: 5 },
               width: "100%",
               maxWidth: "900px",
@@ -692,7 +691,7 @@ const ToyDevis = () => {
                       ref={sigCanvas}
                       penColor="#0000ff"
                       canvasProps={{
-                        width: 600,
+                        width: "100%",
                         height: 150,
                         className: "sigCanvas",
                       }}
