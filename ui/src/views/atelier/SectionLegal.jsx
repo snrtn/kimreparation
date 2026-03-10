@@ -80,7 +80,7 @@ const SectionLegal = () => {
                 sx={{ borderBottom: "1px solid #f5f5f7", pb: 1.5 }}
               >
                 <Typography sx={itemLabelStyle}>Structure</Typography>
-                <Typography sx={itemValueStyle}>Kim Réparation (EI)</Typography>
+                <Typography sx={itemValueStyle}>Kim Reparation (EI)</Typography>
               </Stack>
               <Stack
                 direction="row"
@@ -96,7 +96,9 @@ const SectionLegal = () => {
                 sx={{ borderBottom: "1px solid #f5f5f7", pb: 1.5 }}
               >
                 <Typography sx={itemLabelStyle}>SIRET</Typography>
-                <Typography sx={itemValueStyle}>[14자리 번호]</Typography>
+                <Typography sx={itemValueStyle}>
+                  00 00 00 00 00 00 00
+                </Typography>
               </Stack>
               <Stack
                 direction="row"
@@ -105,7 +107,7 @@ const SectionLegal = () => {
               >
                 <Typography sx={itemLabelStyle}>Siège social</Typography>
                 <Typography sx={{ ...itemValueStyle, textAlign: "right" }}>
-                  [주소 기입]
+                  00 00 00 00 00 00 00
                 </Typography>
               </Stack>
               <Stack
@@ -115,8 +117,12 @@ const SectionLegal = () => {
               >
                 <Typography sx={itemLabelStyle}>Contact</Typography>
                 <Box sx={{ textAlign: "right" }}>
-                  <Typography sx={itemValueStyle}>[이메일]</Typography>
-                  <Typography sx={itemValueStyle}>[전화번호]</Typography>
+                  <Typography sx={itemValueStyle}>
+                    00 00 00 00 00 00 00
+                  </Typography>
+                  <Typography sx={itemValueStyle}>
+                    00 00 00 00 00 00 00
+                  </Typography>
                 </Box>
               </Stack>
             </Stack>
