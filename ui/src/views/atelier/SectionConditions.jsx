@@ -47,7 +47,7 @@ const SectionConditions = () => {
               {"\n"}• Expertise Préalable : Un examen visuel systématique
               détecte toute anomalie (choc, oxydation) avant intervention.{"\n"}
               • Preuve Numérique : Chaque étape de l'ouverture et du montage est
-              filmée (Body-cam).
+              photographiée.
             </Typography>
           </Box>
 
@@ -91,12 +91,18 @@ const SectionConditions = () => {
                 whiteSpace: "pre-line",
               }}
             >
-              La garantie reste valide hors incidents du quotidien :{"\n"}•
-              Dommages accidentels : Fissures, chocs sur le châssis.{"\n"}•
-              Signes de pression interne : Lignes/taches sur l'affichage
-              (pression excessive).{"\n"}• Exposition aux liquides : L'oxydation
-              exclut la garantie.{"\n"}• Sceau de garantie : Ne retirez pas
-              notre Seal et ne faites pas ouvrir l'appareil par un tiers.
+              Conditions d'Exclusion de Garantie :{"\n"}
+              La garantie couvre exclusivement les défauts de fabrication de la
+              pièce installée. Elle est de plein droit annulée dans les cas
+              suivants :{"\n"}• Détérioration Physique : Tout choc, fissure,
+              rayure profonde ou déformation du châssis.{"\n"}• Signes de
+              Pression Excessive : Apparition de lignes colorées, taches noires
+              (pixels morts) ou voile blanc (contrainte mécanique, même sans
+              bris de vitre).{"\n"}• Exposition aux Liquides : Toute trace
+              d'humidité ou d'oxydation. L'étanchéité constructeur n'est plus
+              garantie après ouverture.{"\n"}• Rupture d'Intégrité : Retrait du
+              sceau de garantie (Warranty Seal) ou toute tentative d'ouverture
+              par un tiers.
             </Typography>
           </Box>
         </Stack>

@@ -40,11 +40,9 @@ const SectionExcellence = () => {
             >
               {/* ✅ Kim Reparation 으로 수정 완료 */}
               Kim Reparation est une structure officiellement enregistrée
-              (SIRET) et couverte par une assurance RC Pro. Pour vous offrir la
-              meilleure fiabilité, nous sélectionnons nos composants auprès de
-              fournisseurs certifiés exclusivement basés en France. Cela nous
-              permet de vous garantir une traçabilité totale et des pièces de
-              Grade Original ou Premium.
+              (SIRET) et couverte par une assurance RC Pro. Nous sélectionnons
+              nos composants auprès de grossistes certifiés afin de vous
+              garantir une fiabilité optimale et une traçabilité totale.
             </Typography>
           </Box>
 
@@ -69,13 +67,15 @@ const SectionExcellence = () => {
                 whiteSpace: "pre-line",
               }}
             >
-              Pour une transparence absolue, nous immortalisons chaque étape clé
-              de notre intervention (démontage, remplacement des composants,
-              nettoyage interne et remontage) par des photographies haute
-              résolution. {"\n\n"}
-              Ce dispositif de suivi photographique nous permet de vous assurer
-              que votre appareil a été traité avec le plus grand respect et
-              constitue une base factuelle partagée en cas de question après la
+              Suivi Photographique & Transparence : {"\n"}Avant de commencer, je
+              photographie l'état esthétique (rayures ou impacts) pour un
+              constat clair. L'ouverture peut laisser de très légères traces sur
+              les bordures dues à la résistance des joints d'étanchéité
+              d'origine. {"\n\n"}
+              Si je découvre de la corrosion ou une anomalie interne dès
+              l'ouverture, je vous envoie la photo immédiatement. Les autres
+              clichés de l'intervention sont conservés à l'atelier et ne seront
+              partagés qu'en cas de question ou sur demande expresse après la
               réparation.
             </Typography>
           </Box>
