@@ -59,6 +59,9 @@ const HeadSub = ({ onDrawerToggle, hasSideMenu }) => {
     const isDeepPath = Boolean(subTitle);
 
     if (!isMobile) {
+      // 💡 여기서 아틀리에 타이틀인지 확인!
+      const isAtelier = mainTitleText === "Votre Devis Personnalisé";
+
       return (
         <Box
           onClick={(e) => setAnchorEl(e.currentTarget)}
@@ -72,12 +75,19 @@ const HeadSub = ({ onDrawerToggle, hasSideMenu }) => {
             "&:hover": { bgcolor: "rgba(0,0,0,0.04)" },
           }}
         >
-          <Typography sx={{ fontSize: "0.85rem", fontWeight: 700 }}>
+          <Typography
+            sx={{
+              fontSize: "0.85rem",
+              fontWeight: 700,
+              // 💡 데스크탑에서만 아틀리에 타이틀을 오렌지색으로!
+              color: isAtelier ? "#E65100" : "inherit",
+            }}
+          >
             {mainTitleText}
           </Typography>
           <ExpandMoreIcon
             sx={{
-              ml: 0.3,
+              ml: 1,
               fontSize: "1.1rem",
               color: "#666",
               transform: open ? "rotate(180deg)" : "none",

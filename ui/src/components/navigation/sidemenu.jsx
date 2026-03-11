@@ -38,6 +38,8 @@ const SideMenu = ({ menuData, onDrawerToggle }) => {
   //   (m) => !pathname.startsWith(m.path),
   // );
 
+  const isAtelierTitle = currentTitle === "Votre Devis Personnalisé";
+
   const dropdownMenus = dropdownData;
 
   return (
@@ -56,7 +58,7 @@ const SideMenu = ({ menuData, onDrawerToggle }) => {
           component={Link}
           to="/"
           onClick={() => onDrawerToggle && onDrawerToggle(false)}
-          sx={{ display: "flex", mr: 2 }}
+          sx={{ display: "flex", mr: 1.5 }}
         >
           <img
             src="/assets/logo_removeBg.png"
@@ -74,11 +76,18 @@ const SideMenu = ({ menuData, onDrawerToggle }) => {
             pt: 0.5,
           }}
         >
-          <Typography sx={{ fontSize: "0.86rem", fontWeight: 700 }}>
+          <Typography
+            sx={{
+              fontSize: "0.86rem",
+              fontWeight: 700,
+              color: isAtelierTitle ? "#E65100" : "inherit",
+            }}
+          >
             {currentTitle || "Écrans"}
           </Typography>
           <ExpandMoreIcon
             sx={{
+              ml: 0.5,
               fontSize: "1.1rem",
               transform: open ? "rotate(180deg)" : "none",
               transition: "0.2s",

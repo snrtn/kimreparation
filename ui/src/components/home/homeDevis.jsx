@@ -65,7 +65,7 @@ const HomeDevis = () => {
             sx={{
               p: 0,
               pb: 1.5, // 📌 모바일에서도 밑줄이 들어갈 공간 확보
-              color: "#1d1d1f",
+              color: "#E65100",
               fontSize: { xs: "1.5rem", md: "2rem" },
               fontWeight: 800,
               textTransform: "uppercase",

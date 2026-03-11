@@ -34,51 +34,57 @@ const DropDown = ({ anchorEl, open, onClose, menus, onDrawerToggle }) => {
           gap: 1,
         }}
       >
-        {menus.map((menu, i) => (
-          <Box
-            key={i}
-            component={Link}
-            to={menu.path}
-            onClick={handleItemClick}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              p: 2,
-              textDecoration: "none",
-              color: "inherit",
-              borderRadius: "14px",
-              transition: "all 0.2s ease-in-out",
-            }}
-          >
-            <Typography
-              className="menu-title"
+        {menus.map((menu, i) => {
+          // ⬇️ 여기서 타이틀 체크를 합니다
+          const isAtelier = menu.title === "Votre Devis Personnalisé";
+
+          return (
+            <Box
+              key={i}
+              component={Link}
+              to={menu.path}
+              onClick={handleItemClick}
               sx={{
-                fontSize: "0.95rem",
-                fontWeight: 800,
-                color: "#1d1d1f",
-                transition: "color 0.2s ease",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                p: 2,
+                textDecoration: "none",
+                color: "inherit",
+                borderRadius: "14px",
+                transition: "all 0.2s ease-in-out",
               }}
             >
-              {menu.title}
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "0.78rem",
-                color: "#86868b",
-                mt: 0.5,
-                lineHeight: 1.5,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {menu.desc}
-            </Typography>
-          </Box>
-        ))}
+              <Typography
+                className="menu-title"
+                sx={{
+                  fontSize: "0.95rem",
+                  fontWeight: 800,
+                  // ⬇️ 아틀리에면 오렌지, 아니면 기본 검정색(#1d1d1f)
+                  color: isAtelier ? "#E65100" : "#1d1d1f",
+                  transition: "color 0.2s ease",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {menu.title}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "0.78rem",
+                  color: "#86868b", // 설명 부분은 원래 색상 그대로 유지
+                  mt: 0.5,
+                  lineHeight: 1.5,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {menu.desc}
+              </Typography>
+            </Box>
+          );
+        })}
       </Box>
     </Menu>
   );
