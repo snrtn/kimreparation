@@ -12,9 +12,9 @@ const ScreenContent = ({ current, isMobile, formatDescription }) => {
             mb: { xs: 4, md: 0 },
             width: {
               xs: "100%",
-              sm: "380px",
-              md: "480px",
-              xl: "580px",
+              sm: "370px",
+              md: "470px",
+              xl: "570px",
             },
           }}
         >
@@ -130,6 +130,7 @@ const ScreenContent = ({ current, isMobile, formatDescription }) => {
             borderLeft: { md: "1px solid #d2d2d7" },
             pl: { md: 5 },
             pt: { md: 1 },
+            maxWidth: 460,
           }}
         >
           <Typography
