@@ -11,9 +11,7 @@ const ScreenContent = ({ current, isMobile, formatDescription }) => {
           sx={{
             mb: { xs: 4, md: 0 },
             width: {
-              xs: "100%",
-              sm: "100%",
-              md: "470px",
+              md: "100%",
               xl: "570px",
             },
           }}
@@ -77,9 +75,7 @@ const ScreenContent = ({ current, isMobile, formatDescription }) => {
             my: 4,
             minHeight: { md: "180px" },
             width: {
-              xs: "100%",
-              sm: "100%",
-              md: "470px",
+              md: "100%",
               xl: "570px",
             },
           }}
@@ -136,7 +132,12 @@ const ScreenContent = ({ current, isMobile, formatDescription }) => {
             borderLeft: { md: "1px solid #d2d2d7" },
             pl: { md: 5 },
             pt: { md: 1 },
-            maxWidth: 470,
+            // maxWidth: 470,
+
+            maxWidth: {
+              md: "100%",
+              xl: 470,
+            },
           }}
         >
           <Typography
