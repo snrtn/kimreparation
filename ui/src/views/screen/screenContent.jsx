@@ -6,13 +6,13 @@ const ScreenContent = ({ current, isMobile, formatDescription }) => {
   return (
     <Grid container spacing={isMobile ? 5 : 8}>
       {/* 왼쪽: 설명 및 추천 박스 */}
-      <Grid item xs={12} md={7.5}>
+      <Grid item xs={12} md={7}>
         <Box
           sx={{
             mb: { xs: 4, md: 0 },
             width: {
               xs: "100%",
-              sm: "370px",
+              sm: "100%",
               md: "470px",
               xl: "570px",
             },
@@ -76,6 +76,12 @@ const ScreenContent = ({ current, isMobile, formatDescription }) => {
             borderRadius: "20px",
             my: 4,
             minHeight: { md: "180px" },
+            width: {
+              xs: "100%",
+              sm: "100%",
+              md: "470px",
+              xl: "570px",
+            },
           }}
         >
           <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
@@ -124,13 +130,13 @@ const ScreenContent = ({ current, isMobile, formatDescription }) => {
       </Grid>
 
       {/* 오른쪽: 포인트 체크리스트 */}
-      <Grid item xs={12} md={4.5}>
+      <Grid item xs={12} md={4}>
         <Box
           sx={{
             borderLeft: { md: "1px solid #d2d2d7" },
             pl: { md: 5 },
             pt: { md: 1 },
-            maxWidth: 460,
+            maxWidth: 470,
           }}
         >
           <Typography
