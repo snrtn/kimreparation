@@ -37,7 +37,7 @@ const sidemenuData = {
   toy: [
     { title: "Prise en charge", path: "/toy" },
     { title: "Jouets Electroniques", path: "/toy/repair" },
-    { title: "Nintendo switch joycon", path: "/toy/joycon" },
+    { title: "Nintendo Switch Joy-Con", path: "/toy/joycon" },
   ],
 };
 
