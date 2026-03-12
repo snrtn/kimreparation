@@ -28,7 +28,7 @@ const ToyJoyCon = () => {
             letterSpacing: "-0.04em",
           }}
         >
-          Nintendo switch joycon
+          Nintendo Switch Joy-Con
         </Typography>
 
         {/* --- 섹션 1: 조이콘 제조 현실 --- */}
@@ -186,7 +186,8 @@ const ToyJoyCon = () => {
               <strong>Independance :</strong> Kim Reparation est une structure
               de service totalement independante. Nous n'avons aucun lien
               d'affiliation avec la societe Nintendo. L'utilisation du nom
-              Nintendo switch joycon est faite exclusivement a titre informatif.
+              Nintendo Switch Joy-Con est faite exclusivement a titre
+              informatif.
             </Typography>
             <Typography
               sx={{ fontSize: "0.85rem", color: "#424245", lineHeight: 1.6 }}

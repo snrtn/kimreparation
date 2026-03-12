@@ -60,7 +60,7 @@ const ToyDevis = () => {
   });
 
   const joyconText =
-    "Frais de Pieces : Le client reconnait etre informe que seul le service de main-d'oeuvre est gratieux. Tout composant materiel installe dans la manette fera l'objet d'une facturation prealablement acceptee par le client.";
+    "Frais de Pieces : Le client reconnait etre informe que seul le service de main-d'oeuvre est gracieux. Tout composant materiel installe dans la manette fera l'objet d'une facturation prealablement acceptee par le client.";
 
   const allDefenseLines = [
     {
@@ -101,7 +101,7 @@ const ToyDevis = () => {
     {
       id: "refus",
       isCritical: false,
-      text: "Sécurité : Pour des raisons de sécurité technique, je n'installe pas de pièces fournies par le client (à l'exception des Nintendo switch joycon).",
+      text: "Sécurité : Pour des raisons de sécurité technique, je n'installe pas de pièces fournies par le client (à l'exception des Nintendo Switch Joy-Con).",
     },
     {
       id: "mcu",
@@ -387,7 +387,7 @@ const ToyDevis = () => {
                       setFormData({
                         ...formData,
                         isJoycon: isChecked,
-                        toyName: isChecked ? "Nintendo switch joycon" : "",
+                        toyName: isChecked ? "Nintendo Switch Joy-Con" : "",
                       });
                       if (!isChecked) {
                         setAgreements((prev) => ({
@@ -401,7 +401,7 @@ const ToyDevis = () => {
                 }
                 label={
                   <Typography sx={{ fontSize: "0.85rem", fontWeight: 600 }}>
-                    Nintendo switch joycon
+                    Nintendo Switch Joy-Con
                   </Typography>
                 }
                 sx={{ mb: 1 }}
