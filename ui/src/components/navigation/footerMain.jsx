@@ -51,7 +51,7 @@ const FooterMain = () => {
       links: [
         { name: "Prise en charge", path: "/toy" },
         { name: "Jouets Electroniques", path: "/toy/repair" },
-        { name: "Nintendo Joy-Con", path: "/toy/joycon" },
+        { name: "Nintendo Switch Joy-Con", path: "/toy/joycon" },
       ],
     },
   ];
