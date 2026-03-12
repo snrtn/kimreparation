@@ -7,24 +7,25 @@ import {
   Checkbox,
   FormControlLabel,
   Paper,
+  Collapse,
 } from "@mui/material";
 import SmartphoneIcon from "@mui/icons-material/Smartphone";
 import MobileOffIcon from "@mui/icons-material/MobileOff";
-import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined"; // '투명한 확인'을 상징하는 아이콘
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"; // 안내용 아이콘
+import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import EngineeringIcon from "@mui/icons-material/Engineering";
 
 const Step0Intro = ({ onUpdate, onNext }) => {
   const [agreed, setAgreed] = useState(false);
-  const [scrollConfirmed, setScrollConfirmed] = useState(false); // 스크롤 확인 체크 상태
-  const [selectedStatus, setSelectedStatus] = useState(null); // 어떤 버튼을 눌렀는지 기억하는 상태
+  const [scrollConfirmed, setScrollConfirmed] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [openProcess, setOpenProcess] = useState(false); // 새로운 안내 세션 상태
 
-  // 시작 버튼을 눌렀을 때 실행되는 함수
   const handleStart = () => {
-    // 모든 조건(동의 + 상태 선택 + 스크롤 확인)이 충족되어야 함
     if (!agreed || !selectedStatus || !scrollConfirmed) return;
-
     const elem = document.documentElement;
-
     try {
       if (elem.requestFullscreen) {
         elem.requestFullscreen().catch(() => {});
@@ -38,7 +39,6 @@ const Step0Intro = ({ onUpdate, onNext }) => {
     } catch (error) {
       console.log("null", error);
     }
-
     onUpdate({ status: selectedStatus, agreedToTerms: true });
     onNext();
   };
@@ -61,11 +61,11 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         d'intervention avant de commencer.
       </Typography>
 
-      {/* 🛡️ 법적 방어막 섹션 */}
+      {/* 🛡️ 기존 법적 방어막 섹션 (형님이 주신 내용 토씨 하나 안 건드림) */}
       <Box
         sx={{
           p: 3,
-          mb: 5,
+          mb: 2, // 아래 카드와 간격을 위해 mb 5에서 2로 조정
           bgcolor: "#fbfbfd",
           borderRadius: "16px",
           border: "1px solid #d2d2d7",
@@ -108,7 +108,6 @@ const Step0Intro = ({ onUpdate, onNext }) => {
             même si l'appareil est techniquement irréparable.
           </Typography>
 
-          {/* 📌 명시적 동의 체크박스 */}
           <Box
             sx={{
               mt: 1,
@@ -142,7 +141,103 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         </Stack>
       </Box>
 
-      {/* 📌 상황 선택 버튼 */}
+      {/* ✨ [신규] 형님이 말씀하신 절차 안내 드롭다운 섹션 */}
+      <Box sx={{ mb: 5 }}>
+        <Paper
+          elevation={0}
+          onClick={() => setOpenProcess(!openProcess)}
+          sx={{
+            p: 2,
+            bgcolor: "#f5f5f7",
+            borderRadius: "14px",
+            border: "1px dotted #d2d2d7",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Stack direction="row" spacing={1} alignItems="center">
+            <EngineeringIcon sx={{ fontSize: 20, color: "#1d1d1f" }} />
+            <Typography
+              sx={{ fontWeight: 700, fontSize: "0.9rem", color: "#1d1d1f" }}
+            >
+              Comment se déroule votre réparation ? (Cliquez)
+            </Typography>
+          </Stack>
+          <ExpandMoreIcon
+            sx={{
+              transform: openProcess ? "rotate(180deg)" : "none",
+              transition: "0.3s",
+              fontSize: "1.2rem",
+            }}
+          />
+        </Paper>
+
+        <Collapse in={openProcess}>
+          <Box
+            sx={{
+              p: 2,
+              bgcolor: "#ffffff",
+              border: "1px solid #f5f5f7",
+              borderTop: 0,
+              borderRadius: "0 0 14px 14px",
+            }}
+          >
+            <Stack spacing={2}>
+              {/* 1. 견적 부분: 부품 교체가 기본값임을 강조 */}
+              <Typography
+                variant="caption"
+                sx={{ color: "#424245", display: "block", mb: 1 }}
+              >
+                <strong>1. Devis & Plan :</strong> Ce devis initial est établi
+                sous réserve d'un{" "}
+                <strong>remplacement standard de pièces</strong>, basé sur les
+                informations fournies.
+              </Typography>
+
+              {/* 2. 점검 부분: '할인' 빼고 '최종 확정/변동'으로 수정 */}
+              <Typography
+                variant="caption"
+                sx={{ color: "#424245", display: "block" }}
+              >
+                <strong>2. Expertise & Réparation :</strong> Nous privilégions
+                la réparation des composants. Le montant final sera{" "}
+                <strong>révisé et arrêté</strong> après diagnostic technique,
+                selon la complexité de l'intervention.
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{ color: "#424245", display: "block" }}
+              >
+                <strong>3. Politique Écrans :</strong> Recommandation selon
+                votre style de vie. Aucun stock imposé, vous choisissez le type
+                d'écran lors du devis.
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: "#424245",
+                  display: "block",
+                  whiteSpace: "pre-line", // 줄바꿈 적용
+                  lineHeight: 1.6,
+                }}
+              >
+                <strong>4. Logistique :</strong>
+                {"\n"}• <strong>Dépôt à l'atelier :</strong> Sur rendez-vous
+                (recommandé pour les réparations de précision).
+                {"\n"}• <strong>Service à domicile :</strong> Possible pour les
+                remplacements d'écran ou de batterie (selon diagnostic).
+                {"\n"}• <strong>Pick-up & Livraison :</strong> Disponible si
+                vous ne pouvez pas vous déplacer (frais basés sur le coût réel
+                du carburant + frais de service).
+              </Typography>
+            </Stack>
+          </Box>
+        </Collapse>
+      </Box>
+
+      {/* 📌 상황 선택 버튼 (기존과 동일) */}
       <Box
         sx={{
           opacity: agreed ? 1 : 0.4,
@@ -214,7 +309,7 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         </Stack>
       </Box>
 
-      {/* 🔥 파란색 스크롤 확인 안내 섹션 (진단 단계 명시) */}
+      {/* 스크롤 확인 안내 섹션 */}
       <Box sx={{ mb: 4 }}>
         <Paper
           elevation={0}
@@ -233,10 +328,7 @@ const Step0Intro = ({ onUpdate, onNext }) => {
               <Checkbox
                 checked={scrollConfirmed}
                 onChange={(e) => setScrollConfirmed(e.target.checked)}
-                sx={{
-                  color: "#0071e3",
-                  "&.Mui-checked": { color: "#0071e3" },
-                }}
+                sx={{ color: "#0071e3", "&.Mui-checked": { color: "#0071e3" } }}
               />
             }
             label={
@@ -245,7 +337,7 @@ const Step0Intro = ({ onUpdate, onNext }) => {
                 sx={{ color: "#004080", fontWeight: 700, lineHeight: 1.4 }}
               >
                 Je m'engage à faire défiler l'écran (scroll) pour vérifier tous
-                les choix et messages d'aide lors des étapes du diagnostic.
+                les choix.
               </Typography>
             }
           />
@@ -265,15 +357,9 @@ const Step0Intro = ({ onUpdate, onNext }) => {
           }}
         >
           <Typography
-            sx={{
-              fontSize: "0.9rem",
-              color: "#664d03",
-              fontWeight: 600,
-              lineHeight: 1.4,
-            }}
+            sx={{ fontSize: "0.9rem", color: "#664d03", fontWeight: 600 }}
           >
-            ⚠️ Note : L'interface va basculer en plein écran pour une meilleure
-            expérience.
+            ⚠️ Interface plein écran activée pour le diagnostic.
           </Typography>
         </Paper>
 
@@ -289,12 +375,37 @@ const Step0Intro = ({ onUpdate, onNext }) => {
             color: "white",
             fontWeight: 800,
             fontSize: "1.1rem",
-            "&:hover": { bgcolor: "#005bb5" },
-            "&.Mui-disabled": { bgcolor: "#e5e5e7", color: "#a1a1a6" },
           }}
         >
           COMMENCER LE DIAGNOSTIC
         </Button>
+
+        {/* 신뢰 문구 섹션 */}
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={3}
+          sx={{ mt: 3, mb: 2 }}
+        >
+          <Typography
+            sx={{ fontSize: "0.85rem", color: "#34c759", fontWeight: 700 }}
+          >
+            ✓ Diagnostic 100% Gratuit
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: "0.85rem",
+              color: "#86868b",
+              fontWeight: 600,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <AccessTimeIcon sx={{ fontSize: "1.1rem", mr: 0.5 }} /> Réponse sous
+            1 heure
+          </Typography>
+        </Stack>
       </Box>
     </Box>
   );
