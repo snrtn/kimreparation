@@ -8,8 +8,7 @@ const HomeDevis = () => {
       sx={{
         width: "100%",
         bgcolor: "#ffffff",
-        pt: { xs: 12, md: 20 },
-        pb: { xs: 12, md: 20 },
+        py: { xs: 16, md: 20 },
       }}
     >
       <Container maxWidth="lg">

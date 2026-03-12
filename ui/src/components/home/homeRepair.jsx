@@ -142,7 +142,7 @@ const HomeRepair = () => {
       sx={{
         width: "100%",
         bgcolor: "#ffffff",
-        pt: { xs: 8, md: 12 },
+        py: { xs: 12, md: 20 },
         overflow: "hidden",
       }}
     >

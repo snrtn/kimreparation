@@ -96,7 +96,7 @@ const HomeScreen = () => {
   };
 
   return (
-    <Box sx={{ width: "100%", bgcolor: "#ffffff", pt: 15, pb: 12 }}>
+    <Box sx={{ width: "100%", bgcolor: "#ffffff", py: { xs: 16, md: 20 } }}>
       <Container maxWidth="xl">
         {/* 상단 헤더 섹션 */}
         <Box

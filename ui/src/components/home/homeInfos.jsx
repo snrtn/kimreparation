@@ -50,8 +50,7 @@ const HomeInfos = () => {
       sx={{
         width: "100%",
         bgcolor: "#ffffff",
-        pt: { xs: 10, md: 15 },
-        pb: { xs: 10, md: 20 },
+        py: { xs: 16, md: 20 },
       }}
     >
       <Container maxWidth="xl">
