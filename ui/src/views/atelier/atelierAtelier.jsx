@@ -202,7 +202,7 @@ const AtelierAtelier = () => {
             <Button
               variant="contained"
               startIcon={<YouTubeIcon />}
-              href="https://youtube.com/@YOUR_CHANNEL_ID"
+              href="https://youtube.com/@kimreparation-canal?si=W-tz9Dw3ApMlPtGr"
               target="_blank"
               sx={{
                 bgcolor: "#ff0000",

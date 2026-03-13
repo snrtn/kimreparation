@@ -696,7 +696,7 @@ const SectionLegal = () => {
                 sx={{ borderBottom: "1px solid #f5f5f7", pb: 1.5 }}
               >
                 <Typography sx={itemLabelStyle}>Structure</Typography>
-                <Typography sx={itemValueStyle}>Kim Reparation (EI)</Typography>
+                <Typography sx={itemValueStyle}>KIM REPARATION (EI)</Typography>
               </Stack>
               <Stack
                 direction="row"
@@ -723,7 +723,9 @@ const SectionLegal = () => {
               >
                 <Typography sx={itemLabelStyle}>Siège social</Typography>
                 <Typography sx={{ ...itemValueStyle, textAlign: "right" }}>
-                  00 00 00 00 00 00 00
+                  {/* 19 Rés la Courtillière */}
+                  <br />
+                  {/* 62123 Beaumetz-lès-Loges */}
                 </Typography>
               </Stack>
               <Stack
@@ -734,10 +736,10 @@ const SectionLegal = () => {
                 <Typography sx={itemLabelStyle}>Contact</Typography>
                 <Box sx={{ textAlign: "right" }}>
                   <Typography sx={itemValueStyle}>
-                    00 00 00 00 00 00 00
+                    {/* contact@kimreparation.fr */}
                   </Typography>
                   <Typography sx={itemValueStyle}>
-                    00 00 00 00 00 00 00
+                    {/* 06 27 24 46 02 */}
                   </Typography>
                 </Box>
               </Stack>
@@ -755,9 +757,11 @@ const SectionLegal = () => {
               >
                 <Typography sx={itemLabelStyle}>DNS / Domain</Typography>
                 <Box sx={{ textAlign: "right" }}>
-                  <Typography sx={itemValueStyle}>Hostinger</Typography>
+                  <Typography sx={itemValueStyle}>
+                    OVHcloud (OVH SAS)
+                  </Typography>
                   <Typography sx={{ fontSize: "0.7rem", color: "#c1c1c1" }}>
-                    Larnaca, Chypre
+                    Roubaix, France
                   </Typography>
                 </Box>
               </Stack>
@@ -768,7 +772,7 @@ const SectionLegal = () => {
               >
                 <Typography sx={itemLabelStyle}>Hébergeur</Typography>
                 <Box sx={{ textAlign: "right" }}>
-                  <Typography sx={itemValueStyle}>GitHub, Inc.</Typography>
+                  <Typography sx={itemValueStyle}>Vercel Inc.</Typography>
                   <Typography sx={{ fontSize: "0.7rem", color: "#86868b" }}>
                     San Francisco, CA, USA
                   </Typography>
