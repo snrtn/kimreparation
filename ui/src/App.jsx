@@ -45,22 +45,26 @@ function App() {
     return (
       <div
         style={{
-          backgroundColor: "#fff", // 실제 서버 에러는 보통 흰색 배경입니다.
+          backgroundColor: "#fff",
           color: "#000",
           height: "100vh",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          fontFamily: "sans-serif",
+          // 폰트를 더 서버 기본 폰트스럽게 수정
+          fontFamily:
+            "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
           textAlign: "center",
         }}
       >
-        <div style={{ maxWidth: "600px", width: "100%", maxHeight: "300px" }}>
+        <div style={{ maxWidth: "800px", width: "100%", padding: "20px" }}>
           <h1
             style={{
               fontSize: "42px",
-              fontWeight: 500,
+              fontWeight: 400, // Nginx는 너무 두껍지 않은 게 포인트입니다
+              margin: 0, // 기본 마진 제거해서 짤림 방지
+              lineHeight: "1.2",
             }}
           >
             403 Forbidden
@@ -68,14 +72,14 @@ function App() {
           <hr
             style={{
               border: "none",
-              borderTop: "1px solid #eee",
-              margin: "10px 0",
+              borderTop: "1px solid #eaeaea",
+              margin: "15px 0",
             }}
           />
           <div
             style={{
               fontSize: "14px",
-              color: "#333",
+              color: "#000",
               marginTop: "10px",
             }}
           >
