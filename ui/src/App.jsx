@@ -38,6 +38,28 @@ import ToyJoyCon from "./views/toy/toyJoyCon";
 import ToyDevis from "./views/toy/toyDevis";
 
 function App() {
+  const isVercelDomain = window.location.hostname.includes("vercel.app");
+
+  // 형님의 정식 도메인이 연결되었다면 정식 도메인 외에는 다 차단 가능
+  if (isVercelDomain) {
+    return (
+      <div
+        style={{
+          backgroundColor: "#000",
+          color: "#ffffff", // 글자도 거의 안 보이게 어둡게
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          fontFamily: "sans-serif",
+        }}
+      >
+        <h1 style={{ fontSize: "1rem" }}>403 Forbidden</h1>
+      </div>
+    );
+  }
+
   return (
     <Router>
       <ScrollToTop />
