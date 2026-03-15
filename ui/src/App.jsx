@@ -45,17 +45,44 @@ function App() {
     return (
       <div
         style={{
-          backgroundColor: "#000",
-          color: "#ffffff", // 글자도 거의 안 보이게 어둡게
+          backgroundColor: "#fff", // 실제 서버 에러는 보통 흰색 배경입니다.
+          color: "#000",
           height: "100vh",
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          flexDirection: "column",
           fontFamily: "sans-serif",
+          textAlign: "center",
         }}
       >
-        <h1 style={{ fontSize: "1rem" }}>403 Forbidden</h1>
+        <div style={{ maxWidth: "600px", width: "100%" }}>
+          <h1
+            style={{
+              fontSize: "42px",
+              margin: "0 0 10px 0",
+              fontWeight: 500,
+            }}
+          >
+            403 Forbidden
+          </h1>
+          <hr
+            style={{
+              border: "none",
+              borderTop: "1px solid #eee",
+              margin: "10px 0",
+            }}
+          />
+          <div
+            style={{
+              fontSize: "14px",
+              color: "#333",
+              marginTop: "10px",
+            }}
+          >
+            nginx
+          </div>
+        </div>
       </div>
     );
   }
