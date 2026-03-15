@@ -67,7 +67,7 @@ function App() {
               lineHeight: "1.2",
             }}
           >
-            403 Forbidden
+            502 Bad Gateway
           </h1>
           <hr
             style={{
