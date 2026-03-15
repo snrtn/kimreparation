@@ -56,11 +56,10 @@ function App() {
           textAlign: "center",
         }}
       >
-        <div style={{ maxWidth: "600px", width: "100%" }}>
+        <div style={{ maxWidth: "700px", width: "100%" }}>
           <h1
             style={{
               fontSize: "42px",
-              margin: "0 0 10px 0",
               fontWeight: 500,
             }}
           >
