@@ -8,6 +8,8 @@ import {
   FormControlLabel,
   Paper,
   Collapse,
+  Modal, // 👈 추가됨
+  IconButton, // 👈 추가됨
 } from "@mui/material";
 import SmartphoneIcon from "@mui/icons-material/Smartphone";
 import MobileOffIcon from "@mui/icons-material/MobileOff";
@@ -16,12 +18,15 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EngineeringIcon from "@mui/icons-material/Engineering";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber"; // 👈 추가됨
+import CloseIcon from "@mui/icons-material/Close"; // 👈 추가됨
 
 const Step0Intro = ({ onUpdate, onNext }) => {
   const [agreed, setAgreed] = useState(false);
   const [scrollConfirmed, setScrollConfirmed] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [openProcess, setOpenProcess] = useState(false); // 새로운 안내 세션 상태
+  const [openGuide, setOpenGuide] = useState(false); // 👈 모달 상태 추가됨
 
   const handleStart = () => {
     if (!agreed || !selectedStatus || !scrollConfirmed) return;
@@ -141,7 +146,6 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         </Stack>
       </Box>
 
-      {/* ✨ [신규] 형님이 말씀하신 절차 안내 드롭다운 섹션 */}
       <Box sx={{ mb: 5 }}>
         <Paper
           elevation={0}
@@ -158,11 +162,11 @@ const Step0Intro = ({ onUpdate, onNext }) => {
           }}
         >
           <Stack direction="row" spacing={1} alignItems="center">
-            <EngineeringIcon sx={{ fontSize: 20, color: "#1d1d1f" }} />
+            <EngineeringIcon sx={{ fontSize: 20, color: "#0071e3" }} />
             <Typography
               sx={{ fontWeight: 700, fontSize: "0.9rem", color: "#1d1d1f" }}
             >
-              Comment se déroule votre réparation ? (Cliquez)
+              Comment se déroule votre réparation de précision ? (Cliquez)
             </Typography>
           </Stack>
           <ExpandMoreIcon
@@ -177,60 +181,96 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         <Collapse in={openProcess}>
           <Box
             sx={{
-              p: 2,
+              p: 3,
               bgcolor: "#ffffff",
               border: "1px solid #f5f5f7",
               borderTop: 0,
               borderRadius: "0 0 14px 14px",
             }}
           >
-            <Stack spacing={2}>
-              {/* 1. 견적 부분: 부품 교체가 기본값임을 강조 */}
+            <Stack spacing={2.5}>
+              {/* 1. 진단 및 견적 발송: 형님이 주도권을 잡는 단계 */}
               <Typography
                 variant="caption"
-                sx={{ color: "#424245", display: "block", mb: 1 }}
+                sx={{ color: "#424245", display: "block", lineHeight: 1.6 }}
               >
-                <strong>1. Devis & Plan :</strong> Ce devis initial est établi
-                sous réserve d'un{" "}
-                <strong>remplacement standard de pièces</strong>, basé sur les
-                informations fournies.
+                <strong>1. Diagnostic & Devis :</strong> Envoyez votre
+                diagnostic en ligne. Après analyse de vos données, un{" "}
+                <strong>devis personnalisé</strong> vous sera transmis. La prise
+                en charge officielle débute une fois ce devis approuvé par vos
+                soins.
               </Typography>
 
-              {/* 2. 점검 부분: '할인' 빼고 '최종 확정/변동'으로 수정 */}
+              {/* 2. 정밀 점검 및 견적 재조정: 미세 납땜 강조 */}
               <Typography
                 variant="caption"
-                sx={{ color: "#424245", display: "block" }}
+                sx={{ color: "#424245", display: "block", lineHeight: 1.6 }}
               >
-                <strong>2. Expertise & Réparation :</strong> Nous privilégions
-                la réparation des composants. Le montant final sera{" "}
-                <strong>révisé et arrêté</strong> après diagnostic technique,
-                selon la complexité de l'intervention.
+                <strong>2. Expertise & Ajustement :</strong> Nous privilégions
+                la <strong>micro-soudure</strong> pour sauver vos composants
+                d'origine. Le montant final est arrêté après expertise réelle de
+                l'appareil et peut être{" "}
+                <strong>réajusté selon la complexité</strong> (souvent à votre
+                avantage).
               </Typography>
+
+              {/* 3. 부품 선택: 폴더블 포함 및 링크 안내 */}
               <Typography
                 variant="caption"
-                sx={{ color: "#424245", display: "block" }}
+                sx={{ color: "#424245", display: "block", lineHeight: 1.6 }}
               >
-                <strong>3. Politique Écrans :</strong> Recommandation selon
-                votre style de vie. Aucun stock imposé, vous choisissez le type
-                d'écran lors du devis.
+                <strong>3. Choix de la Qualité :</strong> Du LCD standard à
+                l'écran <strong>Pliable</strong>, vous décidez de la gamme. Nous
+                vous conseillons l'option idéale selon votre usage pour garantir
+                la longévité de l'appareil.{" "}
+                <a
+                  href="/screen"
+                  style={{
+                    color: "#0071e3",
+                    textDecoration: "none",
+                    fontWeight: 600,
+                  }}
+                >
+                  [En savoir plus]
+                </a>
               </Typography>
+
+              {/* 4. 물류: 견적 승인 후 행동 지침 */}
               <Typography
                 variant="caption"
                 sx={{
                   color: "#424245",
-                  display: "block",
-                  whiteSpace: "pre-line", // 줄바꿈 적용
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 1,
+                  whiteSpace: "pre-line",
                   lineHeight: 1.6,
                 }}
               >
-                <strong>4. Logistique :</strong>
-                {"\n"}• <strong>Dépôt à l'atelier :</strong> Sur rendez-vous
-                (recommandé pour les réparations de précision).
-                {"\n"}• <strong>Service à domicile :</strong> Possible pour les
-                remplacements d'écran ou de batterie (selon diagnostic).
-                {"\n"}• <strong>Pick-up & Livraison :</strong> Disponible si
-                vous ne pouvez pas vous déplacer (frais basés sur le coût réel
-                du carburant + frais de service).
+                <strong>4. Logistique (Après approbation du devis) :</strong>
+                <span>
+                  • <strong>Par Correspondance :</strong> Expédiez votre
+                  appareil en toute sécurité (Colissimo/Chronopost).{" "}
+                  {/* 👈 여기서부터 링크 빼고 모달 띄우기로 바꿈 */}
+                  <span
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setOpenGuide(true);
+                    }}
+                    style={{
+                      color: "#0071e3",
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    [Guide d'envoi]
+                  </span>
+                </span>
+                <span>
+                  • <strong>À l'Atelier :</strong> Un créneau de rendez-vous
+                  vous sera proposé pour un dépôt physique à Beaumetz-lès-Loges.
+                </span>
               </Typography>
             </Stack>
           </Box>
@@ -406,7 +446,151 @@ const Step0Intro = ({ onUpdate, onNext }) => {
             1 heure
           </Typography>
         </Stack>
+        <Typography
+          variant="caption"
+          sx={{ display: "block", color: "#86868b", fontWeight: 500, mt: 1 }}
+        >
+          * Tout envoi abusif ou diagnostic frauduleux entraînera un blocage de
+          l'adresse IP.
+        </Typography>
       </Box>
+
+      {/* 📦 👈 여기에 [Guide d'envoi] 모달창 추가됨 */}
+      <Modal
+        open={openGuide}
+        onClose={() => setOpenGuide(false)}
+        closeAfterTransition
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: { xs: "90%", sm: 500 },
+            bgcolor: "background.paper",
+            borderRadius: "24px",
+            boxShadow: 24,
+            p: 4,
+            outline: "none",
+          }}
+        >
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ mb: 2 }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 800,
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <WarningAmberIcon sx={{ color: "#ff3b30" }} /> Guide d'Expédition
+              Sécurisée
+            </Typography>
+            <IconButton onClick={() => setOpenGuide(false)}>
+              <CloseIcon />
+            </IconButton>
+          </Stack>
+
+          <Stack spacing={3}>
+            {/* 배터리 경고 */}
+            <Box
+              sx={{
+                p: 2,
+                bgcolor: "#fff1f0",
+                borderRadius: "12px",
+                border: "1px solid #ffccc7",
+              }}
+            >
+              <Typography
+                variant="subtitle2"
+                sx={{ color: "#d32f2f", fontWeight: 800, mb: 0.5 }}
+              >
+                ⚠️ ATTENTION : SÉCURITÉ BATTERIE
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{ color: "#cf1322", display: "block", fontWeight: 500 }}
+              >
+                INTERDICTION STRICTE d'envoyer une batterie gonflée. L'Atelier
+                décline toute responsabilité en cas d'incident postal lié à
+                votre batterie.
+              </Typography>
+            </Box>
+
+            {/* 포장 방법 (철제통) */}
+            <Box>
+              <Typography sx={{ fontWeight: 700, fontSize: "0.9rem", mb: 1 }}>
+                📦 Protocole d'emballage (3 Couches)
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{ color: "#424245", display: "block", lineHeight: 1.6 }}
+              >
+                1. Enveloppez l'appareil dans du <strong>papier bulle</strong>.
+                <br />
+                2. Placez-le dans une <strong>boîte métallique</strong> (type
+                boîte à biscuits).
+                <br />
+                3. Fixez la boîte dans un carton rigide avec du rembourrage.
+              </Typography>
+            </Box>
+
+            {/* 택배사 팁 */}
+            <Box sx={{ p: 2, bgcolor: "#f5f5f7", borderRadius: "12px" }}>
+              <Typography sx={{ fontWeight: 700, fontSize: "0.8rem", mb: 1 }}>
+                📮 Recommandations postales
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{ color: "#1d1d1f", display: "block", lineHeight: 1.5 }}
+              >
+                • <strong>Colissimo :</strong> Option "Remise contre signature"
+                OBLIGATOIRE.
+                <br />• <strong>Assurance :</strong> Option "Ad Valorem"
+                vivement conseillée pour couvrir la valeur de l'appareil.
+              </Typography>
+            </Box>
+
+            {/* 형님의 명언 */}
+            <Typography
+              sx={{
+                fontStyle: "italic",
+                fontWeight: 600,
+                fontSize: "0.85rem",
+                color: "#1d1d1f",
+                textAlign: "center",
+                pt: 2,
+                borderTop: "1px solid #eee",
+              }}
+            >
+              "Nous vous remercions de votre vigilance concernant la préparation
+              de votre colis."
+            </Typography>
+          </Stack>
+
+          <Button
+            fullWidth
+            onClick={() => setOpenGuide(false)}
+            sx={{
+              mt: 3,
+              bgcolor: "#1d1d1f",
+              color: "white",
+              borderRadius: "12px",
+              py: 1.5,
+              "&:hover": { bgcolor: "#000" },
+            }}
+          >
+            J'ai compris
+          </Button>
+        </Box>
+      </Modal>
     </Box>
   );
 };

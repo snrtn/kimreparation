@@ -673,6 +673,61 @@ const SectionLegal = () => {
                 </Typography>
               </AccordionDetails>
             </Accordion>
+
+            {/* 🚨 [신규] SECTION 4 : Collecte d'IP & Sécurité (IP 수집 및 보안 조항) */}
+            <Accordion
+              disableGutters
+              elevation={0}
+              sx={{
+                border: "1px solid #e5e5e7",
+                borderRadius: "14px !important",
+                overflow: "hidden",
+                "&:before": { display: "none" },
+              }}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon sx={{ color: "#ff3b30" }} />}
+                sx={{
+                  bgcolor: "#fff1f0", // 경고 느낌을 주기 위해 살짝 붉은 배경
+                  px: 3,
+                  py: 1,
+                  "&:hover": { bgcolor: "#ffeceb" },
+                }}
+              >
+                <Typography
+                  sx={{ fontWeight: 700, fontSize: "1rem", color: "#d32f2f" }}
+                >
+                  Sécurité du Système & Collecte d'IP
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails
+                sx={{
+                  bgcolor: "#fafafa",
+                  borderTop: "1px solid #e5e5e7",
+                  p: 3,
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "#424245",
+                    lineHeight: 1.6,
+                    fontSize: "0.95rem",
+                    whiteSpace: "pre-line",
+                  }}
+                >
+                  Pour garantir le bon fonctionnement de notre service de
+                  diagnostic en ligne et prévenir les abus (spam, envois
+                  frauduleux massifs) :{"\n"}• L'adresse IP de l'utilisateur est
+                  temporairement collectée lors de la soumission d'une demande.
+                  {"\n"}• En cas d'utilisation abusive, de tentatives de
+                  piratage ou d'envois répétés de fausses demandes, Kim
+                  Reparation se réserve le droit de bloquer automatiquement
+                  l'adresse IP concernée sans préavis.{"\n"}• Ces données (logs)
+                  sont conservées uniquement à des fins de sécurité et non pour
+                  le traçage publicitaire, conformément au RGPD.
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
           </Stack>
         </Box>
 
