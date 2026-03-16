@@ -6,21 +6,21 @@ import { Link as RouterLink } from "react-router-dom";
 const toysContent = {
   // ✅ 마을 이름은 여기에만 리스트업
   label:
-    "Beaumetz-lès-Loges, Basseux, Rivière, Berneville, Simencourt, Bailleulval, Warlus, Monchiet",
+    "Beaumetz-lès-Loges, Basseux, Rivière, Berneville, Simencourt, Monchiet",
 
   title: "L'Atelier des Jouets Électroniques.\nRéparation & Recyclage.",
 
   // ✅ 요청하신 대로 건드리지 않고 유지
   description:
     "Un jouet électronique en panne ? \n" +
-    "Je lance un programme pilote de réparation gratuite pour les jouets électroniques (valeur neuve max. 60€) des enfants de Beaumetz-lès-Loges et des communes voisines(Basseux, Rivière, Berneville, Simencourt, Bailleulval, Warlus, Monchiet).\n" +
+    "Je lance un programme pilote de réparation gratuite pour les jouets électroniques (valeur neuve max. 60€) à **Beaumetz-lès-Loges** et dans les communes voisines (Basseux, Rivière, Berneville, Simencourt, Monchiet).\n" +
     "Cette initiative bénévole me permet de tester ce service localement avant d'envisager de l'étendre, le tout en complément de mon activité principale.",
 
   button: "En savoir plus",
 
   // 📌 defense: 도미실(거주증명) 추가 및 지역 한정 이유(테스트 중) 명시
   defense:
-    "* Ce service bénévole étant réservé aux habitants des communes citées, une simple vérification de votre adresse (facture ou pièce d'identité) sera effectuée lors du dépôt pour confirmer que nous sommes voisins.\n" +
+    "* Ce service est exclusivement réservé aux habitants de Beaumetz-lès-Loges et des communes voisines(Basseux, Rivière, Berneville, Simencourt, Monchiet). Une simple vérification de votre adresse (facture/ID) sera effectuée lors du dépôt. Pas de photocopie, juste un coup d'œil pour confirmer que nous sommes bien voisins !\n" +
     "* Initiative personnelle : Ce programme pilote est une démarche privée et bénévole visant à tester la faisabilité technique du projet de recyclage.\n" +
     "* Priorité à mon activité principale : Les prestations professionnelles (payantes) sont traitées en priorité. Ce service gratuit est effectué sur mon temps libre et peut être suspendu selon ma charge de travail.\n" +
     "* Accueil sur rendez-vous : S'agissant d'un atelier privé, aucun objet ne sera accepté sans demande de prise en charge préalable.\n" +

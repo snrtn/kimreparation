@@ -66,7 +66,7 @@ const ToyDevis = () => {
     {
       id: "voisin",
       isCritical: true,
-      text: "Résidence : Ce service est réservé aux habitants des communes citées (Beaumetz-lès-Loges, Basseux, Rivière, Berneville, Simencourt, Bailleulval, Warlus, Monchiet). Une simple vérification de votre adresse (facture/ID) sera effectuée lors du dépôt. Pas de photocopie, juste un coup d'œil pour confirmer que nous sommes bien voisins !",
+      text: "Résidence : Ce service est réservé aux habitants habitants de Beaumetz-lès-Loges et des communes voisines(Basseux, Rivière, Berneville, Simencourt, Monchiet). Une simple vérification de votre adresse (facture/ID) sera effectuée lors du dépôt. Pas de photocopie, juste un coup d'œil pour confirmer que nous sommes bien voisins !",
     },
     {
       id: "pilote",

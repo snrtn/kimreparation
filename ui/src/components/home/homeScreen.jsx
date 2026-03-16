@@ -61,6 +61,16 @@ const guides = [
     path: "/screen/lcd",
     serial: "SERIES-L3",
   },
+  {
+    title: "Écran Pliable",
+    tag: "Technologie articulée",
+    desc: "Dalle organique flexible multicouche conçue pour supporter les cycles d'ouverture. Exige une précision extrême pour la charnière.",
+    pros: "Maintien de la fluidité mécanique d'origine",
+    cons: "Coût très élevé / Complexité technique",
+    target: "Propriétaires de smartphones pliables (Type Z Fold, Z Flip, etc.)",
+    path: "/screen/foldable",
+    serial: "SERIES-F1",
+  },
 ];
 
 const HomeScreen = () => {

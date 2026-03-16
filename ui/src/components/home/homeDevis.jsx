@@ -63,9 +63,9 @@ const HomeDevis = () => {
             disableRipple
             sx={{
               p: 0,
-              pb: 1.5, // 📌 모바일에서도 밑줄이 들어갈 공간 확보
+              pb: 0.5, // 📌 모바일에서도 밑줄이 들어갈 공간 확보
               color: "#E65100",
-              fontSize: { xs: "1.5rem", md: "2rem" },
+              fontSize: "1.5rem",
               fontWeight: 800,
               textTransform: "uppercase",
               letterSpacing: "0.05em",
@@ -123,7 +123,7 @@ const HomeDevis = () => {
                 position: "absolute",
                 bottom: 0,
                 left: 0,
-                width: "calc(100% + 80px)",
+                width: "calc(100% + 20px)",
                 height: "3px",
                 bgcolor: "#1d1d1f",
                 borderRadius: "10px",
@@ -138,7 +138,7 @@ const HomeDevis = () => {
                 display: { xs: "none", md: "block" }, // PC에서만 보임
                 position: "absolute",
                 bottom: 0,
-                left: "calc(100% + 79px)",
+                left: "calc(100% + 19px)",
                 width: "18px",
                 height: "3px",
                 bgcolor: "#1d1d1f",
@@ -155,7 +155,7 @@ const HomeDevis = () => {
                 sx={{
                   position: "absolute",
                   top: 0,
-                  left: "100%",
+                  left: "97.9%",
                   width: "0px",
                   height: "3px",
                   bgcolor: "#1d1d1f",

@@ -138,252 +138,259 @@ const HomeRepair = () => {
   const slide = solutionData[current];
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        bgcolor: "#ffffff",
-        py: { xs: 12, md: 20 },
-        overflow: "hidden",
-      }}
-    >
-      <Container maxWidth="xl">
-        <Box sx={{ mb: { xs: 3, md: 4 }, px: { xs: 1, md: 2 } }}>
-          <Typography
-            sx={{
-              color: "#1d1d1f",
-              fontWeight: 700,
-              fontSize: { xs: "2rem", sm: "2.6rem" },
-              letterSpacing: "-0.04em",
-              lineHeight: 1.1,
-            }}
-          >
-            On vous dit tout. <br /> Pour éviter les malentendus.
-          </Typography>
-          <Typography
-            sx={{
-              color: "#86868b",
-              fontSize: "0.85rem",
-              fontStyle: "italic",
-              mt: 2,
-            }}
-          >
-            Je garde une trace de tout ce que je fais pour que ce soit clair
-            entre nous. <br /> Pas de baratin, je répare simplement pour que
-            votre téléphone dure le plus longtemps possible.
-          </Typography>
-        </Box>
-
-        {/* Navigation Tabs */}
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            borderTop: "1px solid #d2d2d7",
-            borderBottom: "1px solid #d2d2d7",
-            mb: { xs: 4, md: 8 },
-            overflowX: "auto",
-            whiteSpace: "nowrap",
-            scrollbarWidth: "none",
-            "&::-webkit-scrollbar": { display: "none" },
-          }}
-        >
-          {solutionData.map((item, index) => (
-            <Box
-              key={item.id}
-              ref={(el) => (tabRefs.current[index] = el)}
-              onClick={() => handleTabChange(index)}
+    <>
+      <Box
+        sx={{
+          width: "100%",
+          bgcolor: "#ffffff",
+          pt: { xs: 16, md: 20 },
+          pb: { xs: 8, md: 12 },
+          overflow: "hidden",
+        }}
+      >
+        <Container maxWidth="xl">
+          <Box sx={{ mb: { xs: 3, md: 4 }, px: { xs: 1, md: 2 } }}>
+            <Typography
               sx={{
-                flex: { xs: "0 0 160px", md: "1" },
-                py: { xs: 3, md: 4 },
-                px: 2,
-                cursor: "pointer",
-                textAlign: "center",
-                borderBottom: "4px solid",
-                borderColor: index === current ? item.color : "transparent",
-                bgcolor: index === current ? "#f5f5f7" : "transparent",
-                transition: "all 0.3s ease",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 1.5,
+                color: "#1d1d1f",
+                fontWeight: 700,
+                fontSize: { xs: "2rem", sm: "2.6rem" },
+                letterSpacing: "-0.04em",
+                lineHeight: 1.1,
               }}
             >
-              <Box sx={{ color: index === current ? item.color : "#86868b" }}>
-                {React.cloneElement(item.icon, { sx: { fontSize: 24 } })}
-              </Box>
-              <Typography
-                sx={{
-                  fontSize: "0.85rem",
-                  fontWeight: 700,
-                  color: index === current ? "#1d1d1f" : "#86868b",
-                  whiteSpace: "normal",
-                  lineHeight: 1.2,
-                }}
-              >
-                {item.title}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
-
-        {/* Content Area */}
-        <Box
-          sx={{ minHeight: { xs: "auto", md: "400px" }, position: "relative" }}
-        >
-          {/* ✅ 워터마크 아이콘 (기능만 추가됨) */}
-          <Box
-            sx={{
-              position: "absolute",
-              right: { xs: -20, md: 0 },
-              bottom: { xs: -20, md: 0 },
-              zIndex: 0,
-              opacity: 0.02,
-              pointerEvents: "none",
-              transition: "all 0.5s ease",
-              color: slide.color,
-              // ✅ 핵심: xs(모바일)에서만 block, sm(태블릿) 이상부터는 none으로 숨김
-              display: { xs: "none", md: "block", lg: "block" },
-            }}
-          >
-            {React.cloneElement(slide.icon, {
-              sx: { fontSize: { xs: "100px", md: "200px" } },
-            })}
+              On vous dit tout. <br /> Pour éviter les malentendus.
+            </Typography>
+            <Typography
+              sx={{
+                color: "#86868b",
+                fontSize: "0.85rem",
+                fontStyle: "italic",
+                mt: 2,
+              }}
+            >
+              Je garde une trace de tout ce que je fais pour que ce soit clair
+              entre nous. <br /> Pas de baratin, je répare simplement pour que
+              votre téléphone dure le plus longtemps possible.
+            </Typography>
           </Box>
 
+          {/* Navigation Tabs */}
           <Box
-            key={slide.id}
             sx={{
-              position: "relative",
-              zIndex: 1,
-              animation: "fadeInStable 0.5s ease-out",
+              width: "100%",
+              display: "flex",
+              borderTop: "1px solid #d2d2d7",
+              borderBottom: "1px solid #d2d2d7",
+              mb: { xs: 4, md: 8 },
+              overflowX: "auto",
+              whiteSpace: "nowrap",
+              scrollbarWidth: "none",
+              "&::-webkit-scrollbar": { display: "none" },
             }}
           >
-            <Stack
-              direction={{ xs: "column", md: "row" }}
-              spacing={{ xs: 4, md: 10 }}
-              alignItems="flex-start"
-            >
-              <Box sx={{ flex: 1 }}>
+            {solutionData.map((item, index) => (
+              <Box
+                key={item.id}
+                ref={(el) => (tabRefs.current[index] = el)}
+                onClick={() => handleTabChange(index)}
+                sx={{
+                  flex: { xs: "0 0 160px", md: "1" },
+                  py: { xs: 3, md: 4 },
+                  px: 2,
+                  cursor: "pointer",
+                  textAlign: "center",
+                  borderBottom: "4px solid",
+                  borderColor: index === current ? item.color : "transparent",
+                  bgcolor: index === current ? "#f5f5f7" : "transparent",
+                  transition: "all 0.3s ease",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 1.5,
+                }}
+              >
+                <Box sx={{ color: index === current ? item.color : "#86868b" }}>
+                  {React.cloneElement(item.icon, { sx: { fontSize: 24 } })}
+                </Box>
                 <Typography
-                  variant="h2"
                   sx={{
-                    fontSize: { xs: "1.4rem", md: "1.6rem" },
+                    fontSize: "0.85rem",
                     fontWeight: 700,
-                    color: slide.color,
-                    mb: 2,
+                    color: index === current ? "#1d1d1f" : "#86868b",
+                    whiteSpace: "normal",
+                    lineHeight: 1.2,
                   }}
                 >
-                  {slide.headline}
+                  {item.title}
                 </Typography>
-                <Typography
-                  sx={{
-                    color: "#424245",
-                    fontSize: "0.9rem",
-                    fontWeight: 400,
-                    lineHeight: 1.6,
-                    mb: 2,
-                  }}
-                >
-                  {slide.summary}
-                </Typography>
-                {slide.id === 3 && (
-                  <Button
-                    variant="outlined"
-                    endIcon={<OpenInNewIcon />}
-                    sx={{
-                      mt: 1,
-                      mb: 2,
-                      borderRadius: "20px",
-                      color: slide.color,
-                      borderColor: slide.color,
-                      fontWeight: 700,
-                      textTransform: "none",
-                    }}
-                    component={RouterLink} // 💡 Redirection interne sans rechargement
-                    to={slide.link}
-                  >
-                    Consulter le guide
-                  </Button>
-                )}
               </Box>
+            ))}
+          </Box>
 
-              <Box sx={{ flex: 1.5 }}>
-                <Typography
-                  sx={{
-                    color: "#424245",
-                    fontSize: "1rem",
-                    fontWeight: 400,
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {slide.firstPara}
-                </Typography>
+          {/* Content Area */}
+          <Box
+            sx={{
+              minHeight: { xs: "auto", md: "400px" },
+              position: "relative",
+            }}
+          >
+            {/* ✅ 워터마크 아이콘 (기능만 추가됨) */}
+            <Box
+              sx={{
+                position: "absolute",
+                right: { xs: -20, md: 0 },
+                bottom: { xs: -20, md: 0 },
+                zIndex: 0,
+                opacity: 0.02,
+                pointerEvents: "none",
+                transition: "all 0.5s ease",
+                color: slide.color,
+                // ✅ 핵심: xs(모바일)에서만 block, sm(태블릿) 이상부터는 none으로 숨김
+                display: { xs: "none", md: "block", lg: "block" },
+              }}
+            >
+              {React.cloneElement(slide.icon, {
+                sx: { fontSize: { xs: "100px", md: "200px" } },
+              })}
+            </Box>
 
-                {!isSmallPhone ? (
+            <Box
+              key={slide.id}
+              sx={{
+                position: "relative",
+                zIndex: 1,
+                animation: "fadeInStable 0.5s ease-out",
+              }}
+            >
+              <Stack
+                direction={{ xs: "column", md: "row" }}
+                spacing={{ xs: 4, md: 10 }}
+                alignItems="flex-start"
+              >
+                <Box sx={{ flex: 1 }}>
+                  <Typography
+                    variant="h2"
+                    sx={{
+                      fontSize: { xs: "1.4rem", md: "1.6rem" },
+                      fontWeight: 700,
+                      color: slide.color,
+                      mb: 2,
+                    }}
+                  >
+                    {slide.headline}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#424245",
+                      fontSize: "0.9rem",
+                      fontWeight: 400,
+                      lineHeight: 1.6,
+                      mb: 2,
+                    }}
+                  >
+                    {slide.summary}
+                  </Typography>
+                  {slide.id === 3 && (
+                    <Button
+                      variant="outlined"
+                      endIcon={<OpenInNewIcon />}
+                      sx={{
+                        mt: 1,
+                        mb: 2,
+                        borderRadius: "20px",
+                        color: slide.color,
+                        borderColor: slide.color,
+                        fontWeight: 700,
+                        textTransform: "none",
+                      }}
+                      component={RouterLink} // 💡 Redirection interne sans rechargement
+                      to={slide.link}
+                    >
+                      Consulter le guide
+                    </Button>
+                  )}
+                </Box>
+
+                <Box sx={{ flex: 1.5 }}>
                   <Typography
                     sx={{
                       color: "#424245",
                       fontSize: "1rem",
                       fontWeight: 400,
                       lineHeight: 1.6,
-                      whiteSpace: "pre-line",
-                      mt: 3,
-                      pt: 3,
-                      borderTop: "1px solid #f0f0f0",
                     }}
                   >
-                    {slide.restDesc}
+                    {slide.firstPara}
                   </Typography>
-                ) : (
-                  <>
-                    <Collapse in={isExpanded}>
-                      <Typography
-                        sx={{
-                          color: "#424245",
-                          fontSize: "1rem",
-                          lineHeight: 1.8,
-                          whiteSpace: "pre-line",
-                          mt: 2,
-                          p: 2,
-                          bgcolor: "#f9f9fb",
-                          borderRadius: "8px",
-                        }}
-                      >
-                        {slide.restDesc}
-                      </Typography>
-                    </Collapse>
-                    <Button
-                      onClick={() => setIsExpanded(!isExpanded)}
-                      endIcon={
-                        isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />
-                      }
+
+                  {!isSmallPhone ? (
+                    <Typography
                       sx={{
-                        color: slide.color,
-                        fontWeight: 700,
-                        mt: 1,
-                        p: 0,
-                        textTransform: "none",
+                        color: "#424245",
+                        fontSize: "1rem",
+                        fontWeight: 400,
+                        lineHeight: 1.6,
+                        whiteSpace: "pre-line",
+                        mt: 3,
+                        pt: 3,
+                        borderTop: "1px solid #f0f0f0",
                       }}
                     >
-                      {isExpanded ? "Réduire les détails" : "Voir les détails"}
-                    </Button>
-                  </>
-                )}
-              </Box>
-            </Stack>
+                      {slide.restDesc}
+                    </Typography>
+                  ) : (
+                    <>
+                      <Collapse in={isExpanded}>
+                        <Typography
+                          sx={{
+                            color: "#424245",
+                            fontSize: "1rem",
+                            lineHeight: 1.8,
+                            whiteSpace: "pre-line",
+                            mt: 2,
+                            p: 2,
+                            bgcolor: "#f9f9fb",
+                            borderRadius: "8px",
+                          }}
+                        >
+                          {slide.restDesc}
+                        </Typography>
+                      </Collapse>
+                      <Button
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        endIcon={
+                          isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />
+                        }
+                        sx={{
+                          color: slide.color,
+                          fontWeight: 700,
+                          mt: 1,
+                          p: 0,
+                          textTransform: "none",
+                        }}
+                      >
+                        {isExpanded
+                          ? "Réduire les détails"
+                          : "Voir les détails"}
+                      </Button>
+                    </>
+                  )}
+                </Box>
+              </Stack>
+            </Box>
           </Box>
-        </Box>
-
+        </Container>
         <Divider sx={{ mt: 3 }} />
-      </Container>
 
-      <style>{`
+        <style>{`
         @keyframes fadeInStable {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
-    </Box>
+          }
+          `}</style>
+      </Box>
+    </>
   );
 };
 

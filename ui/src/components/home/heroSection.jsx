@@ -6,14 +6,6 @@ import { Link as RouterLink } from "react-router-dom";
 const slideData = [
   {
     id: 0,
-    title: "Réalité Technique",
-    point: "Expertise & Vérité",
-    headline: "L'envers du décor de l'électronique.",
-    desc: "Alliages rigides sans plomb, stress thermique à 350°C et fragilité structurelle du PCB : découvrez la réalité physique de vos composants.\nUne approche transparente pour comprendre pourquoi une réparation dépend avant tout de l'état résiduel de la matière.",
-    path: "/repair/repairLimit",
-  },
-  {
-    id: 1,
     title: "Écran & Tactile",
     point: "Structure & Précision",
     headline: "Plus qu'une vitre, un équilibre fragile.",
@@ -21,7 +13,7 @@ const slideData = [
     path: "/repair",
   },
   {
-    id: 2,
+    id: 1,
     title: "Tombé dans l'eau",
     point: "Urgence & Oxydation",
     headline: "L'oxydation, une réaction chimique invisible.",
@@ -29,7 +21,7 @@ const slideData = [
     path: "/repair/repairWater",
   },
   {
-    id: 3,
+    id: 2,
     title: "Batterie & Énergie",
     point: "Chimie & Sécurité",
     headline: "Gonflement gazeux et instabilité de tension.",
@@ -37,7 +29,7 @@ const slideData = [
     path: "/repair/repairBattery",
   },
   {
-    id: 4,
+    id: 3,
     title: "Système & Logiciel",
     point: "Stabilité & NAND",
     headline: "Le secteur, unique garant de vos données.",
@@ -45,7 +37,7 @@ const slideData = [
     path: "/repair/repairSystem",
   },
   {
-    id: 5,
+    id: 4,
     title: "Caméra & Son",
     point: "Optique & Acoustique",
     headline: "Vibrations mécaniques et membranes fragiles.",
@@ -53,12 +45,20 @@ const slideData = [
     path: "/repair/repairHardware",
   },
   {
-    id: 6,
+    id: 5,
     title: "Étanchéité",
     point: "Isolation & Limites",
     headline: "L'étanchéité n'est pas une barrière éternelle.",
     desc: "Les joints adhésifs sèchent naturellement avec la chaleur et le temps.\nLa vapeur d'eau traverse là où le liquide s'arrête, et aucune intervention ne peut restaurer l'indice IP68 certifié en usine à 100%.",
     path: "/repair/waterproof",
+  },
+  {
+    id: 6,
+    title: "Réalité Technique",
+    point: "Expertise & Vérité",
+    headline: "L'envers du décor de l'électronique.",
+    desc: "Alliages rigides sans plomb, stress thermique à 350°C et fragilité structurelle du PCB : découvrez la réalité physique de vos composants.\nUne approche transparente pour comprendre pourquoi une réparation dépend avant tout de l'état résiduel de la matière.",
+    path: "/repair/repairLimit",
   },
 ];
 
