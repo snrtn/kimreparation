@@ -10,7 +10,7 @@ const dropdownData = [
     path: "/screen",
   },
   {
-    title: "Votre Devis Personnalisé",
+    title: "Diagnostic Personnalisé",
     desc: "Diagnostic complet et sur-mesure pour votre appareil.",
     path: "/devis",
   },

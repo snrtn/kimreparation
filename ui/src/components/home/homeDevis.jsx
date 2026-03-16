@@ -23,7 +23,7 @@ const HomeDevis = () => {
               textTransform: "uppercase",
             }}
           >
-            Diagnostic Préparatoire
+            Diagnostic Personnalisé
           </Typography>
 
           <Typography
@@ -97,7 +97,7 @@ const HomeDevis = () => {
               },
             }}
           >
-            Votre Devis Personnalisé
+            Diagnostic Personnalisé
             {/* 📌 0단: 모바일 전용 심플 밑줄 (PC에선 숨김) */}
             <Box
               className="line-mobile"

@@ -16,8 +16,8 @@ const sidemenuData = {
     { title: "Batterie & Charge", path: "/repair/repairBattery" },
     { title: "Système & Logiciel", path: "/repair/repairSystem" },
     { title: "Caméra & Son", path: "/repair/repairHardware" },
-    { title: "Réalité Technique", path: "/repair/repairLimit" },
     { title: "Étanchéité", path: "/repair/waterproof" },
+    { title: "Réalité Technique", path: "/repair/repairLimit" },
   ],
 
   devis: [

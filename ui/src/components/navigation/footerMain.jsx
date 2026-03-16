@@ -31,7 +31,7 @@ const FooterMain = () => {
       ],
     },
     {
-      title: "Votre Devis Personnalisé",
+      title: "Diagnostic Personnalisé",
       links: [
         { name: "Diagnostic Téléphone", path: "/devis" },
         { name: "Diagnostic Autres", path: "/devis/other" },

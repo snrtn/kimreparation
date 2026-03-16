@@ -38,7 +38,7 @@ const SideMenu = ({ menuData, onDrawerToggle }) => {
   //   (m) => !pathname.startsWith(m.path),
   // );
 
-  const isAtelierTitle = currentTitle === "Votre Devis Personnalisé";
+  const isAtelierTitle = currentTitle === "Diagnostic Personnalisé";
 
   const dropdownMenus = dropdownData;
 
