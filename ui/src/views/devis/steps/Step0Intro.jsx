@@ -448,10 +448,17 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         </Stack>
         <Typography
           variant="caption"
-          sx={{ display: "block", color: "#86868b", fontWeight: 500, mt: 1 }}
+          sx={{
+            display: "block",
+            color: "#86868b",
+            fontWeight: 500,
+            mt: 1,
+            lineHeight: 1.4,
+          }}
         >
-          * Tout envoi abusif ou diagnostic frauduleux entraînera un blocage de
-          l'adresse IP.
+          * Sécurité et prévention des fraudes : Au titre de l'intérêt légitime
+          (RGPD), tout envoi abusif ou frauduleux entraînera le blocage de
+          l'adresse IP sans consentement préalable.
         </Typography>
       </Box>
 
