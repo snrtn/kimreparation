@@ -24,7 +24,8 @@ const LayoutView = () => {
     pathname.startsWith("/repair") ||
     pathname.startsWith("/devis") ||
     pathname.startsWith("/atelier") ||
-    pathname.startsWith("/toy"); // ✅ toy 경로일 때도 사이드바 그리라고 추가!
+    pathname.startsWith("/toy") ||
+    pathname.startsWith("/client");
 
   const getGuideType = () => {
     if (pathname.startsWith("/screen")) return "screen";
@@ -32,6 +33,7 @@ const LayoutView = () => {
     if (pathname.startsWith("/devis")) return "devis";
     if (pathname.startsWith("/atelier")) return "atelier";
     if (pathname.startsWith("/toy")) return "toy";
+    if (pathname.startsWith("/client")) return "client";
     return "";
   };
 

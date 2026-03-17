@@ -39,6 +39,11 @@ const sidemenuData = {
     { title: "Jouets Electroniques", path: "/toy/repair" },
     { title: "Nintendo Switch Joy-Con", path: "/toy/joycon" },
   ],
+
+  client: [
+    { title: "Devis & Facture", path: "/client" },
+    { title: "Service History", path: "/client/drive" },
+  ],
 };
 
 export default sidemenuData;

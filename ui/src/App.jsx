@@ -37,6 +37,16 @@ import ToyRepair from "./views/toy/toyRepair";
 import ToyJoyCon from "./views/toy/toyJoyCon";
 import ToyDevis from "./views/toy/toyDevis";
 
+// Client Drive 관련 컴포넌트 임포트
+import DashboardClient from "./client/dashboardClient";
+import DossierClient from "./client/dossierClient";
+import FactureClient from "./client/factureClient";
+
+import DriveView from "./client/drive/driveView";
+import DriveDashboard from "./client/drive/driveDashboard";
+import DocsPreview from "./client/drive/docsPreview";
+import ImgPreview from "./client/drive/imgPreview";
+
 function App() {
   const isVercelDomain = window.location.hostname.includes("vercel.app");
 
@@ -134,6 +144,27 @@ function App() {
             <Route index element={<ToyDevis />} />
             <Route path="joycon" element={<ToyJoyCon />} />
             <Route path="repair" element={<ToyRepair />} />
+          </Route>
+
+          <Route path="client">
+            {/* devis */}
+            <Route index element={<DashboardClient />} />
+            <Route path="dossier:docsId" element={<DossierClient />} />
+            <Route path="facture:docsId" element={<FactureClient />} />
+
+            {/* drive */}
+            {/* 1. 로그인: ID와 코드 입력 화면 */}
+            <Route path="drive" element={<DriveView />} />
+            {/* 2. 대시보드: 여기서 문서(PDF)와 사진 폴더 목록이 보임 */}
+            <Route
+              path="driveDashboard/:repairId"
+              element={<DriveDashboard />}
+            />
+            {/* 3. 문서 상세: 견적서(Devis)나 송장(Facture) PDF 보기 */}
+            <Route path="docs/:repairId/:fileId" element={<DocsPreview />} />
+
+            {/* 4. 사진 상세: 특정 폴더(항목)의 사진 슬라이더 보기 */}
+            <Route path="imgs/:repairId/:itemId" element={<ImgPreview />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

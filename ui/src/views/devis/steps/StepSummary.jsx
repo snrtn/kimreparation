@@ -142,6 +142,13 @@ const getLabel = (cat, val) => {
   return labels[cat]?.[val] || labels.global[val] || val;
 };
 
+// ✅ 값이 존재하는지 체크하는 함수 (빈 값 필터링용)
+const hasValue = (val) => {
+  if (!val) return false;
+  if (Array.isArray(val) && val.length === 0) return false;
+  return true;
+};
+
 const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
   const todayDate = new Date().toLocaleDateString("fr-FR");
   const [refNumber] = useState(() => Math.floor(Math.random() * 90000));
@@ -173,7 +180,7 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
   };
 
   const Row = ({ label, value, category }) => {
-    if (!value || (Array.isArray(value) && value.length === 0)) return null;
+    if (!hasValue(value)) return null; // 값이 없으면 렌더링 안 함
     const content = getLabel(category, value);
     return (
       <Box
@@ -230,6 +237,45 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
     );
   };
 
+  // ✅ 2. BILAN TECHNIQUE 아래에 들어갈 분류(카테고리) 설정
+  const techCategories = [
+    {
+      title: "Écran & Tactile",
+      items: [
+        { label: "État écran", val: data.status, cat: "status" },
+        { label: "Aspect ext.", val: data.appearance, cat: "appearance" },
+        { label: "Affichage", val: data.display, cat: "display" },
+        { label: "Tactile", val: data.touchWorks, cat: "touchWorks" },
+        { label: "Détails", val: data.touchIssues, cat: "touchIssues" },
+      ],
+    },
+    {
+      title: "Batterie & Châssis",
+      items: [
+        { label: "Batterie", val: data.battery, cat: "battery" },
+        { label: "Châssis", val: data.frame, cat: "frame" },
+      ],
+    },
+    {
+      title: "Incident & Historique",
+      items: [
+        { label: "Incident", val: data.incident, cat: "incident" },
+        { label: "Liquide", val: data.waterType, cat: "waterType" },
+        { label: "Délai eau", val: data.waterTime, cat: "waterTime" },
+        { label: "Vibrations", val: data.environment, cat: "environment" },
+      ],
+    },
+    {
+      title: "Autres Fonctionnalités",
+      items: [
+        { label: "Caméras", val: data.camera, cat: "camera" },
+        { label: "Audio", val: data.audio, cat: "audio" },
+        { label: "Connectivité", val: data.connection, cat: "connection" },
+        { label: "Stockage", val: data.storage, cat: "storage" },
+      ],
+    },
+  ];
+
   return (
     <Box sx={{ textAlign: "left" }}>
       <Typography
@@ -271,19 +317,19 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
           </Typography>
         </Box>
 
-        <Box sx={{ mb: 4 }}>
+        {/* 📌 1. 고객 & 기기 정보 (배경색 빼고 밑줄 스타일로 변경) */}
+        <Box sx={{ mb: 5 }}>
           <Typography
             sx={{
-              fontSize: "0.8rem",
+              fontSize: "1rem",
               fontWeight: 900,
-              bgcolor: "#1d1d1f",
-              color: "#fff",
-              px: 1.5,
-              py: 0.5,
+              color: "#1d1d1f",
+              borderBottom: "2px solid #1d1d1f",
+              pb: 0.5,
               mb: 2,
             }}
           >
-            1. CLIENT & APPAREIL
+            1. INFORMATIONS CLIENT & APPAREIL
           </Typography>
           <Row label="PROPRIÉTAIRE" value={data.userName} />
           <Row
@@ -291,7 +337,7 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
             value={
               data.contactType === "phone"
                 ? data.userPhone
-                : `${data.emailUser}${data.emailDomain}`
+                : `${data.emailUser || ""}${data.emailDomain || ""}`
             }
           />
           <Row label="MARQUE" value={data.brand} category="brand" />
@@ -299,53 +345,61 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
           <Row label="N° MODÈLE" value={data.modelNumber} />
         </Box>
 
+        {/* 📌 2. 수리 내역 (배경색 빼고 밑줄, 세부 카테고리별로 분리 렌더링) */}
         <Box sx={{ mb: 4 }}>
           <Typography
             sx={{
-              fontSize: "0.8rem",
+              fontSize: "1rem",
               fontWeight: 900,
-              bgcolor: "#1d1d1f",
-              color: "#fff",
-              px: 1.5,
-              py: 0.5,
-              mb: 2,
+              color: "#1d1d1f",
+              borderBottom: "2px solid #1d1d1f",
+              pb: 0.5,
+              mb: 1,
             }}
           >
-            2. BILAN TECHNIQUE
+            2. BILAN TECHNIQUE DÉTAILLÉ
           </Typography>
-          <Row label="État écran" value={data.status} category="status" />
-          <Row
-            label="Aspect ext."
-            value={data.appearance}
-            category="appearance"
-          />
-          <Row label="Affichage" value={data.display} category="display" />
-          <Row label="Incident" value={data.incident} category="incident" />
-          <Row label="Liquide" value={data.waterType} category="waterType" />
-          <Row label="Délai eau" value={data.waterTime} category="waterTime" />
-          <Row label="Châssis" value={data.frame} category="frame" />
-          <Row label="Batterie" value={data.battery} category="battery" />
-          <Row label="Tactile" value={data.touchWorks} category="touchWorks" />
-          <Row
-            label="Détails"
-            value={data.touchIssues}
-            category="touchIssues"
-          />
-          <Row label="Caméras" value={data.camera} category="camera" />
-          <Row label="Audio" value={data.audio} category="audio" />
-          <Row
-            label="Connectivité"
-            value={data.connection}
-            category="connection"
-          />
-          <Row label="Stockage" value={data.storage} category="storage" />
-          <Row
-            label="Vibrations"
-            value={data.environment}
-            category="environment"
-          />
+
+          {/* 분류된 그룹 렌더링 */}
+          {techCategories.map((group, idx) => {
+            const validItems = group.items.filter((item) => hasValue(item.val));
+
+            // 해당 그룹에 선택된 값이 없으면 아예 숨김 (합집합 조건)
+            if (validItems.length === 0) return null;
+
+            return (
+              <Box key={idx} sx={{ mb: 3, pl: { xs: 0, md: 1 } }}>
+                <Typography
+                  sx={{
+                    fontSize: "0.8rem",
+                    fontWeight: 800,
+                    color: "#636366",
+                    borderBottom: "1px solid #e5e5e7",
+                    pb: 0.5,
+                    mb: 1.5,
+                    mt: 2,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {group.title}
+                </Typography>
+
+                {validItems.map((item, i) => (
+                  <Row
+                    key={i}
+                    label={item.label}
+                    value={item.val}
+                    category={item.cat}
+                  />
+                ))}
+              </Box>
+            );
+          })}
         </Box>
 
+        {/* ==========================================================
+            🔽 여기서부터는 기존 코드와 동일 (약관, 서명, 전송 버튼) 🔽
+            ========================================================== */}
         <Box
           sx={{
             p: 2,
