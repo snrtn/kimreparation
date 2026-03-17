@@ -14,10 +14,10 @@ import {
 import SignatureCanvas from "react-signature-canvas";
 import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import PrintIcon from "@mui/icons-material/Print";
 import HomeIcon from "@mui/icons-material/Home";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+
+// 📌 [주의] html2canvas, jsPDF 임포트 제거함! (이제 안 씁니다)
 
 const labels = {
   global: {
@@ -142,7 +142,7 @@ const getLabel = (cat, val) => {
   return labels[cat]?.[val] || labels.global[val] || val;
 };
 
-// ✅ 값이 존재하는지 체크하는 함수 (빈 값 필터링용)
+// 빈 값 필터링 함수
 const hasValue = (val) => {
   if (!val) return false;
   if (Array.isArray(val) && val.length === 0) return false;
@@ -154,33 +154,123 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
   const [refNumber] = useState(() => Math.floor(Math.random() * 90000));
   const pdfRef = useRef();
 
-  const handleDownloadPDF = async () => {
+  const handlePrint = () => {
     const element = pdfRef.current;
-    const canvas = await html2canvas(element, { scale: 2, useCORS: true });
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    const imgProps = pdf.getImageProperties(imgData);
-    const ratio = Math.min(
-      pdfWidth / imgProps.width,
-      (pdfHeight - 15) / imgProps.height,
-    );
-    const finalWidth = imgProps.width * ratio;
-    const finalHeight = imgProps.height * ratio;
-    pdf.addImage(
-      imgData,
-      "PNG",
-      (pdfWidth - finalWidth) / 2,
-      5,
-      finalWidth,
-      finalHeight,
-    );
-    pdf.save(`Diagnostic_KIM_REPARATION_${refNumber}.pdf`);
+    if (!element) return;
+
+    // 1. 스타일 복사
+    const styles = Array.from(
+      document.querySelectorAll('style, link[rel="stylesheet"]'),
+    )
+      .map((s) => s.outerHTML)
+      .join("");
+
+    // 2. 캔버스(서명)를 이미지로 변환
+    const canvasElements = element.querySelectorAll("canvas");
+    const canvasDataUrls = Array.from(canvasElements).map((c) => c.toDataURL());
+
+    // 3. 폼 내용 복제
+    const clone = element.cloneNode(true);
+
+    // 4. 서명 이미지 교체
+    const clonedCanvases = clone.querySelectorAll("canvas");
+    clonedCanvases.forEach((c, i) => {
+      const img = document.createElement("img");
+      img.src = canvasDataUrls[i];
+      img.style.width = "100%";
+      img.style.maxWidth = "600px";
+      c.parentNode.replaceChild(img, c);
+    });
+
+    // 현재 연도 가져오기 (푸터용)
+    const currentYear = new Date().getFullYear();
+
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) {
+      alert("Veuillez autoriser les pop-ups pour imprimer.");
+      return;
+    }
+
+    // 5. 새 창에 HTML + 프린트용 CSS + 📌 FooterSub 내용 렌더링
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Impression - Fiche de Diagnostic</title>
+          ${styles}
+          <style>
+            .hide-on-print { display: none !important; }
+            @media print {
+              @page { size: A4 portrait; margin: 15mm; }
+              body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: white; }
+              .avoid-break { page-break-inside: avoid; break-inside: avoid; }
+            }
+            body { margin: 0; padding: 20px; display: flex; justify-content: center; font-family: sans-serif; }
+            #print-container { width: 100%; max-width: 800px; }
+            
+            /* Footer 전용 스타일 */
+            .print-footer {
+              width: 100%;
+              padding: 40px 0;
+              margin-top: 40px;
+              border-top: 1px solid #f2f2f7;
+              text-align: left;
+            }
+            .print-footer-section { margin-bottom: 32px; }
+            .print-footer-title { font-size: 0.8rem; font-weight: 700; color: #1d1d1f; margin-bottom: 12px; }
+            .print-footer-text { font-size: 0.8rem; color: #86868b; line-height: 1.8; margin: 0; }
+            .print-footer-italic { font-size: 0.8rem; color: #86868b; line-height: 1.8; font-style: italic; margin: 0; }
+            .print-footer-bottom { font-size: 0.75rem; color: #86868b; padding-top: 16px; border-top: 1px dashed #e5e5e7; margin-top: 16px; }
+          </style>
+        </head>
+        <body>
+          <div id="print-container">
+            ${clone.outerHTML}
+
+            <div class="print-footer avoid-break">
+              
+              <div class="print-footer-section">
+                <div class="print-footer-title">AVERTISSEMENT SUR LA SECURITE DE VOS DONNEES PERSONNELLES</div>
+                <p class="print-footer-text">
+                  Nous tenons a informer notre aimable clientele que la sauvegarde integrale de vos donnees (photographies, contacts, messages) reste sous votre responsabilite exclusive avant toute intervention technique. Un appareil endommage par un choc ou un liquide peut presenter des defaillances imprevisibles. <strong>Kim Reparation</strong> ne pourra etre tenu responsable de la perte de vos fichiers numeriques lors du processus de maintenance.
+                </p>
+              </div>
+
+              <div class="print-footer-section">
+                <div class="print-footer-title">TRANSPARENCE SUR LES RISQUES TECHNIQUES ET STRUCTURELS</div>
+                <p class="print-footer-text">
+                  Toute intervention materielle comporte des risques intrinseques lies a l'etat initial de l'appareil. Des dommages invisibles a l'oeil nu, tels que des micro-fissures structurelles, peuvent evoluer lors du demontage. De meme, bien que nous installions systematiquement de nouveaux joints, l'impermeabilite d'origine (normes IP67 ou IP68) ne peut etre garantie a l'identique apres une ouverture. Nous partageons ces informations par souci d'honnetete envers nos clients.
+                </p>
+              </div>
+
+              <div class="print-footer-section">
+                <p class="print-footer-italic">
+                  Note d'independance : Kim Reparation est un prestataire de services independant. Nous ne sommes ni affilies ni autorises par les societes constructrices (telles que Nintendo, Apple ou Samsung). Les noms de marques sont mentionnes uniquement a titre informatif.
+                </p>
+              </div>
+
+              <div class="print-footer-bottom">
+                © ${currentYear} KIM REPARATION. TOUS DROITS RESERVES.
+              </div>
+
+            </div>
+          </div>
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.focus();
+                window.print();
+                window.close();
+              }, 500);
+            };
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
   };
 
   const Row = ({ label, value, category }) => {
-    if (!hasValue(value)) return null; // 값이 없으면 렌더링 안 함
+    if (!hasValue(value)) return null;
     const content = getLabel(category, value);
     return (
       <Box
@@ -237,7 +327,6 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
     );
   };
 
-  // ✅ 2. BILAN TECHNIQUE 아래에 들어갈 분류(카테고리) 설정
   const techCategories = [
     {
       title: "Écran & Tactile",
@@ -295,6 +384,7 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
           border: "2px solid #1d1d1f",
           fontFamily: "monospace",
           mb: 4,
+          margin: "0 auto",
         }}
       >
         <Box
@@ -317,8 +407,8 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
           </Typography>
         </Box>
 
-        {/* 📌 1. 고객 & 기기 정보 (배경색 빼고 밑줄 스타일로 변경) */}
-        <Box sx={{ mb: 5 }}>
+        {/* ✅ className="avoid-break" 추가: 이 덩어리는 페이지 넘어갈 때 반갈죽 되지 않게 설정 */}
+        <Box className="avoid-break" sx={{ mb: 5 }}>
           <Typography
             sx={{
               fontSize: "1rem",
@@ -345,9 +435,9 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
           <Row label="N° MODÈLE" value={data.modelNumber} />
         </Box>
 
-        {/* 📌 2. 수리 내역 (배경색 빼고 밑줄, 세부 카테고리별로 분리 렌더링) */}
         <Box sx={{ mb: 4 }}>
           <Typography
+            className="avoid-break"
             sx={{
               fontSize: "1rem",
               fontWeight: 900,
@@ -360,15 +450,16 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
             2. BILAN TECHNIQUE DÉTAILLÉ
           </Typography>
 
-          {/* 분류된 그룹 렌더링 */}
           {techCategories.map((group, idx) => {
             const validItems = group.items.filter((item) => hasValue(item.val));
-
-            // 해당 그룹에 선택된 값이 없으면 아예 숨김 (합집합 조건)
             if (validItems.length === 0) return null;
-
             return (
-              <Box key={idx} sx={{ mb: 3, pl: { xs: 0, md: 1 } }}>
+              // ✅ 그룹 단위로 페이지 잘림 방지 (avoid-break)
+              <Box
+                className="avoid-break"
+                key={idx}
+                sx={{ mb: 3, pl: { xs: 0, md: 1 } }}
+              >
                 <Typography
                   sx={{
                     fontSize: "0.8rem",
@@ -383,7 +474,6 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
                 >
                   {group.title}
                 </Typography>
-
                 {validItems.map((item, i) => (
                   <Row
                     key={i}
@@ -397,10 +487,8 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
           })}
         </Box>
 
-        {/* ==========================================================
-            🔽 여기서부터는 기존 코드와 동일 (약관, 서명, 전송 버튼) 🔽
-            ========================================================== */}
         <Box
+          className="avoid-break"
           sx={{
             p: 2,
             mb: 4,
@@ -480,7 +568,7 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
           </Box>
         </Box>
 
-        <Box>
+        <Box className="avoid-break">
           <Typography sx={{ fontWeight: 900, fontSize: "1rem", mb: 1 }}>
             Signature du Client :
           </Typography>
@@ -492,6 +580,7 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
               overflow: "hidden",
             }}
           >
+            {/* 서명 칸 너비를 600으로 고정하여 A4 너비를 초과하지 않도록 안전하게 설정 */}
             <SignatureCanvas
               ref={sigCanvasRef}
               penColor="#0000ff"
@@ -500,7 +589,7 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
             />
           </Box>
           <Button
-            data-html2canvas-ignore
+            className="hide-on-print" // ✅ 이 클래스를 추가합니다.
             size="small"
             onClick={() => {
               sigCanvasRef.current.clear();
@@ -518,14 +607,13 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
         </Box>
       </Paper>
 
-      {/* ✅ 추가 요청하신 최종 전송 확인 체크박스 (강력 추천 가시성) */}
       <Box
         sx={{
           p: 2.5,
           bgcolor: "#eff7ff",
           borderRadius: "16px",
           border: "2px solid #0071e3",
-          mb: 5,
+          my: 5,
         }}
       >
         <FormControlLabel
@@ -552,10 +640,17 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
         />
       </Box>
 
-      {/* 완료 모달 */}
+      {/* 모달창 */}
       <Dialog
         open={isSubmitted}
-        PaperProps={{ sx: { borderRadius: "28px", p: 3, textAlign: "center" } }}
+        PaperProps={{
+          sx: {
+            borderRadius: "28px",
+            p: 3,
+            textAlign: "center",
+            minWidth: "300px",
+          },
+        }}
       >
         <DialogContent>
           <CheckCircleIcon sx={{ fontSize: 70, color: "#34c759", mb: 2 }} />
@@ -566,11 +661,12 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
             Merci ! Nous vous recontacterons <strong>très rapidement</strong>.
           </Typography>
           <Stack spacing={2}>
+            {/* ✅ 새로운 프린트 로직이 연결된 버튼 */}
             <Button
               fullWidth
               variant="contained"
-              startIcon={<PictureAsPdfIcon />}
-              onClick={handleDownloadPDF}
+              startIcon={<PrintIcon sx={{ color: "#fff" }} />}
+              onClick={handlePrint}
               sx={{
                 py: 1.8,
                 borderRadius: "14px",
@@ -579,8 +675,9 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
                 fontSize: "1rem",
               }}
             >
-              Sauvegarder en PDF
+              Imprimer la fiche
             </Button>
+
             <Button
               fullWidth
               variant="outlined"

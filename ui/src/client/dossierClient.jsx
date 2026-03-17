@@ -914,7 +914,7 @@ const DossierClient = () => {
               variant="contained"
               fullWidth
               onClick={handlePrint}
-              startIcon={<PrintIcon />}
+              startIcon={<PrintIcon sx={{ color: "#fff" }} />}
               sx={{
                 bgcolor: "#0071e3",
                 py: 1.5,

@@ -7,7 +7,7 @@ import {
   MenuItem,
   Select,
   FormControl,
-  InputLabel,
+  InputAdornment, // ✅ '@' 고정을 위해 추가
 } from "@mui/material";
 
 const StepContact = ({ data, onUpdate }) => {
@@ -138,10 +138,19 @@ const StepContact = ({ data, onUpdate }) => {
               Adresse E-mail
             </Typography>
             <Stack direction="row" spacing={1}>
+              {/* 📍 이메일 앞부분 (자동완성 방지 및 @ 뒤에 자르기) */}
               <TextField
                 placeholder="jean.dupont"
+                autoComplete="off" // 브라우저 자동완성 끄기 시도
                 value={data.emailUser || ""}
-                onChange={(e) => onUpdate({ emailUser: e.target.value })}
+                onChange={(e) => {
+                  let inputVal = e.target.value;
+                  // 값에 '@'가 포함되어 있다면 잘라버림
+                  if (inputVal.includes("@")) {
+                    inputVal = inputVal.split("@")[0];
+                  }
+                  onUpdate({ emailUser: inputVal });
+                }}
                 sx={{
                   flex: 1,
                   "& .MuiOutlinedInput-root": {
@@ -153,7 +162,12 @@ const StepContact = ({ data, onUpdate }) => {
               <FormControl sx={{ minWidth: { xs: 120, md: 160 } }}>
                 <Select
                   value={data.emailDomain || "@gmail.com"}
-                  onChange={(e) => onUpdate({ emailDomain: e.target.value })}
+                  onChange={(e) =>
+                    onUpdate({
+                      emailDomain: e.target.value,
+                      customDomain: "", // 도메인 변경 시 커스텀 입력 초기화
+                    })
+                  }
                   sx={{ borderRadius: "14px", bgcolor: "#fbfbfd" }}
                 >
                   <MenuItem value="@gmail.com">@gmail.com</MenuItem>
@@ -166,11 +180,29 @@ const StepContact = ({ data, onUpdate }) => {
               </FormControl>
             </Stack>
 
-            {/* 'Autre' 선택 시 직접 입력창 */}
+            {/* 📍 'Autre' 선택 시 직접 입력창 (점 필수 입력 검사 추가) */}
             {isCustomDomain && (
               <TextField
                 fullWidth
                 placeholder="exemple.com"
+                autoComplete="off" // 자동완성 끄기
+                value={data.customDomain || ""}
+                onChange={(e) => onUpdate({ customDomain: e.target.value })}
+                error={
+                  (data.customDomain?.length || 0) > 0 &&
+                  !data.customDomain.includes(".")
+                }
+                helperText={
+                  (data.customDomain?.length || 0) > 0 &&
+                  !data.customDomain.includes(".")
+                    ? "Le domaine doit contenir un point (ex: domaine.com)"
+                    : ""
+                }
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">@</InputAdornment>
+                  ),
+                }}
                 sx={{
                   mt: 1.5,
                   "& .MuiOutlinedInput-root": {
@@ -178,7 +210,6 @@ const StepContact = ({ data, onUpdate }) => {
                     bgcolor: "#fbfbfd",
                   },
                 }}
-                onChange={(e) => onUpdate({ customDomain: e.target.value })}
               />
             )}
           </Box>

@@ -294,7 +294,7 @@ const DevisPhone = () => {
         </AppBar>
 
         <Container
-          maxWidth="md"
+          maxWidth="sm"
           sx={{
             pt: 4,
             pb: 15,

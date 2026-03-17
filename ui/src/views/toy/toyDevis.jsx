@@ -18,13 +18,12 @@ import {
   DialogActions,
   AppBar,
   Toolbar,
+  InputAdornment,
 } from "@mui/material";
 import SignatureCanvas from "react-signature-canvas";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import PrintIcon from "@mui/icons-material/Print";
 import HomeIcon from "@mui/icons-material/Home";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 
 const ToyDevis = () => {
   const todayDate = new Date().toLocaleDateString("fr-FR");
@@ -40,7 +39,7 @@ const ToyDevis = () => {
     name: "",
     city: "",
     toyName: "",
-    isJoycon: false, // 👈 이거 추가
+    isJoycon: false,
     contactType: "phone",
     phoneValue: "",
     emailUser: "",
@@ -66,7 +65,7 @@ const ToyDevis = () => {
     {
       id: "voisin",
       isCritical: true,
-      text: "Résidence : Ce service est réservé aux habitants habitants de Beaumetz-lès-Loges et des communes voisines(Basseux, Rivière, Berneville, Simencourt, Monchiet). Une simple vérification de votre adresse (facture/ID) sera effectuée lors du dépôt. Pas de photocopie, juste un coup d'œil pour confirmer que nous sommes bien voisins !",
+      text: "Résidence : Ce service est réservé aux habitants de Beaumetz-lès-Loges et des communes voisines (Basseux, Rivière, Berneville, Simencourt, Monchiet). Une simple vérification de votre adresse (facture/ID) sera effectuée lors du dépôt. Pas de photocopie, juste un coup d'œil pour confirmer que nous sommes bien voisins !",
     },
     {
       id: "pilote",
@@ -146,8 +145,6 @@ const ToyDevis = () => {
     "Rivière",
     "Berneville",
     "Simencourt",
-    "Bailleulval",
-    "Warlus",
     "Monchiet",
   ];
 
@@ -157,11 +154,14 @@ const ToyDevis = () => {
       ? formData.phoneValue
       : `${formData.emailUser}${isCustomDomain ? "@" + formData.customDomain : formData.emailDomain}`;
 
+  // 📍 [핵심 변경점 1] 유효성 검사 로직: customDomain일 때 무조건 '.'이 포함되어야만 인정(true)
   const isContactValid =
     formData.contactType === "phone"
       ? formData.phoneValue.trim() !== ""
       : formData.emailUser.trim() !== "" &&
-        (!isCustomDomain || formData.customDomain.trim() !== "");
+        (!isCustomDomain ||
+          (formData.customDomain.trim() !== "" &&
+            formData.customDomain.includes(".")));
 
   const isComplete =
     Object.keys(agreements).every((k) =>
@@ -170,7 +170,7 @@ const ToyDevis = () => {
     formData.name.trim() !== "" &&
     formData.city !== "" &&
     formData.toyName.trim() !== "" &&
-    isContactValid;
+    isContactValid; // 👈 이제 여기에 점(.) 확인 로직이 포함됩니다.
 
   const toggleAgreement = (id) =>
     setAgreements((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -186,44 +186,69 @@ const ToyDevis = () => {
     setHasSignature(false);
   };
 
-  const handleDownloadPDF = async () => {
+  const handlePrint = () => {
     const element = pdfRef.current;
     if (!element) return;
 
-    const canvas = await html2canvas(element, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      scrollY: 0,
-      windowHeight: element.scrollHeight,
+    const styles = Array.from(
+      document.querySelectorAll('style, link[rel="stylesheet"]'),
+    )
+      .map((s) => s.outerHTML)
+      .join("");
+
+    const canvasElements = element.querySelectorAll("canvas");
+    const canvasDataUrls = Array.from(canvasElements).map((c) => c.toDataURL());
+
+    const clone = element.cloneNode(true);
+
+    const clonedCanvases = clone.querySelectorAll("canvas");
+    clonedCanvases.forEach((c, i) => {
+      const img = document.createElement("img");
+      img.src = canvasDataUrls[i];
+      img.style.width = "100%";
+      img.style.maxWidth = "600px";
+      c.parentNode.replaceChild(img, c);
     });
 
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) {
+      alert("Veuillez autoriser les pop-ups pour imprimer.");
+      return;
+    }
 
-    const pdfWidth = 210;
-    const pdfHeight = 297;
-    const margin = 0;
-
-    const imgProps = pdf.getImageProperties(imgData);
-    const availableWidth = pdfWidth - margin * 2;
-    const availableHeight = pdfHeight - margin * 2;
-
-    const ratio = Math.min(
-      availableWidth / imgProps.width,
-      availableHeight / imgProps.height,
-    );
-
-    const finalWidth = imgProps.width * ratio;
-    const finalHeight = imgProps.height * ratio;
-
-    const x = (pdfWidth - finalWidth) / 2;
-    const y = margin;
-
-    pdf.addImage(imgData, "PNG", x, y, finalWidth, finalHeight);
-    pdf.save(
-      `CONTRAT_KIM_REPARATION_${formData.name.replace(/\s+/g, "_")}.pdf`,
-    );
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Impression - Bon de Prise en Charge</title>
+          ${styles}
+          <style>
+            .hide-on-print { display: none !important; }
+            @media print {
+              @page { size: A4 portrait; margin: 15mm; }
+              body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: white; }
+              .avoid-break { page-break-inside: avoid; break-inside: avoid; }
+            }
+            body { margin: 0; padding: 20px; display: flex; justify-content: center; font-family: sans-serif; }
+            #print-container { width: 100%; max-width: 800px; }
+          </style>
+        </head>
+        <body>
+          <div id="print-container">
+            ${clone.outerHTML}
+          </div>
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.focus();
+                window.print();
+                window.close();
+              }, 500);
+            };
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
   };
 
   const handleSendEmail = () => {
@@ -324,54 +349,79 @@ const ToyDevis = () => {
                 />
               ) : (
                 <Stack
-                  direction="row"
-                  sx={{ width: "100%" }}
-                  alignItems="flex-end"
-                  spacing={1}
+                  direction="column"
+                  spacing={2}
+                  sx={{ width: "100%", flex: 1 }}
                 >
-                  <TextField
-                    variant="standard"
-                    label="E-mail"
-                    sx={{ flex: 1 }}
-                    placeholder="jean.dupont"
-                    value={formData.emailUser}
-                    onChange={(e) =>
-                      setFormData({ ...formData, emailUser: e.target.value })
-                    }
-                  />
-                  <FormControl variant="standard" sx={{ minWidth: 140 }}>
-                    <Select
-                      value={formData.emailDomain}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          emailDomain: e.target.value,
-                        })
-                      }
-                    >
-                      <MenuItem value="@gmail.com">@gmail.com</MenuItem>
-                      <MenuItem value="@orange.fr">@orange.fr</MenuItem>
-                      <MenuItem value="@wanadoo.fr">@wanadoo.fr</MenuItem>
-                      <MenuItem value="@free.fr">@free.fr</MenuItem>
-                      <MenuItem value="@sfr.fr">@sfr.fr</MenuItem>
-                      <MenuItem value="@outlook.com">@outlook.com</MenuItem>
-                      <MenuItem value="@yahoo.fr">@yahoo.fr</MenuItem>
-                      <MenuItem value="@icloud.com">@icloud.com</MenuItem>
-                      <MenuItem value="custom">Autre</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <Stack direction="row" alignItems="flex-end" spacing={1}>
+                    <TextField
+                      variant="standard"
+                      label="E-mail"
+                      sx={{ flex: 1 }}
+                      placeholder="jean.dupont"
+                      autoComplete="off"
+                      value={formData.emailUser}
+                      onChange={(e) => {
+                        let inputVal = e.target.value;
+                        if (inputVal.includes("@")) {
+                          inputVal = inputVal.split("@")[0];
+                        }
+                        setFormData({ ...formData, emailUser: inputVal });
+                      }}
+                    />
+                    <FormControl variant="standard" sx={{ minWidth: 140 }}>
+                      <Select
+                        value={formData.emailDomain}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            emailDomain: e.target.value,
+                            customDomain: "", // 다른 거 고르면 커스텀 도메인 초기화
+                          })
+                        }
+                      >
+                        <MenuItem value="@gmail.com">@gmail.com</MenuItem>
+                        <MenuItem value="@orange.fr">@orange.fr</MenuItem>
+                        <MenuItem value="@wanadoo.fr">@wanadoo.fr</MenuItem>
+                        <MenuItem value="@free.fr">@free.fr</MenuItem>
+                        <MenuItem value="@sfr.fr">@sfr.fr</MenuItem>
+                        <MenuItem value="@outlook.com">@outlook.com</MenuItem>
+                        <MenuItem value="@yahoo.fr">@yahoo.fr</MenuItem>
+                        <MenuItem value="@icloud.com">@icloud.com</MenuItem>
+                        <MenuItem value="custom">Autre</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Stack>
+
                   {formData.emailDomain === "custom" && (
                     <TextField
                       variant="standard"
-                      label="Domaine"
+                      label="Nom de domaine"
+                      fullWidth
                       placeholder="exemple.com"
-                      sx={{ width: 120 }}
+                      autoComplete="off"
+                      // 📍 [핵심 변경점 2] UI 경고 표시: 값이 입력되었는데 '.'이 없으면 에러 발생
+                      error={
+                        formData.customDomain.length > 0 &&
+                        !formData.customDomain.includes(".")
+                      }
+                      helperText={
+                        formData.customDomain.length > 0 &&
+                        !formData.customDomain.includes(".")
+                          ? "Le domaine doit contenir un point (ex: domaine.com)" // 빨간색 에러 메시지 텍스트
+                          : ""
+                      }
                       onChange={(e) =>
                         setFormData({
                           ...formData,
                           customDomain: e.target.value,
                         })
                       }
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">@</InputAdornment>
+                        ),
+                      }}
                     />
                   )}
                 </Stack>
@@ -432,7 +482,6 @@ const ToyDevis = () => {
             CLIQUEZ SUR CHAQUE CARTE POUR ACCEPTER LES CONDITIONS DE BÉNÉVOLAT :
           </Typography>
           <Stack spacing={1.5} sx={{ mb: 6 }}>
-            {/* 👇 새로 추가되는 조이콘 전용 항목 (여기에 끼워넣기!) */}
             {formData.isJoycon && (
               <Paper
                 variant="outlined"
@@ -537,7 +586,7 @@ const ToyDevis = () => {
             sx={{
               py: 2,
               borderRadius: "12px",
-              bgcolor: "#1d1d1f",
+              bgcolor: "#0071e3",
               fontWeight: 800,
             }}
           >
@@ -630,7 +679,6 @@ const ToyDevis = () => {
             <Box
               sx={{ display: "flex", flexDirection: "column", gap: 1, mb: 4 }}
             >
-              {/* 👇 이거 한 줄만 기존 map 위에 추가하시면 됩니다 */}
               {formData.isJoycon && (
                 <Typography sx={{ fontSize: "0.75rem", lineHeight: 1.3 }}>
                   • {joyconText}
@@ -648,6 +696,7 @@ const ToyDevis = () => {
             </Box>
 
             <Box
+              className="avoid-break"
               sx={{
                 p: 2,
                 border: "2px solid #000",
@@ -663,7 +712,7 @@ const ToyDevis = () => {
               </Typography>
             </Box>
 
-            <Box sx={{}}>
+            <Box className="avoid-break" sx={{}}>
               <Stack
                 direction={{ xs: "column", md: "row" }}
                 justifyContent="space-between"
@@ -699,7 +748,7 @@ const ToyDevis = () => {
                     />
                   </Box>
                   <Button
-                    data-html2canvas-ignore
+                    className="hide-on-print"
                     size="small"
                     onClick={clearSignature}
                     sx={{ mt: 1, color: "#d32f2f" }}
@@ -776,8 +825,8 @@ const ToyDevis = () => {
             <Button
               fullWidth
               variant="contained"
-              startIcon={<PictureAsPdfIcon />}
-              onClick={handleDownloadPDF}
+              startIcon={<PrintIcon sx={{ color: "#fff" }} />}
+              onClick={handlePrint}
               sx={{
                 py: 1.5,
                 borderRadius: "12px",
@@ -785,14 +834,19 @@ const ToyDevis = () => {
                 fontWeight: 900,
               }}
             >
-              Sauvegarder en PDF
+              Imprimer le contrat
             </Button>
             <Button
               fullWidth
               variant="outlined"
               startIcon={<HomeIcon />}
               onClick={() => window.location.reload()}
-              sx={{ py: 1.5, borderRadius: "12px" }}
+              sx={{
+                py: 1.5,
+                borderRadius: "12px",
+                color: "#1d1d1f",
+                borderColor: "#1d1d1f",
+              }}
             >
               Retour à l'accueil
             </Button>

@@ -41,11 +41,14 @@ const DashboardClient = () => {
       ? formData.phoneValue
       : `${formData.emailUser}${isCustomDomain ? "@" + formData.customDomain : formData.emailDomain}`;
 
+  // 📍 [핵심 변경점 1] customDomain일 때 무조건 '.'이 포함되어야 유효(valid)하게 처리
   const isContactValid =
     formData.contactType === "phone"
       ? formData.phoneValue.trim() !== ""
       : formData.emailUser.trim() !== "" &&
-        (!isCustomDomain || formData.customDomain.trim() !== "");
+        (!isCustomDomain ||
+          (formData.customDomain.trim() !== "" &&
+            formData.customDomain.includes(".")));
 
   const isComplete = formData.name.trim() !== "" && isContactValid;
 
@@ -75,7 +78,8 @@ const DashboardClient = () => {
   const handleSearch = () => {
     const finalCode = codes.join("");
     if (finalCode.length === 6) {
-      navigate(`/client/dossier/${finalCode}`);
+      // navigate(`/client/dossier/${finalCode}`);
+      navigate(`/client/dossier:docsId`);
     } else {
       alert("Veuillez saisir votre code à 6 caractères.");
     }
@@ -260,9 +264,14 @@ const DashboardClient = () => {
                       placeholder="jean.dupont"
                       autoComplete="off" // 📍 요구사항 2: 이메일 자동완성 끄기
                       value={formData.emailUser}
-                      onChange={(e) =>
-                        setFormData({ ...formData, emailUser: e.target.value })
-                      }
+                      onChange={(e) => {
+                        // 📍 [핵심 변경점 2] 이메일 입력 시 '@' 뒤로 다 날려버림
+                        let inputVal = e.target.value;
+                        if (inputVal.includes("@")) {
+                          inputVal = inputVal.split("@")[0];
+                        }
+                        setFormData({ ...formData, emailUser: inputVal });
+                      }}
                     />
                     <FormControl variant="standard" sx={{ minWidth: 140 }}>
                       <Select
@@ -271,6 +280,7 @@ const DashboardClient = () => {
                           setFormData({
                             ...formData,
                             emailDomain: e.target.value,
+                            customDomain: "", // 📍 다른 도메인 선택하면 커스텀 입력 초기화
                           })
                         }
                       >
@@ -287,13 +297,25 @@ const DashboardClient = () => {
                     </FormControl>
                   </Stack>
 
+                  {/* 📍 [핵심 변경점 3] 직접 입력창 + '.' 필수 확인 (빨간색 에러 텍스트) */}
                   {formData.emailDomain === "custom" && (
                     <TextField
                       variant="standard"
                       label="Nom de domaine"
                       fullWidth
                       placeholder="exemple.com"
-                      autoComplete="off" // 📍 요구사항 2: 직접 입력 칸도 자동완성 끄기
+                      autoComplete="off"
+                      value={formData.customDomain}
+                      error={
+                        formData.customDomain.length > 0 &&
+                        !formData.customDomain.includes(".")
+                      }
+                      helperText={
+                        formData.customDomain.length > 0 &&
+                        !formData.customDomain.includes(".")
+                          ? "Le domaine doit contenir un point (ex: domaine.com)"
+                          : ""
+                      }
                       onChange={(e) =>
                         setFormData({
                           ...formData,
@@ -301,7 +323,6 @@ const DashboardClient = () => {
                         })
                       }
                       InputProps={{
-                        // 📍 요구사항 3: 지울 수 없는 '@' 고정
                         startAdornment: (
                           <InputAdornment position="start">@</InputAdornment>
                         ),
