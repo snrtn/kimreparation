@@ -14,7 +14,9 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  DialogActions, // 📍 팝업용 액션 추가
+  DialogActions,
+  Checkbox, // 📍 이거 추가
+  FormControlLabel, // 📍 팝업용 액션 추가
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PersonIcon from "@mui/icons-material/Person";
@@ -31,14 +33,14 @@ import SignatureCanvas from "react-signature-canvas";
 // ==========================================
 // 🧩 1. DevisHeader
 // ==========================================
-const DevisHeader = ({ devisData }) => (
+const DevisHeader = ({ devisData, getValidityInfo }) => (
   <Box className="protected-zone" sx={{ mb: 6 }}>
     <Stack direction="row" justifyContent="space-between" sx={{ mb: 6 }}>
       <Box>
         <Typography
           variant="h4"
           fontWeight="900"
-          sx={{ color: "#1976d2", mb: 1 }}
+          sx={{ color: "#1d1d1f", mb: 1 }}
         >
           {devisData.company.name}
         </Typography>
@@ -93,13 +95,85 @@ const DevisHeader = ({ devisData }) => (
           [{devisData.version}]
         </span>
       </Typography>
-      <Stack direction="row" spacing={4}>
-        <Typography variant="body3">
+
+      <Stack direction="row" spacing={4} alignItems="center">
+        <Typography variant="body2">
           <strong>Émis le :</strong> {devisData.date}
         </Typography>
-        <Typography variant="body3">
-          <strong>Valable jusqu'au :</strong> {devisData.validity}
-        </Typography>
+
+        {(() => {
+          const info = getValidityInfo(devisData.date);
+          if (!info) return null;
+
+          // 💀 4단계: 21일 지남 (완전 만료)
+          if (info.status === "EXPIRED") {
+            return (
+              <Typography
+                className="no-print"
+                variant="body2"
+                sx={{
+                  color: "#d32f2f",
+                  fontWeight: "900",
+                  bgcolor: "#ffebee",
+                  px: 1,
+                  py: 0.5,
+                  borderRadius: "4px",
+                }}
+              >
+                ⚠️ DEVIS EXPIRÉ (견적 만료)
+              </Typography>
+            );
+          }
+
+          // 🛑 3단계: 10일 지남 ~ 21일 이내 (빨간색 최후통첩)
+          if (info.status === "PROLONGED_RED") {
+            return (
+              <Typography className="no-print" variant="body2">
+                <strong>Valable jusqu'au :</strong>{" "}
+                <span
+                  style={{
+                    textDecoration: "line-through",
+                    color: "#86868b",
+                    marginRight: "8px",
+                  }}
+                >
+                  {info.date10}
+                </span>
+                <span style={{ color: "#d32f2f", fontWeight: "900" }}>
+                  {info.date21} (Dernier délai)
+                </span>
+              </Typography>
+            );
+          }
+
+          // ⚠️ 2단계: 3일 지남 ~ 10일 이내 (주황색 연장)
+          if (info.status === "PROLONGED_ORANGE") {
+            return (
+              <Typography className="no-print" variant="body2">
+                <strong>Valable jusqu'au :</strong>{" "}
+                <span
+                  style={{
+                    textDecoration: "line-through",
+                    color: "#86868b",
+                    marginRight: "8px",
+                  }}
+                >
+                  {info.date3}
+                </span>
+                <span style={{ color: "#ff9800", fontWeight: "900" }}>
+                  {info.date10} (Prolongé)
+                </span>
+              </Typography>
+            );
+          }
+
+          // ✅ 1단계: 3일 이내 (정상)
+          return (
+            <Typography className="no-print" variant="body2">
+              <strong>Valable jusqu'au :</strong> <span>{info.date3}</span>
+            </Typography>
+          );
+        })()}
       </Stack>
     </Box>
   </Box>
@@ -232,6 +306,10 @@ const DevisFooter = ({
   const [tempSig, setTempSig] = useState(null); // 모달에서 그린 임시 서명 이미지
   const modalSigCanvas = useRef(null);
 
+  // 📍 추가된 상태: 최종 확인 모달 및 체크박스 상태
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [isAgreed, setIsAgreed] = useState(false);
+
   const [isMobile] = useState(() => {
     if (typeof window !== "undefined") {
       return window.innerWidth <= 1024 || navigator.maxTouchPoints > 0;
@@ -239,16 +317,25 @@ const DevisFooter = ({
     return false;
   });
 
-  // 메인 승인(Valider) 버튼 클릭 시
-  const handleSave = () => {
-    let finalDataUrl = "";
+  // 📍 1. 서명 후 Valider 누르면 -> 바로 저장 안 하고 '동의 모달창' 띄움!
+  const handlePreSave = () => {
     if (isMobile) {
       if (!tempSig) return alert("Veuillez signer le document.");
-      finalDataUrl = tempSig; // 모달에서 받아온 임시 서명 사용
     } else {
       if (sigCanvas.current.isEmpty())
         return alert("Veuillez signer le document.");
-      finalDataUrl = sigCanvas.current.getCanvas().toDataURL("image/png"); // PC에서 직접 그린 서명 사용
+    }
+    setIsAgreed(false); // 체크박스 초기화
+    setOpenConfirmModal(true); // 동의 모달창 열기
+  };
+
+  // 📍 2. 모달창에서 체크하고 Accepter 누르면 -> 찐으로 저장!
+  const handleFinalSave = () => {
+    let finalDataUrl = "";
+    if (isMobile) {
+      finalDataUrl = tempSig;
+    } else {
+      finalDataUrl = sigCanvas.current.getCanvas().toDataURL("image/png");
     }
 
     const now = new Date();
@@ -259,16 +346,18 @@ const DevisFooter = ({
         minute: "2-digit",
       },
     )}`;
+
     onApprove(finalDataUrl, timestamp);
+    setOpenConfirmModal(false); // 모달창 닫기
   };
 
-  // 모달 안에서 '확인(Confirmer)' 버튼 클릭 시
+  // 모달 안에서 '확인(Confirmer)' 버튼 클릭 시 (그리기 완료)
   const handleModalConfirm = () => {
     if (modalSigCanvas.current.isEmpty()) return;
     const dataUrl = modalSigCanvas.current.getCanvas().toDataURL("image/png");
-    setTempSig(dataUrl); // 임시 이미지 상태 저장
-    setIsDrawing(true); // 메인 화면의 Valider 버튼 활성화
-    setOpenSignModal(false); // 모달 닫기
+    setTempSig(dataUrl);
+    setIsDrawing(true);
+    setOpenSignModal(false);
   };
 
   return (
@@ -316,30 +405,41 @@ const DevisFooter = ({
 
       {/* 서명 영역 */}
       <Box sx={{ pt: 4, borderTop: "2px dashed #ccc", mb: 4 }}>
-        <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
-          Validation et Accord du Client
-        </Typography>
         <Stack
           direction="row"
           justifyContent="space-between"
           alignItems="center"
           sx={{ mt: 4 }}
         >
-          <Box>
-            <Typography variant="body1" fontWeight="bold">
-              Signé électroniquement le :
+          <Box sx={{ mb: 5 }}>
+            {/* 📍 메인 제목 (동의 서명) */}
+            <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
+              Signature pour accord
             </Typography>
-            <Typography sx={{ color: "#1976d2", fontWeight: 900 }}>
-              {new Date().toLocaleDateString("fr-FR")}
-            </Typography>
+
+            {/* 📍 이해 쏙쏙 되는 프로페셔널한 문구로 변경! */}
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Typography variant="body1" fontWeight="bold">
+                {signatureData ? "Validé le :" : "Statut :"}
+              </Typography>
+              <Typography
+                sx={{
+                  color: signatureData ? "#4caf50" : "#86868b",
+                  fontWeight: 900,
+                  ml: 1,
+                }}
+              >
+                {signatureData ? approvedTime : "En attente de validation"}
+              </Typography>
+            </Box>
           </Box>
           <Box sx={{ textAlign: "right" }}>
             {!signatureData ? (
               <Box className="no-print">
                 <Box
                   sx={{
-                    width: "300px",
-                    height: "120px",
+                    width: "350px",
+                    height: "160px",
                     border: "2px dashed #1976d2",
                     borderRadius: "8px",
                     bgcolor: "#f0f8ff",
@@ -381,8 +481,8 @@ const DevisFooter = ({
                       ref={sigCanvas}
                       penColor="#0000ff"
                       canvasProps={{
-                        width: 300,
-                        height: 120,
+                        width: 350,
+                        height: 160,
                         className: "sigCanvas",
                       }}
                       onEnd={() => setIsDrawing(true)}
@@ -407,11 +507,12 @@ const DevisFooter = ({
                   >
                     Effacer
                   </Button>
+                  {/* 📍 기존 handleSave 대신 handlePreSave(동의 모달 띄우기) 연결! */}
                   <Button
                     size="small"
                     variant="contained"
                     disabled={!isDrawing}
-                    onClick={handleSave}
+                    onClick={handlePreSave}
                   >
                     Valider
                   </Button>
@@ -453,7 +554,7 @@ const DevisFooter = ({
                         penColor="#0000ff"
                         canvasProps={{
                           width: 280,
-                          height: 150,
+                          height: 160,
                           style: { touchAction: "none" },
                         }}
                       />
@@ -488,8 +589,8 @@ const DevisFooter = ({
               <Box>
                 <Box
                   sx={{
-                    width: "300px",
-                    height: "120px",
+                    width: "350px",
+                    height: "160px",
                     border: "2px solid #1976d2",
                     borderRadius: "8px",
                     display: "flex",
@@ -504,18 +605,76 @@ const DevisFooter = ({
                     style={{ maxWidth: "100%", maxHeight: "100%" }}
                   />
                 </Box>
-                <Typography
-                  variant="caption"
-                  color="success.main"
-                  sx={{ fontWeight: "900", mt: 1, display: "block" }}
-                >
-                  ✓ Approuvé le {approvedTime}
-                </Typography>
               </Box>
             )}
           </Box>
         </Stack>
       </Box>
+      {/* 🚀 [여기가 핵심!] 최종 동의 체크 모달 */}
+      <Dialog
+        open={openConfirmModal}
+        onClose={() => setOpenConfirmModal(false)}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle
+          sx={{ bgcolor: "#2e7d32", color: "#fff", fontWeight: "bold" }}
+        >
+          Validation du Devis
+        </DialogTitle>
+        <DialogContent sx={{ p: 3, pt: 4 }}>
+          <Typography variant="body1" sx={{ my: 3, color: "#1d1d1f" }}>
+            Montant total du devis :{" "}
+            <strong>{totalTTC.toFixed(2)} € TTC</strong>
+          </Typography>
+
+          <Box
+            sx={{
+              p: 2,
+              bgcolor: "#f5f5f7",
+              borderRadius: "8px",
+              border: "1px solid #e0e0e0",
+            }}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isAgreed}
+                  onChange={(e) => setIsAgreed(e.target.checked)}
+                  color="success"
+                  sx={{ "& .MuiSvgIcon-root": { fontSize: 28 } }}
+                />
+              }
+              label={
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 600, color: "#1d1d1f", lineHeight: 1.4 }}
+                >
+                  Je confirme avoir pris connaissance et j'accepte ce devis
+                  ainsi que les conditions générales de réparation.
+                </Typography>
+              }
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ p: 3, justifyContent: "space-between" }}>
+          <Button
+            onClick={() => setOpenConfirmModal(false)}
+            sx={{ color: "#86868b", fontWeight: "bold" }}
+          >
+            Annuler
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            disabled={!isAgreed}
+            onClick={handleFinalSave}
+            sx={{ fontWeight: "bold", px: 4 }}
+          >
+            Accepter
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
@@ -773,11 +932,60 @@ const DossierClient = () => {
     },
   ]);
 
+  // 📍 달력 계산기 (형님의 3주 컷 로직: 3일 + 7일 + 11일 = 총 21일)
+  const getValidityInfo = (dateStr) => {
+    if (!dateStr) return null;
+
+    const [day, month, year] = dateStr.split("/");
+    const origDate = new Date(`${year}-${month}-${day}`);
+    origDate.setHours(0, 0, 0, 0);
+
+    // 1. 기본 3일
+    const valid3 = new Date(origDate);
+    valid3.setDate(valid3.getDate() + 3);
+
+    // 2. +7일 누적 (총 10일)
+    const valid10 = new Date(valid3);
+    valid10.setDate(valid10.getDate() + 7);
+
+    // 3. 📍 +11일 최종 누적 (총 21일 = 딱 3주)
+    const valid21 = new Date(valid10);
+    valid21.setDate(valid10.getDate() + 11);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const formatDate = (d) => {
+      const dd = String(d.getDate()).padStart(2, "0");
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const yyyy = d.getFullYear();
+      return `${dd}/${mm}/${yyyy}`;
+    };
+
+    // 📍 현재 상태 판별
+    let status = "VALID";
+    if (today > valid21) {
+      status = "EXPIRED"; // 21일 지남 -> 만료
+    } else if (today > valid10) {
+      status = "PROLONGED_RED"; // 10일 지남 -> 빨간색 (최종 21일까지)
+    } else if (today > valid3) {
+      status = "PROLONGED_ORANGE"; // 3일 지남 -> 주황색 (10일까지)
+    }
+
+    return {
+      date3: formatDate(valid3),
+      date10: formatDate(valid10),
+      date21: formatDate(valid21),
+      status,
+    };
+  };
+
   const devisData = {
     devisNumber: "DEV-2026-0042",
     version: "v3",
-    date: "17/03/2026",
-    validity: "17/04/2026",
+    date: "01/03/2026",
+    dateEmission: "",
+    isPaid: false,
     company: {
       name: "KIM REPARATION",
       address: "123 Rue de la Réparation",
@@ -1007,7 +1215,7 @@ const DossierClient = () => {
           mb: { xs: "-650px", sm: "-340px", md: 0 },
         }}
       >
-        <DevisHeader devisData={devisData} />
+        <DevisHeader devisData={devisData} getValidityInfo={getValidityInfo} />
         <DevisItems items={devisData.items} onImageClick={handleOpenGallery} />
         <DevisFooter
           totalHT={totalHT}

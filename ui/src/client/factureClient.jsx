@@ -28,7 +28,7 @@ const FactureClient = () => {
   const factureData = {
     devisNumber: "DEV-2026-0042",
     date: "17/03/2026",
-    validity: "17/04/2026",
+    dateEmission: "22/04/2026",
     isPaid: true,
     // 📍 DB에서 가져올 결제 수단 (예: "PayPal", "Espèces", "Virement", "CB")
     paymentMethod: "PayPal", // 📍 false: 결제 대기 / true: 결제 완료 (도장 찍힘)
@@ -243,16 +243,16 @@ const FactureClient = () => {
             <Typography variant="body1" fontWeight="bold">
               {factureData.client.name}
             </Typography>
-            <Typography variant="body2">
+            {/* <Typography variant="body2">
               {factureData.client.address}
-            </Typography>
-            <Typography variant="body2">{factureData.client.city}</Typography>
+            </Typography> */}
+            {/* <Typography variant="body2">{factureData.client.city}</Typography> */}
             <Typography variant="body2" sx={{ mt: 1 }}>
               Contact : {factureData.client.contact}
             </Typography>
             <Typography
               variant="body2"
-              sx={{ color: "#1d1d1f", fontWeight: 700, mt: 1 }}
+              sx={{ color: "#1976d2", fontWeight: 700, mt: 1 }}
             >
               Appareil : {factureData.client.toyName}
             </Typography>
@@ -265,17 +265,17 @@ const FactureClient = () => {
             direction="row"
             justifyContent="space-between"
             alignItems="center"
-            sx={{ py: 6 }}
+            sx={{ py: 2 }}
           >
             <Typography variant="h6" fontWeight="900" sx={{ letterSpacing: 1 }}>
               FACTURE N° {factureNumber}
             </Typography>
             <Typography
               sx={{
-                border: "3px solid #2e7d32", // 테두리 살짝 굵게 (도장 느낌)
-                color: "#2e7d32",
-                fontWeight: "600", // 글씨도 굵게
-                fontSize: "1.2rem",
+                border: "3px solid #4caf50",
+                color: "#4caf50",
+                fontWeight: "600",
+                fontSize: "0.9rem",
                 px: 2,
                 py: 0.5,
                 borderRadius: "6px",
@@ -290,12 +290,11 @@ const FactureClient = () => {
                 : "PAYÉE"}
             </Typography>
           </Stack>
+
+          {/* 📍 군더더기 빼고 발행/결제 날짜 하나만 놔둠! */}
           <Stack direction="row" spacing={4} sx={{ mt: 2 }}>
             <Typography variant="body2">
-              <strong>Date de facturation :</strong> {factureData.date}
-            </Typography>
-            <Typography variant="body2">
-              <strong>Date d'échéance :</strong> {factureData.validity}
+              <strong>Date d'émission :</strong> {factureData.dateEmission}
             </Typography>
           </Stack>
         </Box>
@@ -332,7 +331,12 @@ const FactureClient = () => {
                   </TableCell>
                   <TableCell align="center">1</TableCell>
                   <TableCell align="right">{item.price.toFixed(2)} €</TableCell>
-                  <TableCell align="right">{item.price.toFixed(2)} €</TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{ color: "#1976d2", fontWeight: "900" }}
+                  >
+                    {item.price.toFixed(2)} €
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -375,9 +379,13 @@ const FactureClient = () => {
             <Divider sx={{ my: 1, borderColor: "#000" }} />
             <Stack direction="row" justifyContent="space-between">
               <Typography variant="h6" fontWeight="900">
-                Total TTC :
+                Total Payé TTC :
               </Typography>
-              <Typography variant="h6" fontWeight="900">
+              <Typography
+                variant="h6"
+                fontWeight="900"
+                sx={{ color: "#1976d2" }}
+              >
                 {totalTTC.toFixed(2)} €
               </Typography>
             </Stack>
@@ -388,7 +396,7 @@ const FactureClient = () => {
               color="text.secondary"
               sx={{ mt: 1 }}
             >
-              Net à payer
+              ✔ Règlement effectué
             </Typography>
           </Box>
         </Stack>
