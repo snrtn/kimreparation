@@ -98,7 +98,7 @@ const DashboardClient = () => {
           CONSULTER MON DOSSIER
         </Typography>
         <Typography variant="body2" sx={{ mb: 6, color: "#86868b" }}>
-          Veuillez saisir votre code d'accès (6 caractères minimum)
+          Veuillez saisir votre code d'accès des caractères
         </Typography>
 
         {/* 📍 코드 입력 텍스트 필드 */}
