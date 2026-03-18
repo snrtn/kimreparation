@@ -41,7 +41,17 @@ const LayoutView = () => {
   const currentMenu = sidemenuData[guideType] || [];
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+        userSelect: "none",
+      }}
+      onContextMenu={(e) => e.preventDefault()} // 1. 우클릭 방지
+      onCopy={(e) => e.preventDefault()} // 2. 복사(Ctrl+C) 방지
+      onCut={(e) => e.preventDefault()} // 3. 잘라내기(Ctrl+X) 방지
+    >
       <CssBaseline />
 
       {/* 헤더 출력 로직 */}

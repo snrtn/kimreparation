@@ -15,8 +15,8 @@ const FooterMain = () => {
         { name: "Batterie & Charge", path: "/repair/repairBattery" },
         { name: "Système & Logiciel", path: "/repair/repairSystem" },
         { name: "Caméra & Son", path: "/repair/repairHardware" },
-        { name: "Réalité Technique", path: "/repair/repairLimit" },
         { name: "Étanchéité", path: "/repair/waterproof" },
+        { name: "Réalité Technique", path: "/repair/repairLimit" },
       ],
     },
     {

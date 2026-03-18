@@ -427,7 +427,9 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
             value={
               data.contactType === "phone"
                 ? data.userPhone
-                : `${data.emailUser || ""}${data.emailDomain || ""}`
+                : data.emailDomain === "custom"
+                  ? `${data.emailUser || ""}@${data.customDomain || ""}` // 커스텀 도메인일 때 로직
+                  : `${data.emailUser || ""}${data.emailDomain || ""}` // 일반 도메인일 때 로직
             }
           />
           <Row label="MARQUE" value={data.brand} category="brand" />

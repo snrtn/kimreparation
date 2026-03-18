@@ -1,6 +1,14 @@
 import React from "react";
-import { Box, Typography, Stack, Container, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Stack,
+  Container,
+  Button,
+  Tooltip,
+} from "@mui/material";
 import YouTubeIcon from "@mui/icons-material/YouTube";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 const AtelierAtelier = () => {
   const labelStyle = {
@@ -11,7 +19,26 @@ const AtelierAtelier = () => {
     mb: 3,
   };
 
-  // ✅ 형님이 주신 원본 데이터 반영 (안내 문구)
+  // ✅ 툴팁 하얀색 테두리 스타일 공통 적용
+  const tooltipSlotProps = {
+    popper: {
+      sx: {
+        "& .MuiTooltip-tooltip": {
+          bgcolor: "#ffffff",
+          color: "#1d1d1f",
+          border: "1px solid #d2d2d7",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          p: 1.5,
+          borderRadius: "12px",
+        },
+        "& .MuiTooltip-arrow": {
+          color: "#ffffff",
+          "&::before": { border: "1px solid #d2d2d7" },
+        },
+      },
+    },
+  };
+
   const infoNotes = [
     "Accueil : Pour vous consacrer le temps nécessaire et vous éviter toute attente, je vous reçois sur rendez-vous après réception de votre demande de devis.",
     "Confirmation : Comme je me déplace parfois en intervention, un petit message avant de venir vous assure de ma présence à l'atelier.",
@@ -19,7 +46,6 @@ const AtelierAtelier = () => {
 
   return (
     <Container maxWidth="md" sx={{ py: { xs: 16, xl: 20 } }}>
-      {/* --- 섹션 1: 영업시간 및 안내 사항 --- */}
       <Box
         sx={{
           minHeight: "70vh",
@@ -29,20 +55,16 @@ const AtelierAtelier = () => {
         }}
       >
         <Box sx={{ mb: 3 }}>
-          {/* 🔥 파란색 소제목: Horaires (시간) */}
           <Typography
             sx={{
               fontSize: "0.9rem",
               fontWeight: 600,
               color: "#0066cc",
               mb: 0.8,
-              letterSpacing: "-0.01em",
             }}
           >
             Horaires
           </Typography>
-
-          {/* 🔥 메인 제목: Horaires d'ouverture. (영업 시간) */}
           <Typography
             sx={{
               fontWeight: 800,
@@ -57,18 +79,15 @@ const AtelierAtelier = () => {
         </Box>
 
         <Box sx={{ py: 6, borderTop: "1px solid #e5e5e7" }}>
-          <Typography sx={labelStyle}>HORAIRES D'OUVERTURE</Typography>
           <Stack spacing={4} sx={{ mb: 6 }}>
-            {/* 정규 영업일 (월, 화, 목, 금) */}
+            {/* --- 정규 영업일 --- */}
             <Stack
               direction="row"
               justifyContent="space-between"
               alignItems="baseline"
-              spacing={2} // 모바일에서 두 텍스트가 붙지 않게 최소 간격 유지
+              spacing={2}
             >
               <Box sx={{ flex: 1 }}>
-                {" "}
-                {/* 왼쪽 영역이 남는 공간을 다 차지하게 해서 오른쪽을 끝으로 밀어줌 */}
                 <Typography
                   sx={{
                     fontSize: "1rem",
@@ -79,8 +98,64 @@ const AtelierAtelier = () => {
                 >
                   Lundi, Mardi, Jeudi, Vendredi
                 </Typography>
-                <Typography sx={{ fontSize: "1.2rem", fontWeight: 500 }}>
-                  09h00 — 18h00
+
+                {/* 📍 텍스트 + 아이콘 한 줄 정렬 */}
+                <Typography
+                  sx={{
+                    fontSize: "1.2rem",
+                    fontWeight: 500,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 0.5,
+                  }}
+                >
+                  Sur rendez-vous uniquement
+                  <Tooltip
+                    title={
+                      <Box sx={{ p: 0.5 }}>
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          sx={{ fontWeight: 700, mb: 0.5 }}
+                        >
+                          Horaires : 09h00 - 18h00
+                        </Typography>
+                        <Typography variant="caption" display="block">
+                          • Uniquement sur RDV
+                        </Typography>
+                        <Typography variant="caption" display="block">
+                          • Réservation obligatoire
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          sx={{
+                            mt: 1.5,
+                            pt: 1,
+                            borderTop: "1px solid #eee",
+                            color: "#636366",
+                            fontStyle: "italic",
+                          }}
+                        >
+                          Une question ? Écrivez-nous :<br />
+                          <strong>contact@kimreparation.fr</strong>
+                        </Typography>
+                      </Box>
+                    }
+                    arrow
+                    placement="top"
+                    slotProps={tooltipSlotProps}
+                  >
+                    <InfoOutlinedIcon
+                      sx={{
+                        fontSize: "1.4rem",
+                        color: "#86868b",
+                        cursor: "help",
+                        opacity: 0.7,
+                        "&:hover": { opacity: 1, color: "#0071e3" },
+                      }}
+                    />
+                  </Tooltip>
                 </Typography>
               </Box>
               <Typography
@@ -89,14 +164,14 @@ const AtelierAtelier = () => {
                   color: "#0071e3",
                   fontWeight: 700,
                   textAlign: "right",
-                  minWidth: { xs: "120px", sm: "auto" }, // 모바일에서 오른쪽 칸 너비를 일정하게 고정해서 줄을 맞춤
+                  minWidth: { xs: "120px", sm: "auto" },
                 }}
               >
-                RDV uniquement
+                Disponibilités à confirmer
               </Typography>
             </Stack>
 
-            {/* 유동 영업일 (수, 저녁, 주말) */}
+            {/* --- 유동 영업일 (문 닫음 강조 버전) --- */}
             <Stack
               direction="row"
               justifyContent="space-between"
@@ -115,26 +190,84 @@ const AtelierAtelier = () => {
                   Mercredi, Soirées & Week-ends
                 </Typography>
                 <Typography
-                  sx={{ fontSize: "1.2rem", fontWeight: 500, color: "#0066cc" }}
+                  sx={{
+                    fontSize: "1.2rem",
+                    fontWeight: 700,
+                    color: "#0066cc",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 0.5,
+                  }}
                 >
-                  Sur demande
+                  Dépôt sur RDV
+                  <Tooltip
+                    title={
+                      <Box sx={{ p: 0.5 }}>
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          sx={{ fontWeight: 800, mb: 1, color: "#d32f2f" }}
+                        >
+                          Horaires : FERMÉ (Pas d'ouverture libre)
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          sx={{ fontWeight: 600 }}
+                        >
+                          • Dépôt d'appareils possible uniquement selon mes
+                          disponibilités.
+                        </Typography>
+                        <Typography variant="caption" display="block">
+                          • Uniquement après validation du devis.
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          sx={{
+                            mt: 1.5,
+                            pt: 1,
+                            borderTop: "1px solid #eee",
+                            color: "#636366",
+                            fontStyle: "italic",
+                          }}
+                        >
+                          Une question ? Contactez-nous :<br />
+                          <strong>contact@kimreparation.fr</strong>
+                        </Typography>
+                      </Box>
+                    }
+                    arrow
+                    placement="top"
+                    slotProps={tooltipSlotProps}
+                  >
+                    <InfoOutlinedIcon
+                      sx={{
+                        fontSize: "1.4rem",
+                        color: "#86868b",
+                        cursor: "help",
+                        opacity: 0.8,
+                        "&:hover": { opacity: 1, color: "#0071e3" },
+                      }}
+                    />
+                  </Tooltip>
                 </Typography>
               </Box>
               <Typography
                 sx={{
                   fontSize: "0.8rem",
-                  color: "#86868b",
-                  fontWeight: 600,
+                  color: "#d32f2f",
+                  fontWeight: 700,
                   textAlign: "right",
-                  minWidth: { xs: "120px", sm: "auto" }, // 위와 똑같은 너비를 줘서 세로 줄을 칼같이 맞춤
+                  minWidth: { xs: "130px", sm: "auto" },
                 }}
               >
-                Selon mes disponibilités
+                Sur devis accepté uniquement
               </Typography>
             </Stack>
           </Stack>
 
-          {/* 안내 박스: 예약제 강조 */}
+          {/* 안내 박스 */}
           <Stack
             spacing={2.5}
             sx={{
@@ -161,16 +294,14 @@ const AtelierAtelier = () => {
         </Box>
       </Box>
 
-      {/* --- 섹션 2: 유튜브 브릿지 (그대로 유지) --- */}
+      {/* --- 섹션 2: 유튜브 브릿지 --- */}
       <Box sx={{ py: 6, borderTop: "1px solid #e5e5e7" }}>
         <Typography sx={labelStyle}>SUR YOUTUBE</Typography>
-
         <Stack
           direction={{ xs: "column", md: "row" }}
           spacing={8}
           alignItems="center"
         >
-          {/* 쇼츠 영상 */}
           <Box
             sx={{
               width: { xs: "100%", md: "280px" },
@@ -179,7 +310,6 @@ const AtelierAtelier = () => {
               overflow: "hidden",
               bgcolor: "#000",
               boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-              filter: "grayscale(0.2)",
             }}
           >
             <iframe
@@ -189,8 +319,6 @@ const AtelierAtelier = () => {
               allowFullScreen
             />
           </Box>
-
-          {/* 채널 정보 */}
           <Box sx={{ flex: 1, textAlign: { xs: "center", md: "left" } }}>
             <Typography
               variant="h3"
@@ -198,11 +326,10 @@ const AtelierAtelier = () => {
             >
               Kim <br /> Reparation
             </Typography>
-
             <Button
               variant="contained"
               startIcon={<YouTubeIcon />}
-              href="https://youtube.com/@kimreparation-canal?si=W-tz9Dw3ApMlPtGr"
+              href="https://youtube.com/@kimreparation-canal"
               target="_blank"
               sx={{
                 bgcolor: "#ff0000",
@@ -211,8 +338,7 @@ const AtelierAtelier = () => {
                 py: 1.5,
                 borderRadius: "30px",
                 fontWeight: 700,
-                boxShadow: "none",
-                "&:hover": { bgcolor: "#cc0000", boxShadow: "none" },
+                "&:hover": { bgcolor: "#cc0000" },
               }}
             >
               Voir la chaîne
