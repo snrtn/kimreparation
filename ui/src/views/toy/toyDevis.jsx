@@ -255,7 +255,7 @@ const ToyDevis = () => {
       printWindow.focus();
       printWindow.print();
       // printWindow.close(); // 테스트 중에는 닫지 말고 확인해보세요
-    }, 1000);
+    }, 3000);
   };
 
   const handleSendEmail = () => {
