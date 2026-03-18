@@ -667,34 +667,22 @@ const DossierClient = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지 [모바일 자동 링크 예외 처리 추가!]
+  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지
+  // [최종 수정] 모바일 브라우저의 오지랖(자동 링크 등) 충돌 방지를 위해 모바일에서는 감시를 끕니다.
   useEffect(() => {
-    const observer = new MutationObserver((mutations) => {
-      let isHacked = false;
+    // 📍 1. 현재 접속한 기기가 모바일(터치 기기)이거나 화면이 좁은지 확인합니다.
+    const isMobile = window.innerWidth <= 1024 || navigator.maxTouchPoints > 0;
 
-      for (let mutation of mutations) {
-        // 1. 브라우저가 몰래 <a> 태그(전화/이메일 링크)를 추가했다면 모른척 해줍니다.
-        if (mutation.addedNodes.length > 0) {
-          const node = mutation.addedNodes[0];
-          if (node.nodeName === "A" || node.nodeName === "FONT") {
-            continue; // 무시하고 다음 감시로 넘어감!
-          }
-        }
+    // 📍 2. 모바일 기기라면 F12(개발자 도구) 조작이 불가능하므로, 감시자를 실행하지 않고 퇴근시킵니다!
+    if (isMobile) {
+      return;
+    }
 
-        // 2. 하지만 금액, 이름, 설명 등 진짜 글자가 바뀌면 바로 해킹(위조)으로 간주!
-        if (
-          mutation.type === "childList" ||
-          mutation.type === "characterData"
-        ) {
-          isHacked = true;
-          break;
-        }
-      }
-
-      if (isHacked) {
-        alert("🚨 Sécurité : Tentative de modification du document détectée !");
-        window.location.reload();
-      }
+    // 📍 3. PC(데스크탑)에서만 아래의 철통 보안 감시가 돌아갑니다.
+    // 👉 여기에 있던 mutations 단어를 지워서 에러를 없앴습니다!
+    const observer = new MutationObserver(() => {
+      alert("🚨 Sécurité : Tentative de modification du document détectée !");
+      window.location.reload();
     });
 
     const config = {
