@@ -19,26 +19,6 @@ const AtelierAtelier = () => {
     mb: 3,
   };
 
-  // ✅ 툴팁 하얀색 테두리 스타일 공통 적용
-  const tooltipSlotProps = {
-    popper: {
-      sx: {
-        "& .MuiTooltip-tooltip": {
-          bgcolor: "#ffffff",
-          color: "#1d1d1f",
-          border: "1px solid #d2d2d7",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          p: 1.5,
-          borderRadius: "12px",
-        },
-        "& .MuiTooltip-arrow": {
-          color: "#ffffff",
-          "&::before": { border: "1px solid #d2d2d7" },
-        },
-      },
-    },
-  };
-
   const infoNotes = [
     "Accueil : Pour vous consacrer le temps nécessaire et vous éviter toute attente, je vous reçois sur rendez-vous après réception de votre demande de devis.",
     "Confirmation : Comme je me déplace parfois en intervention, un petit message avant de venir vous assure de ma présence à l'atelier.",
@@ -79,15 +59,16 @@ const AtelierAtelier = () => {
         </Box>
 
         <Box sx={{ py: 6, borderTop: "1px solid #e5e5e7" }}>
-          <Stack spacing={4} sx={{ mb: 6 }}>
-            {/* --- 정규 영업일 --- */}
+          <Stack spacing={5} sx={{ mb: 6 }}>
+            {/* 📍 1번 섹션: 평일 영업 안내 */}
             <Stack
-              direction="row"
+              // 모바일은 위아래(column), PC는 양옆(row)
+              direction={{ xs: "column", sm: "row" }}
               justifyContent="space-between"
-              alignItems="baseline"
-              spacing={2}
+              alignItems={{ xs: "flex-start", sm: "baseline" }}
+              spacing={1}
             >
-              <Box sx={{ flex: 1 }}>
+              <Box>
                 <Typography
                   sx={{
                     fontSize: "1rem",
@@ -98,12 +79,11 @@ const AtelierAtelier = () => {
                 >
                   Lundi, Mardi, Jeudi, Vendredi
                 </Typography>
-
-                {/* 📍 텍스트 + 아이콘 한 줄 정렬 */}
                 <Typography
                   sx={{
                     fontSize: "1.2rem",
                     fontWeight: 500,
+                    color: "#1d1d1f",
                     display: "flex",
                     alignItems: "center",
                     gap: 0.5,
@@ -116,15 +96,20 @@ const AtelierAtelier = () => {
                         <Typography
                           variant="caption"
                           display="block"
-                          sx={{ fontWeight: 700, mb: 0.5 }}
+                          sx={{
+                            fontWeight: 700,
+                            mb: 0.5,
+                            color: "#1d1d1f",
+                          }}
                         >
                           Horaires : 09h00 - 18h00
                         </Typography>
-                        <Typography variant="caption" display="block">
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          sx={{ color: "#424245" }}
+                        >
                           • Uniquement sur RDV
-                        </Typography>
-                        <Typography variant="caption" display="block">
-                          • Réservation obligatoire
                         </Typography>
                         <Typography
                           variant="caption"
@@ -144,7 +129,23 @@ const AtelierAtelier = () => {
                     }
                     arrow
                     placement="top"
-                    slotProps={tooltipSlotProps}
+                    enterTouchDelay={0}
+                    slotProps={{
+                      popper: {
+                        sx: {
+                          zIndex: 9999, // 📍 z-index 빡세게 올려서 가려지지 않게 설정
+                          "& .MuiTooltip-tooltip": {
+                            bgcolor: "#ffffff",
+                            color: "#1d1d1f",
+                            border: "1px solid #d2d2d7",
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                            p: 1.5,
+                            borderRadius: "12px",
+                          },
+                          "& .MuiTooltip-arrow": { color: "#ffffff" },
+                        },
+                      },
+                    }}
                   >
                     <InfoOutlinedIcon
                       sx={{
@@ -152,7 +153,6 @@ const AtelierAtelier = () => {
                         color: "#86868b",
                         cursor: "help",
                         opacity: 0.7,
-                        "&:hover": { opacity: 1, color: "#0071e3" },
                       }}
                     />
                   </Tooltip>
@@ -160,25 +160,24 @@ const AtelierAtelier = () => {
               </Box>
               <Typography
                 sx={{
-                  fontSize: "0.8rem",
+                  fontSize: "0.85rem",
                   color: "#0071e3",
                   fontWeight: 700,
-                  textAlign: "right",
-                  minWidth: { xs: "120px", sm: "auto" },
+                  mt: { xs: 0.5, sm: 0 },
                 }}
               >
                 Disponibilités à confirmer
               </Typography>
             </Stack>
 
-            {/* --- 유동 영업일 (문 닫음 강조 버전) --- */}
+            {/* 📍 2번 섹션: 유동 영업 안내 */}
             <Stack
-              direction="row"
+              direction={{ xs: "column", sm: "row" }}
               justifyContent="space-between"
-              alignItems="baseline"
-              spacing={2}
+              alignItems={{ xs: "flex-start", sm: "baseline" }}
+              spacing={1}
             >
-              <Box sx={{ flex: 1 }}>
+              <Box>
                 <Typography
                   sx={{
                     fontSize: "1rem",
@@ -192,8 +191,8 @@ const AtelierAtelier = () => {
                 <Typography
                   sx={{
                     fontSize: "1.2rem",
-                    fontWeight: 700,
-                    color: "#0066cc",
+                    fontWeight: 500,
+                    color: "#1d1d1f",
                     display: "flex",
                     alignItems: "center",
                     gap: 0.5,
@@ -210,17 +209,28 @@ const AtelierAtelier = () => {
                         >
                           Horaires : FERMÉ (Pas d'ouverture libre)
                         </Typography>
+                        {/* 📍 툴팁 본문: 일정에 따른 기기 접수 안내 */}
                         <Typography
                           variant="caption"
                           display="block"
-                          sx={{ fontWeight: 600 }}
+                          sx={{
+                            color: "#424245",
+                            fontWeight: 600,
+                            mb: 0.5,
+                          }}
                         >
                           • Dépôt d'appareils possible uniquement selon mes
                           disponibilités.
                         </Typography>
-                        <Typography variant="caption" display="block">
-                          • Uniquement après validation du devis.
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          sx={{ color: "#424245" }}
+                        >
+                          • Uniquement après validation de votre devis.
                         </Typography>
+
+                        {/* 📍 하단: 궁금한 점은 메일로 문의 */}
                         <Typography
                           variant="caption"
                           display="block"
@@ -232,14 +242,30 @@ const AtelierAtelier = () => {
                             fontStyle: "italic",
                           }}
                         >
-                          Une question ? Contactez-nous :<br />
+                          Une question ? Écrivez-nous par e-mail :<br />
                           <strong>contact@kimreparation.fr</strong>
                         </Typography>
                       </Box>
                     }
                     arrow
                     placement="top"
-                    slotProps={tooltipSlotProps}
+                    enterTouchDelay={0}
+                    slotProps={{
+                      popper: {
+                        sx: {
+                          zIndex: 9999, // 📍 z-index 보장
+                          "& .MuiTooltip-tooltip": {
+                            bgcolor: "#ffffff",
+                            color: "#1d1d1f",
+                            border: "1px solid #d2d2d7",
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                            p: 1.5,
+                            borderRadius: "12px",
+                          },
+                          "& .MuiTooltip-arrow": { color: "#ffffff" },
+                        },
+                      },
+                    }}
                   >
                     <InfoOutlinedIcon
                       sx={{
@@ -247,7 +273,6 @@ const AtelierAtelier = () => {
                         color: "#86868b",
                         cursor: "help",
                         opacity: 0.8,
-                        "&:hover": { opacity: 1, color: "#0071e3" },
                       }}
                     />
                   </Tooltip>
@@ -255,14 +280,13 @@ const AtelierAtelier = () => {
               </Box>
               <Typography
                 sx={{
-                  fontSize: "0.8rem",
+                  fontSize: "0.85rem",
                   color: "#d32f2f",
                   fontWeight: 700,
-                  textAlign: "right",
-                  minWidth: { xs: "130px", sm: "auto" },
+                  mt: { xs: 0.5, sm: 0 },
                 }}
               >
-                Sur devis accepté uniquement
+                Après validation du devis
               </Typography>
             </Stack>
           </Stack>

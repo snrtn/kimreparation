@@ -234,7 +234,7 @@ const DashboardClient = () => {
               {/* 수단 선택 셀렉터 */}
               <FormControl
                 variant="standard"
-                sx={{ minWidth: { xs: "100%", sm: 150 } }}
+                sx={{ minWidth: { xs: "100%", sm: 120 } }}
               >
                 <InputLabel>Moyen de contact</InputLabel>
                 <Select
@@ -243,21 +243,18 @@ const DashboardClient = () => {
                     setFormData({
                       ...formData,
                       contactType: e.target.value,
+                      // 📍 여기서 이메일 관련 상태를 초기화해줘야
+                      // 다시 이메일로 돌아왔을 때 'Autre' 창이 안 뜹니다!
                       phoneValue: "",
                       emailUser: "",
+                      emailDomain: "@gmail.com", // 기본값으로 복구
+                      customDomain: "", // 입력했던 도메인도 삭제
                     })
                   }
                   MenuProps={{ disableScrollLock: true }}
                 >
-                  <MenuItem value="@gmail.com">@gmail.com</MenuItem>
-                  <MenuItem value="@orange.fr">@orange.fr</MenuItem>
-                  <MenuItem value="@wanadoo.fr">@wanadoo.fr</MenuItem>
-                  <MenuItem value="@free.fr">@free.fr</MenuItem>
-                  <MenuItem value="@sfr.fr">@sfr.fr</MenuItem>
-                  <MenuItem value="@outlook.com">@outlook.com</MenuItem>
-                  <MenuItem value="@yahoo.fr">@yahoo.fr</MenuItem>
-                  <MenuItem value="@icloud.com">@icloud.com</MenuItem>
-                  <MenuItem value="custom">Autre</MenuItem>
+                  <MenuItem value="phone">Téléphone</MenuItem>
+                  <MenuItem value="email">E-mail</MenuItem>
                 </Select>
               </FormControl>
 
@@ -287,8 +284,8 @@ const DashboardClient = () => {
                 >
                   <TextField
                     variant="standard"
-                    label="E-mail (ID)"
-                    sx={{ flex: 2 }}
+                    label="Identifiant"
+                    sx={{ flex: 1 }}
                     placeholder="identifiant"
                     value={formData.emailUser}
                     onChange={(e) =>
@@ -312,7 +309,12 @@ const DashboardClient = () => {
                     >
                       <MenuItem value="@gmail.com">@gmail.com</MenuItem>
                       <MenuItem value="@orange.fr">@orange.fr</MenuItem>
+                      <MenuItem value="@wanadoo.fr">@wanadoo.fr</MenuItem>
                       <MenuItem value="@free.fr">@free.fr</MenuItem>
+                      <MenuItem value="@sfr.fr">@sfr.fr</MenuItem>
+                      <MenuItem value="@outlook.com">@outlook.com</MenuItem>
+                      <MenuItem value="@yahoo.fr">@yahoo.fr</MenuItem>
+                      <MenuItem value="@icloud.com">@icloud.com</MenuItem>
                       <MenuItem value="custom">Autre</MenuItem>
                     </Select>
                   </FormControl>

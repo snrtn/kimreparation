@@ -275,7 +275,7 @@ const DriveView = () => {
             >
               <FormControl
                 variant="standard"
-                sx={{ minWidth: { xs: "100%", sm: 140 } }}
+                sx={{ minWidth: { xs: "100%", sm: 120 } }}
               >
                 <InputLabel>Contact</InputLabel>
                 <Select
@@ -284,8 +284,12 @@ const DriveView = () => {
                     setFormData({
                       ...formData,
                       contactType: e.target.value,
+                      // 📍 여기서 이메일 관련 상태를 초기화해줘야
+                      // 다시 이메일로 돌아왔을 때 'Autre' 창이 안 뜹니다!
                       phoneValue: "",
                       emailUser: "",
+                      emailDomain: "@gmail.com", // 기본값으로 복구
+                      customDomain: "", // 입력했던 도메인도 삭제
                     })
                   }
                   MenuProps={{ disableScrollLock: true }}
@@ -320,8 +324,8 @@ const DriveView = () => {
                 >
                   <TextField
                     variant="standard"
-                    label="E-mail"
-                    sx={{ flex: 2 }}
+                    label="Identifiant"
+                    sx={{ flex: 1 }}
                     placeholder="identifiant"
                     value={formData.emailUser}
                     onChange={(e) =>
