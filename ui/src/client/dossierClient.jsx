@@ -667,18 +667,32 @@ const DossierClient = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지 [모바일 새로고침 버그 수정완료]
   useEffect(() => {
     const observer = new MutationObserver((mutations) => {
-      alert("🚨 Sécurité : Tentative de modification du document détectée !");
-      window.location.reload();
+      // 브라우저가 몰래 넣는 스타일(attributes)은 무시하고,
+      // 진짜로 글자나 요소(태그)가 삭제/변경됐을 때만 경고를 띄웁니다!
+      for (let mutation of mutations) {
+        if (
+          mutation.type === "childList" ||
+          mutation.type === "characterData"
+        ) {
+          alert(
+            "🚨 Sécurité : Tentative de modification du document détectée !",
+          );
+          window.location.reload();
+          break;
+        }
+      }
     });
 
     const config = {
-      attributes: true,
-      childList: true,
-      subtree: true,
-      characterData: true,
+      attributes: false, // 📍 [핵심] 브라우저 자동 레이아웃 변경(스크롤) 감시 끄기
+      childList: true, // 📍 글자나 내용물 삭제/추가 철저히 감시
+      subtree: true, // 📍 하위 구역 전부 감시
+      characterData: true, // 📍 텍스트 위조 감시
     };
+
     const protectedZones = document.querySelectorAll(".protected-zone");
 
     protectedZones.forEach((zone) => {

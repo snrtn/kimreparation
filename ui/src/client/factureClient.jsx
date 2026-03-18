@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect } from "react";
 import {
   Box,
@@ -93,18 +92,28 @@ const FactureClient = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지
+  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지 [모바일 새로고침 버그 수정완료]
   useEffect(() => {
     const observer = new MutationObserver((mutations) => {
-      alert("🚨 Sécurité : Tentative de modification du document détectée !");
-      window.location.reload();
+      for (let mutation of mutations) {
+        if (
+          mutation.type === "childList" ||
+          mutation.type === "characterData"
+        ) {
+          alert(
+            "🚨 Sécurité : Tentative de modification du document détectée !",
+          );
+          window.location.reload();
+          break;
+        }
+      }
     });
 
     const config = {
-      attributes: true,
-      childList: true,
-      subtree: true,
-      characterData: true,
+      attributes: false, // 📍 [핵심] 브라우저 자동 레이아웃 변경(스크롤) 감시 끄기
+      childList: true, // 📍 글자나 내용물 삭제/추가 철저히 감시
+      subtree: true, // 📍 하위 구역 전부 감시
+      characterData: true, // 📍 텍스트 위조 감시
     };
 
     const protectedZones = document.querySelectorAll(".protected-zone");
