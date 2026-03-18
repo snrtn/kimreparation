@@ -28,7 +28,7 @@ import { useNavigate } from "react-router-dom";
 import SignatureCanvas from "react-signature-canvas";
 
 // ==========================================
-// 🧩 1. DevisHeader (보안 구역 적용)
+// 🧩 1. DevisHeader (보안 구역 적용) - 자동 링크 변환 방지 적용!
 // ==========================================
 const DevisHeader = ({ devisData }) => (
   <Box className="protected-zone" sx={{ mb: 6 }}>
@@ -46,9 +46,20 @@ const DevisHeader = ({ devisData }) => (
         <Typography variant="body2" sx={{ mt: 1 }}>
           {devisData.company.siret}
         </Typography>
-        <Typography variant="body2">Tél : {devisData.company.phone}</Typography>
+
+        {/* 📍 [핵심] 전화번호 자동 링크 변환 방지: 사이에 <span> 추가 */}
         <Typography variant="body2">
-          E-mail : {devisData.company.email}
+          Tél : <span>{devisData.company.phone.replace(/ /g, " \u200B")}</span>
+        </Typography>
+
+        {/* 📍 [핵심] 이메일 자동 링크 변환 방지: '@'와 '.' 주변에 안보이는 문자 삽입 */}
+        <Typography variant="body2">
+          E-mail :{" "}
+          <span>
+            {devisData.company.email
+              .replace(/@/g, "&#8203;@&#8203;")
+              .replace(/\./g, "&#8203;.&#8203;")}
+          </span>
         </Typography>
       </Box>
       <Box
@@ -68,9 +79,13 @@ const DevisHeader = ({ devisData }) => (
         </Typography>
         <Typography variant="body2">{devisData.client.address}</Typography>
         <Typography variant="body2">{devisData.client.city}</Typography>
+
+        {/* 📍 [핵심] 고객 연락처도 링크 변환 방지 */}
         <Typography variant="body2" sx={{ mt: 1 }}>
-          Contact : {devisData.client.contact}
+          Contact :{" "}
+          <span>{devisData.client.contact.replace(/ /g, " \u200B")}</span>
         </Typography>
+
         <Typography
           variant="body2"
           sx={{ color: "#1976d2", fontWeight: 700, mt: 1 }}

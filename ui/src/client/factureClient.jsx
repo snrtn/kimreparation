@@ -92,7 +92,7 @@ const FactureClient = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지 [모바일 새로고침 버그 수정완료]
+  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지
   useEffect(() => {
     const observer = new MutationObserver((mutations) => {
       for (let mutation of mutations) {
@@ -110,10 +110,10 @@ const FactureClient = () => {
     });
 
     const config = {
-      attributes: false, // 📍 [핵심] 브라우저 자동 레이아웃 변경(스크롤) 감시 끄기
-      childList: true, // 📍 글자나 내용물 삭제/추가 철저히 감시
-      subtree: true, // 📍 하위 구역 전부 감시
-      characterData: true, // 📍 텍스트 위조 감시
+      attributes: false,
+      childList: true,
+      subtree: true,
+      characterData: true,
     };
 
     const protectedZones = document.querySelectorAll(".protected-zone");
@@ -139,8 +139,8 @@ const FactureClient = () => {
         flexDirection: "column",
         alignItems: "center",
         py: 20,
-        userSelect: "none", // 🛡️ 📍 보안 4: 전체 텍스트 드래그 및 복사 방지
-        overflowX: "hidden", // 📍 [핵심] 모바일에서 화면 넘어가는 가로 스크롤 방지
+        userSelect: "none",
+        overflowX: "hidden",
         "@media print": { backgroundColor: "#fff", py: 0 },
       }}
     >
@@ -159,7 +159,7 @@ const FactureClient = () => {
       <Box
         className="no-print"
         sx={{
-          width: { xs: "90%", md: "800px" }, // 📍 모바일 반응형 조절
+          width: { xs: "90%", md: "800px" },
           mb: 2,
           display: "flex",
           justifyContent: "space-between",
@@ -192,14 +192,12 @@ const FactureClient = () => {
         elevation={10}
         sx={{
           width: "800px",
-          minWidth: "800px", // 📍 A4 너비 강제 고정
+          minWidth: "800px",
           minHeight: "1131px",
           p: "50px",
           bgcolor: "#ffffff",
-          // 📍 [핵심] 모바일/태블릿에서 PDF 전체 보기처럼 비율을 확 축소시킴
           transform: { xs: "scale(0.42)", sm: "scale(0.7)", md: "none" },
           transformOrigin: "top center",
-          // 📍 축소되면서 남는 하단 빈 공간을 위로 당겨서 없앰
           mb: { xs: "-650px", sm: "-340px", md: 0 },
         }}
       >
@@ -220,11 +218,19 @@ const FactureClient = () => {
             <Typography variant="body2" sx={{ mt: 1 }}>
               {factureData.company.siret}
             </Typography>
+
+            {/* 📍 [핵심] 전화번호 & 이메일 자동 링크 변환 방지 (\u200B 사용) */}
             <Typography variant="body2">
-              Tél : {factureData.company.phone}
+              Tél :{" "}
+              <span>{factureData.company.phone.replace(/ /g, " \u200B")}</span>
             </Typography>
             <Typography variant="body2">
-              E-mail : {factureData.company.email}
+              E-mail :{" "}
+              <span>
+                {factureData.company.email
+                  .replace(/@/g, "\u200B@\u200B")
+                  .replace(/\./g, "\u200B.\u200B")}
+              </span>
             </Typography>
           </Box>
           <Box
@@ -246,8 +252,11 @@ const FactureClient = () => {
               {factureData.client.address}
             </Typography>
             <Typography variant="body2">{factureData.client.city}</Typography>
+
+            {/* 📍 [핵심] 고객 연락처 자동 링크 변환 방지 */}
             <Typography variant="body2" sx={{ mt: 1 }}>
-              Contact : {factureData.client.contact}
+              Contact :{" "}
+              <span>{factureData.client.contact.replace(/ /g, " \u200B")}</span>
             </Typography>
             <Typography
               variant="body2"
@@ -270,7 +279,6 @@ const FactureClient = () => {
               FACTURE N° {factureNumber}
             </Typography>
 
-            {/* 📍 조건부 렌더링: 결제 여부에 따른 뱃지 변경 */}
             {factureData.isPaid ? (
               <Typography
                 sx={{
@@ -363,7 +371,6 @@ const FactureClient = () => {
           alignItems="flex-start"
           sx={{ mt: 4 }}
         >
-          {/* 📍 조건부 렌더링: 결제 완료 시 계좌번호 대신 감사 인사 */}
           <Box
             sx={{
               width: "45%",
