@@ -28,7 +28,7 @@ import { useNavigate } from "react-router-dom";
 import SignatureCanvas from "react-signature-canvas";
 
 // ==========================================
-// 🧩 1. DevisHeader (보안 구역 적용) - 자동 링크 변환 방지 적용!
+// 🧩 1. DevisHeader (보안 구역 적용)
 // ==========================================
 const DevisHeader = ({ devisData }) => (
   <Box className="protected-zone" sx={{ mb: 6 }}>
@@ -46,20 +46,9 @@ const DevisHeader = ({ devisData }) => (
         <Typography variant="body2" sx={{ mt: 1 }}>
           {devisData.company.siret}
         </Typography>
-
-        {/* 📍 [핵심] 전화번호 자동 링크 변환 방지: 사이에 <span> 추가 */}
+        <Typography variant="body2">Tél : {devisData.company.phone}</Typography>
         <Typography variant="body2">
-          Tél : <span>{devisData.company.phone.replace(/ /g, " \u200B")}</span>
-        </Typography>
-
-        {/* 📍 [핵심] 이메일 자동 링크 변환 방지: '@'와 '.' 주변에 안보이는 문자 삽입 */}
-        <Typography variant="body2">
-          E-mail :{" "}
-          <span>
-            {devisData.company.email
-              .replace(/@/g, "&#8203;@&#8203;")
-              .replace(/\./g, "&#8203;.&#8203;")}
-          </span>
+          E-mail : {devisData.company.email}
         </Typography>
       </Box>
       <Box
@@ -79,13 +68,9 @@ const DevisHeader = ({ devisData }) => (
         </Typography>
         <Typography variant="body2">{devisData.client.address}</Typography>
         <Typography variant="body2">{devisData.client.city}</Typography>
-
-        {/* 📍 [핵심] 고객 연락처도 링크 변환 방지 */}
         <Typography variant="body2" sx={{ mt: 1 }}>
-          Contact :{" "}
-          <span>{devisData.client.contact.replace(/ /g, " \u200B")}</span>
+          Contact : {devisData.client.contact}
         </Typography>
-
         <Typography
           variant="body2"
           sx={{ color: "#1976d2", fontWeight: 700, mt: 1 }}
@@ -682,30 +667,41 @@ const DossierClient = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지 [모바일 새로고침 버그 수정완료]
+  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지 [모바일 자동 링크 예외 처리 추가!]
   useEffect(() => {
     const observer = new MutationObserver((mutations) => {
-      // 브라우저가 몰래 넣는 스타일(attributes)은 무시하고,
-      // 진짜로 글자나 요소(태그)가 삭제/변경됐을 때만 경고를 띄웁니다!
+      let isHacked = false;
+
       for (let mutation of mutations) {
+        // 1. 브라우저가 몰래 <a> 태그(전화/이메일 링크)를 추가했다면 모른척 해줍니다.
+        if (mutation.addedNodes.length > 0) {
+          const node = mutation.addedNodes[0];
+          if (node.nodeName === "A" || node.nodeName === "FONT") {
+            continue; // 무시하고 다음 감시로 넘어감!
+          }
+        }
+
+        // 2. 하지만 금액, 이름, 설명 등 진짜 글자가 바뀌면 바로 해킹(위조)으로 간주!
         if (
           mutation.type === "childList" ||
           mutation.type === "characterData"
         ) {
-          alert(
-            "🚨 Sécurité : Tentative de modification du document détectée !",
-          );
-          window.location.reload();
+          isHacked = true;
           break;
         }
+      }
+
+      if (isHacked) {
+        alert("🚨 Sécurité : Tentative de modification du document détectée !");
+        window.location.reload();
       }
     });
 
     const config = {
-      attributes: false, // 📍 [핵심] 브라우저 자동 레이아웃 변경(스크롤) 감시 끄기
-      childList: true, // 📍 글자나 내용물 삭제/추가 철저히 감시
-      subtree: true, // 📍 하위 구역 전부 감시
-      characterData: true, // 📍 텍스트 위조 감시
+      attributes: false,
+      childList: true,
+      subtree: true,
+      characterData: true,
     };
 
     const protectedZones = document.querySelectorAll(".protected-zone");

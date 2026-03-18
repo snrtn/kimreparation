@@ -92,25 +92,38 @@ const FactureClient = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지
+  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지 [모바일 자동 링크 예외 처리 추가!]
   useEffect(() => {
     const observer = new MutationObserver((mutations) => {
+      let isHacked = false;
+
       for (let mutation of mutations) {
+        // 1. 브라우저가 몰래 <a> 태그(전화/이메일 링크)나 폰트 태그를 추가했다면 모른척 해줍니다.
+        if (mutation.addedNodes.length > 0) {
+          const node = mutation.addedNodes[0];
+          if (node.nodeName === "A" || node.nodeName === "FONT") {
+            continue; // 무시하고 다음 감시로 넘어감!
+          }
+        }
+
+        // 2. 하지만 금액, 이름, 설명 등 진짜 글자가 바뀌면 바로 해킹(위조)으로 간주!
         if (
           mutation.type === "childList" ||
           mutation.type === "characterData"
         ) {
-          alert(
-            "🚨 Sécurité : Tentative de modification du document détectée !",
-          );
-          window.location.reload();
+          isHacked = true;
           break;
         }
+      }
+
+      if (isHacked) {
+        alert("🚨 Sécurité : Tentative de modification du document détectée !");
+        window.location.reload();
       }
     });
 
     const config = {
-      attributes: false,
+      attributes: false, // 📍 [핵심] 스크롤 등 속성 변화 무시
       childList: true,
       subtree: true,
       characterData: true,
@@ -139,8 +152,8 @@ const FactureClient = () => {
         flexDirection: "column",
         alignItems: "center",
         py: 20,
-        userSelect: "none",
-        overflowX: "hidden",
+        userSelect: "none", // 🛡️ 📍 보안 4: 전체 텍스트 드래그 및 복사 방지
+        overflowX: "hidden", // 📍 모바일에서 화면 넘어가는 가로 스크롤 방지
         "@media print": { backgroundColor: "#fff", py: 0 },
       }}
     >
@@ -192,7 +205,7 @@ const FactureClient = () => {
         elevation={10}
         sx={{
           width: "800px",
-          minWidth: "800px",
+          minWidth: "800px", // 📍 A4 너비 강제 고정
           minHeight: "1131px",
           p: "50px",
           bgcolor: "#ffffff",
@@ -218,19 +231,11 @@ const FactureClient = () => {
             <Typography variant="body2" sx={{ mt: 1 }}>
               {factureData.company.siret}
             </Typography>
-
-            {/* 📍 [핵심] 전화번호 & 이메일 자동 링크 변환 방지 (\u200B 사용) */}
             <Typography variant="body2">
-              Tél :{" "}
-              <span>{factureData.company.phone.replace(/ /g, " \u200B")}</span>
+              Tél : {factureData.company.phone}
             </Typography>
             <Typography variant="body2">
-              E-mail :{" "}
-              <span>
-                {factureData.company.email
-                  .replace(/@/g, "\u200B@\u200B")
-                  .replace(/\./g, "\u200B.\u200B")}
-              </span>
+              E-mail : {factureData.company.email}
             </Typography>
           </Box>
           <Box
@@ -252,11 +257,8 @@ const FactureClient = () => {
               {factureData.client.address}
             </Typography>
             <Typography variant="body2">{factureData.client.city}</Typography>
-
-            {/* 📍 [핵심] 고객 연락처 자동 링크 변환 방지 */}
             <Typography variant="body2" sx={{ mt: 1 }}>
-              Contact :{" "}
-              <span>{factureData.client.contact.replace(/ /g, " \u200B")}</span>
+              Contact : {factureData.client.contact}
             </Typography>
             <Typography
               variant="body2"
