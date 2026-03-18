@@ -48,7 +48,7 @@ const DropDown = ({ anchorEl, open, onClose, menus, onDrawerToggle }) => {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-start",
-                p: 4,
+                p: { xs: 4, md: 3 },
                 textDecoration: "none",
                 color: "inherit",
                 borderRadius: "14px",

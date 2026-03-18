@@ -239,7 +239,6 @@ const DevisFooter = ({
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 6 }}>
-        {/* 📍 금액 총합 박스 -> 보안 적용 */}
         <Box
           className="protected-zone"
           sx={{
@@ -280,7 +279,7 @@ const DevisFooter = ({
         </Box>
       </Box>
 
-      {/* 서명 영역은 DOM이 변해야 하므로 보안 구역 제외 */}
+      {/* 서명 영역 */}
       <Box sx={{ pt: 4, borderTop: "2px dashed #ccc", mb: 4 }}>
         <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
           Validation et Accord du Client
@@ -390,7 +389,7 @@ const DevisChat = ({ devisData, comments, onAddComment }) => {
       </Typography>
 
       <Paper
-        className="no-print" // 인쇄할 때는 안내문이 안 보이게 처리
+        className="no-print"
         elevation={0}
         sx={{
           p: 1.5,
@@ -649,7 +648,6 @@ const DossierClient = () => {
       prev === galleryImages.length - 1 ? 0 : prev + 1,
     );
 
-  // 🛡️ 📍 보안 1: 개발자 도구 단축키 차단
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (
@@ -669,10 +667,8 @@ const DossierClient = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지
   useEffect(() => {
     const observer = new MutationObserver((mutations) => {
-      // 지정된 구역(가격, 제목 등) 안에서 무언가 조작되면 즉시 경고 띄우고 페이지 리로드
       alert("🚨 Sécurité : Tentative de modification du document détectée !");
       window.location.reload();
     });
@@ -683,18 +679,17 @@ const DossierClient = () => {
       subtree: true,
       characterData: true,
     };
-    const protectedZones = document.querySelectorAll(".protected-zone"); // 보안 클래스 찾기
+    const protectedZones = document.querySelectorAll(".protected-zone");
 
     protectedZones.forEach((zone) => {
       observer.observe(zone, config);
     });
 
     return () => observer.disconnect();
-  }, []); // 컴포넌트 렌더링 직후 한 번만 실행됨
+  }, []);
 
   return (
     <Box
-      // 🛡️ 📍 보안 3: 오른쪽 클릭(우클릭) 완벽 방지
       onContextMenu={(e) => {
         e.preventDefault();
         alert("🔒 Sécurité : Clic droit désactivé.");
@@ -706,7 +701,8 @@ const DossierClient = () => {
         flexDirection: "column",
         alignItems: "center",
         py: 20,
-        userSelect: "none", // 🛡️ 📍 보안 4: 전체 텍스트 드래그 및 복사 방지
+        userSelect: "none",
+        overflowX: "hidden", // 📍 [추가] 모바일에서 800px DOM 영역 때문에 좌우 텅 빈 스크롤 생기는 것 방지
         "@media print": { backgroundColor: "#fff", py: 0 },
       }}
     >
@@ -722,7 +718,7 @@ const DossierClient = () => {
       <Box
         className="no-print"
         sx={{
-          width: "800px",
+          width: { xs: "90%", md: "800px" }, // 버튼 박스도 반응형 조절
           mb: 2,
           display: "flex",
           justifyContent: "space-between",
@@ -748,14 +744,21 @@ const DossierClient = () => {
         )}
       </Box>
 
+      {/* 📄 실제 문서 영역 */}
       <Paper
         id="printable-paper"
         elevation={10}
         sx={{
           width: "800px",
+          minWidth: "800px", // 📍 A4 너비 강제 고정
           minHeight: "1131px",
           p: "50px",
           bgcolor: "#ffffff",
+          // 📍 [핵심] 모바일/태블릿에서 PDF 전체 보기처럼 비율을 확 축소시킴
+          transform: { xs: "scale(0.42)", sm: "scale(0.7)", md: "none" },
+          transformOrigin: "top center",
+          // 📍 축소되면서 남는 하단 빈 공간을 위로 당겨서 없앰
+          mb: { xs: "-650px", sm: "-340px", md: 0 },
         }}
       >
         <DevisHeader devisData={devisData} />

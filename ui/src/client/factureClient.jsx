@@ -131,6 +131,7 @@ const FactureClient = () => {
         alignItems: "center",
         py: 20,
         userSelect: "none", // 🛡️ 📍 보안 4: 전체 텍스트 드래그 및 복사 방지
+        overflowX: "hidden", // 📍 [핵심] 모바일에서 화면 넘어가는 가로 스크롤 방지
         "@media print": { backgroundColor: "#fff", py: 0 },
       }}
     >
@@ -149,7 +150,7 @@ const FactureClient = () => {
       <Box
         className="no-print"
         sx={{
-          width: "800px",
+          width: { xs: "90%", md: "800px" }, // 📍 모바일 반응형 조절
           mb: 2,
           display: "flex",
           justifyContent: "space-between",
@@ -182,9 +183,15 @@ const FactureClient = () => {
         elevation={10}
         sx={{
           width: "800px",
+          minWidth: "800px", // 📍 A4 너비 강제 고정
           minHeight: "1131px",
           p: "50px",
           bgcolor: "#ffffff",
+          // 📍 [핵심] 모바일/태블릿에서 PDF 전체 보기처럼 비율을 확 축소시킴
+          transform: { xs: "scale(0.42)", sm: "scale(0.7)", md: "none" },
+          transformOrigin: "top center",
+          // 📍 축소되면서 남는 하단 빈 공간을 위로 당겨서 없앰
+          mb: { xs: "-650px", sm: "-340px", md: 0 },
         }}
       >
         {/* 1. 헤더 (회사 및 고객 정보) */}
@@ -265,9 +272,9 @@ const FactureClient = () => {
                   py: 0.5,
                   borderRadius: "4px",
                   transform: "rotate(-5deg)",
-                  whiteSpace: "nowrap", // 📍 글자가 두 줄로 꺾이는 것 방지
-                  flexShrink: 0, // 📍 공간이 좁아져도 도장 모양 유지
-                  mr: 2, // 📍 오른쪽 모서리가 삐져나가지 않게 살짝 안으로 밀어줌
+                  whiteSpace: "nowrap",
+                  flexShrink: 0,
+                  mr: 2,
                 }}
               >
                 PAYÉE
@@ -282,9 +289,9 @@ const FactureClient = () => {
                   py: 0.5,
                   borderRadius: "4px",
                   transform: "rotate(-5deg)",
-                  whiteSpace: "nowrap", // 📍 글자가 두 줄로 꺾이는 것 방지
-                  flexShrink: 0, // 📍 공간이 좁아져도 도장 모양 유지
-                  mr: 2, // 📍 오른쪽 모서리가 삐져나가지 않게 살짝 안으로 밀어줌
+                  whiteSpace: "nowrap",
+                  flexShrink: 0,
+                  mr: 2,
                 }}
               >
                 EN ATTENTE DE PAIEMENT

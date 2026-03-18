@@ -15,7 +15,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  InputAdornment, // 📍 추가됨: 지울 수 없는 '@'를 위해 필요합니다.
+  InputAdornment,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -41,7 +41,6 @@ const DashboardClient = () => {
       ? formData.phoneValue
       : `${formData.emailUser}${isCustomDomain ? "@" + formData.customDomain : formData.emailDomain}`;
 
-  // 📍 [핵심 변경점 1] customDomain일 때 무조건 '.'이 포함되어야 유효(valid)하게 처리
   const isContactValid =
     formData.contactType === "phone"
       ? formData.phoneValue.trim() !== ""
@@ -78,16 +77,14 @@ const DashboardClient = () => {
   const handleSearch = () => {
     const finalCode = codes.join("");
     if (finalCode.length === 6) {
-      // 🛠️ [테스트용 임시 로직]
-      // 확인(OK)을 누르면 true, 취소(Cancel)를 누르면 false를 반환합니다.
       const isFacture = window.confirm(
         "Mode test 🛠️\n\nCliquez sur [OK] pour aller vers la page Facture (paiement/reçu),\nCliquez sur [Annuler] pour aller vers la page Dossier (devis).",
       );
 
       if (isFacture) {
-        navigate(`/client/facture:docsId`); // '확인' 클릭 시
+        navigate(`/client/facture:docsId`);
       } else {
-        navigate(`/client/dossier:docsId`); // '취소' 클릭 시
+        navigate(`/client/dossier:docsId`);
       }
     } else {
       alert("Veuillez saisir votre code à 6 caractères.");
@@ -98,7 +95,7 @@ const DashboardClient = () => {
     <Container maxWidth="md">
       <Box sx={{ py: 20, textAlign: "center" }}>
         <Typography
-          variant="h3"
+          variant="h4"
           fontWeight="900"
           sx={{ mb: 2, color: mainBlue }}
         >
@@ -238,6 +235,8 @@ const DashboardClient = () => {
                       emailUser: "",
                     })
                   }
+                  // 📍 [핵심] 셀렉터 눌렀을 때 모달 덜컹거림 방지
+                  MenuProps={{ disableScrollLock: true }}
                 >
                   <MenuItem value="phone">Téléphone</MenuItem>
                   <MenuItem value="email">E-mail</MenuItem>
@@ -249,7 +248,7 @@ const DashboardClient = () => {
                   variant="standard"
                   label="Numéro de téléphone"
                   fullWidth
-                  placeholder="00 00 00 00 00" // 📍 요구사항 1: 전화번호 placeholder 변경
+                  placeholder="00 00 00 00 00"
                   value={formData.phoneValue}
                   onChange={(e) => {
                     let val = e.target.value.replace(/\D/g, "");
@@ -271,10 +270,9 @@ const DashboardClient = () => {
                       label="E-mail"
                       sx={{ flex: 1 }}
                       placeholder="jean.dupont"
-                      autoComplete="off" // 📍 요구사항 2: 이메일 자동완성 끄기
+                      autoComplete="off"
                       value={formData.emailUser}
                       onChange={(e) => {
-                        // 📍 [핵심 변경점 2] 이메일 입력 시 '@' 뒤로 다 날려버림
                         let inputVal = e.target.value;
                         if (inputVal.includes("@")) {
                           inputVal = inputVal.split("@")[0];
@@ -289,9 +287,11 @@ const DashboardClient = () => {
                           setFormData({
                             ...formData,
                             emailDomain: e.target.value,
-                            customDomain: "", // 📍 다른 도메인 선택하면 커스텀 입력 초기화
+                            customDomain: "",
                           })
                         }
+                        // 📍 [핵심] 도메인 셀렉터 눌렀을 때도 덜컹거림 방지
+                        MenuProps={{ disableScrollLock: true }}
                       >
                         <MenuItem value="@gmail.com">@gmail.com</MenuItem>
                         <MenuItem value="@orange.fr">@orange.fr</MenuItem>
@@ -306,7 +306,6 @@ const DashboardClient = () => {
                     </FormControl>
                   </Stack>
 
-                  {/* 📍 [핵심 변경점 3] 직접 입력창 + '.' 필수 확인 (빨간색 에러 텍스트) */}
                   {formData.emailDomain === "custom" && (
                     <TextField
                       variant="standard"

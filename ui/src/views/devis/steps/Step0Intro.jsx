@@ -8,8 +8,8 @@ import {
   FormControlLabel,
   Paper,
   Collapse,
-  Modal, // 👈 추가됨
-  IconButton, // 👈 추가됨
+  Modal,
+  IconButton,
 } from "@mui/material";
 import SmartphoneIcon from "@mui/icons-material/Smartphone";
 import MobileOffIcon from "@mui/icons-material/MobileOff";
@@ -18,15 +18,16 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EngineeringIcon from "@mui/icons-material/Engineering";
-import WarningAmberIcon from "@mui/icons-material/WarningAmber"; // 👈 추가됨
-import CloseIcon from "@mui/icons-material/Close"; // 👈 추가됨
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import CloseIcon from "@mui/icons-material/Close";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle"; // ✅ 추가됨: 체크 아이콘 임포트
 
 const Step0Intro = ({ onUpdate, onNext }) => {
   const [agreed, setAgreed] = useState(false);
   const [scrollConfirmed, setScrollConfirmed] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [openProcess, setOpenProcess] = useState(false); // 새로운 안내 세션 상태
-  const [openGuide, setOpenGuide] = useState(false); // 👈 모달 상태 추가됨
+  const [openGuide, setOpenGuide] = useState(false); // 모달 상태 추가됨
 
   const handleStart = () => {
     if (!agreed || !selectedStatus || !scrollConfirmed) return;
@@ -51,14 +52,13 @@ const Step0Intro = ({ onUpdate, onNext }) => {
   return (
     <Box sx={{ textAlign: "left" }}>
       <Typography
-        variant="h4"
-        sx={{ fontWeight: 800, mb: 2, color: "#1d1d1f" }}
+        sx={{ fontWeight: 800, mb: 2, fontSize: "2rem", color: "#1d1d1f" }}
       >
         Diagnostic Téléphone
       </Typography>
 
       <Typography
-        sx={{ color: "#424245", fontSize: "1rem", mb: 4, lineHeight: 1.6 }}
+        sx={{ color: "#424245", fontSize: "0.9rem", mb: 4, lineHeight: 1.6 }}
       >
         Afin d'évaluer avec précision l'état de votre Téléphone, nous vous
         invitons à réaliser ce diagnostic. Dans une démarche de totale
@@ -66,11 +66,11 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         d'intervention avant de commencer.
       </Typography>
 
-      {/* 🛡️ 기존 법적 방어막 섹션 (형님이 주신 내용 토씨 하나 안 건드림) */}
+      {/* 🛡️ 기존 법적 방어막 섹션 */}
       <Box
         sx={{
           p: 3,
-          mb: 2, // 아래 카드와 간격을 위해 mb 5에서 2로 조정
+          mb: 2,
           bgcolor: "#fbfbfd",
           borderRadius: "16px",
           border: "1px solid #d2d2d7",
@@ -79,7 +79,7 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
           <FactCheckOutlinedIcon sx={{ fontSize: 22, color: "#0071e3" }} />
           <Typography
-            sx={{ fontWeight: 800, fontSize: "1rem", color: "#1d1d1f" }}
+            sx={{ fontWeight: 800, fontSize: "0.9rem", color: "#1d1d1f" }}
           >
             Notre engagement de transparence :
           </Typography>
@@ -189,7 +189,6 @@ const Step0Intro = ({ onUpdate, onNext }) => {
             }}
           >
             <Stack spacing={2.5}>
-              {/* 1. 진단 및 견적 발송: 형님이 주도권을 잡는 단계 */}
               <Typography
                 variant="caption"
                 sx={{ color: "#424245", display: "block", lineHeight: 1.6 }}
@@ -201,7 +200,6 @@ const Step0Intro = ({ onUpdate, onNext }) => {
                 soins.
               </Typography>
 
-              {/* 2. 정밀 점검 및 견적 재조정: 미세 납땜 강조 */}
               <Typography
                 variant="caption"
                 sx={{ color: "#424245", display: "block", lineHeight: 1.6 }}
@@ -214,7 +212,6 @@ const Step0Intro = ({ onUpdate, onNext }) => {
                 avantage).
               </Typography>
 
-              {/* 3. 부품 선택: 폴더블 포함 및 링크 안내 */}
               <Typography
                 variant="caption"
                 sx={{ color: "#424245", display: "block", lineHeight: 1.6 }}
@@ -235,7 +232,6 @@ const Step0Intro = ({ onUpdate, onNext }) => {
                 </a>
               </Typography>
 
-              {/* 4. 물류: 견적 승인 후 행동 지침 */}
               <Typography
                 variant="caption"
                 sx={{
@@ -251,7 +247,6 @@ const Step0Intro = ({ onUpdate, onNext }) => {
                 <span>
                   • <strong>Par Correspondance :</strong> Expédiez votre
                   appareil en toute sécurité (Colissimo/Chronopost).{" "}
-                  {/* 👈 여기서부터 링크 빼고 모달 띄우기로 바꿈 */}
                   <span
                     onClick={(e) => {
                       e.stopPropagation();
@@ -277,7 +272,7 @@ const Step0Intro = ({ onUpdate, onNext }) => {
         </Collapse>
       </Box>
 
-      {/* 📌 상황 선택 버튼 (기존과 동일) */}
+      {/* 📌 상황 선택 버튼 */}
       <Box
         sx={{
           opacity: agreed ? 1 : 0.4,
@@ -318,6 +313,12 @@ const Step0Intro = ({ onUpdate, onNext }) => {
                 Je peux voir le menu et utiliser le tactile.
               </Typography>
             </Box>
+            {/* ✅ 추가됨: 선택 시 우측 끝에 체크 아이콘 표시 */}
+            {selectedStatus === "working" && (
+              <CheckCircleIcon
+                sx={{ ml: "auto", color: "#0071e3", fontSize: 28 }}
+              />
+            )}
           </Button>
 
           <Button
@@ -345,6 +346,12 @@ const Step0Intro = ({ onUpdate, onNext }) => {
                 L'image est absente ou le téléphone ne réagit pas.
               </Typography>
             </Box>
+            {/* ✅ 추가됨: 선택 시 우측 끝에 체크 아이콘 표시 */}
+            {selectedStatus === "broken" && (
+              <CheckCircleIcon
+                sx={{ ml: "auto", color: "#ff3b30", fontSize: 28 }}
+              />
+            )}
           </Button>
         </Stack>
       </Box>
@@ -446,23 +453,9 @@ const Step0Intro = ({ onUpdate, onNext }) => {
             41 minutes
           </Typography>
         </Stack>
-        {/* <Typography
-          variant="caption"
-          sx={{
-            display: "block",
-            color: "#86868b",
-            fontWeight: 500,
-            mt: 1,
-            lineHeight: 1.4,
-          }}
-        >
-          * Sécurité et prévention des fraudes : Au titre de l'intérêt légitime
-          (RGPD), tout envoi abusif ou frauduleux entraînera le blocage de
-          l'adresse IP sans consentement préalable.
-        </Typography> */}
       </Box>
 
-      {/* 📦 👈 여기에 [Guide d'envoi] 모달창 추가됨 */}
+      {/* 📦 [Guide d'envoi] 모달창 */}
       <Modal
         open={openGuide}
         onClose={() => setOpenGuide(false)}
