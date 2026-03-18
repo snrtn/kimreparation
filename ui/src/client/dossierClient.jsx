@@ -740,7 +740,7 @@ const DossierClient = () => {
         {signatureData && (
           <Button
             variant="contained"
-            startIcon={<PrintIcon />}
+            startIcon={<PrintIcon sx={{ color: "#fff" }} />}
             onClick={handlePrint}
             sx={{ bgcolor: "#1976d2", fontWeight: 900 }}
           >

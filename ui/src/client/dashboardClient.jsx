@@ -78,8 +78,17 @@ const DashboardClient = () => {
   const handleSearch = () => {
     const finalCode = codes.join("");
     if (finalCode.length === 6) {
-      // navigate(`/client/dossier/${finalCode}`);
-      navigate(`/client/dossier:docsId`);
+      // 🛠️ [테스트용 임시 로직]
+      // 확인(OK)을 누르면 true, 취소(Cancel)를 누르면 false를 반환합니다.
+      const isFacture = window.confirm(
+        "Mode test 🛠️\n\nCliquez sur [OK] pour aller vers la page Facture (paiement/reçu),\nCliquez sur [Annuler] pour aller vers la page Dossier (devis).",
+      );
+
+      if (isFacture) {
+        navigate(`/client/facture:docsId`); // '확인' 클릭 시
+      } else {
+        navigate(`/client/dossier:docsId`); // '취소' 클릭 시
+      }
     } else {
       alert("Veuillez saisir votre code à 6 caractères.");
     }

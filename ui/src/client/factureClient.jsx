@@ -30,7 +30,7 @@ const FactureClient = () => {
     devisNumber: "DEV-2026-0042",
     date: "17/03/2026",
     validity: "17/04/2026",
-    isPaid: false, // 📍 false: 결제 대기 / true: 결제 완료 (도장 찍힘)
+    isPaid: true, // 📍 false: 결제 대기 / true: 결제 완료 (도장 찍힘)
     company: {
       name: "KIM REPARATION",
       address: "123 Rue de la Réparation",
@@ -163,14 +163,16 @@ const FactureClient = () => {
         >
           Retour
         </Button>
-        <Button
-          variant="contained"
-          startIcon={<PrintIcon />}
-          onClick={handlePrint}
-          sx={{ bgcolor: "#1976d2", fontWeight: 900 }}
-        >
-          Imprimer Facture
-        </Button>
+        {factureData.isPaid && (
+          <Button
+            variant="contained"
+            startIcon={<PrintIcon sx={{ color: "#fff" }} />}
+            onClick={handlePrint}
+            sx={{ bgcolor: "#1976d2", fontWeight: 900 }}
+          >
+            Imprimer Facture
+          </Button>
+        )}
       </Box>
 
       {/* 📄 실제 청구서 문서 영역 */}
