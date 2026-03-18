@@ -42,7 +42,7 @@ const sidemenuData = {
 
   client: [
     { title: "Devis & Facture", path: "/client" },
-    { title: "Service History", path: "/client/drive" },
+    { title: "Espace Client", path: "/client/drive" },
   ],
 };
 

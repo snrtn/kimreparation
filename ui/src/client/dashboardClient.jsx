@@ -1,11 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Container,
   Typography,
   Button,
   Stack,
-  InputBase,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -20,12 +19,14 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const DashboardClient = () => {
-  const [codes, setCodes] = useState(["", "", "", "", "", ""]);
+  const [accessCode, setAccessCode] = useState("");
   const [openModal, setOpenModal] = useState(false);
-  const inputRefs = useRef([]);
   const navigate = useNavigate();
-  const mainBlue = "#1976d2";
 
+  // 디자인 포인트 컬러 (애플 블랙/그레이)
+  const mainBlack = "#1d1d1f";
+
+  // --- [복구 모달 데이터 상태] ---
   const [formData, setFormData] = useState({
     name: "",
     contactType: "phone",
@@ -35,6 +36,7 @@ const DashboardClient = () => {
     customDomain: "",
   });
 
+  // --- [복구 모달 검증 로직] ---
   const isCustomDomain = formData.emailDomain === "custom";
   const finalContact =
     formData.contactType === "phone"
@@ -51,127 +53,124 @@ const DashboardClient = () => {
 
   const isComplete = formData.name.trim() !== "" && isContactValid;
 
-  const handleChange = (e, index) => {
-    const val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
-    if (!val) return;
-    const newCodes = [...codes];
-    newCodes[index] = val.slice(-1);
-    setCodes(newCodes);
-    if (index < 5) inputRefs.current[index + 1].focus();
+  // --- [입력창 반응형 스타일 계산] ---
+  const getDynamicStyle = () => {
+    const len = accessCode.length;
+    if (len <= 6) return { fontSize: "2rem", letterSpacing: "0.5em" };
+    if (len <= 10) return { fontSize: "1.5rem", letterSpacing: "0.3em" };
+    if (len <= 14) return { fontSize: "1.2rem", letterSpacing: "0.15em" };
+    return { fontSize: "1rem", letterSpacing: "0.05em" };
   };
 
-  const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace") {
-      const newCodes = [...codes];
-      if (codes[index]) {
-        newCodes[index] = "";
-        setCodes(newCodes);
-      } else if (index > 0) {
-        newCodes[index - 1] = "";
-        setCodes(newCodes);
-        inputRefs.current[index - 1].focus();
-      }
-    }
+  const dynamicStyle = getDynamicStyle();
+
+  // --- [핸들러 로직] ---
+  const handleCodeChange = (e) => {
+    // 알파벳+숫자 허용 / 대문자 변환 / 최대 14자 제한
+    const val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+    if (val.length <= 14) setAccessCode(val);
   };
 
   const handleSearch = () => {
-    const finalCode = codes.join("");
-    if (finalCode.length === 6) {
+    if (accessCode.length >= 6) {
       const isFacture = window.confirm(
-        "Mode test 🛠️\n\nCliquez sur [OK] pour aller vers la page Facture (paiement/reçu),\nCliquez sur [Annuler] pour aller vers la page Dossier (devis).",
+        "Mode test 🛠️\n\n[OK] -> Facture (Paiement)\n[Annuler] -> Dossier (Devis)",
       );
-
-      if (isFacture) {
-        navigate(`/client/facture:docsId`);
-      } else {
-        navigate(`/client/dossier:docsId`);
-      }
-    } else {
-      alert("Veuillez saisir votre code à 6 caractères.");
+      if (isFacture) navigate(`/client/facture:docsId`);
+      else navigate(`/client/dossier:docsId`);
     }
   };
 
   return (
-    <Container maxWidth="md">
-      <Box sx={{ py: 20, textAlign: "center" }}>
+    <Container maxWidth="sm">
+      <Box sx={{ py: { xs: 15, md: 20 }, textAlign: "center" }}>
         <Typography
           variant="h4"
           fontWeight="900"
-          sx={{ mb: 2, color: mainBlue }}
+          sx={{ mb: 1, letterSpacing: "-0.04em" }}
         >
           DEVIS & FACTURE
         </Typography>
-        <Typography variant="h6" sx={{ mb: 1, color: "#333", fontWeight: 700 }}>
+        <Typography
+          variant="h6"
+          sx={{ mb: 1, color: "#86868b", fontWeight: 600 }}
+        >
           CONSULTER MON DOSSIER
         </Typography>
-        <Typography variant="body2" sx={{ mb: 10, color: "#666" }}>
-          Veuillez saisir votre code d'accès à 6 caractères
+        <Typography variant="body2" sx={{ mb: 6, color: "#86868b" }}>
+          Veuillez saisir votre code d'accès (6 caractères minimum)
         </Typography>
 
-        <Stack
-          direction="row"
-          spacing={1.5}
-          justifyContent="center"
-          sx={{ mb: 10 }}
-        >
-          {codes.map((digit, index) => (
-            <InputBase
-              key={index}
-              inputRef={(el) => (inputRefs.current[index] = el)}
-              value={digit}
-              onChange={(e) => handleChange(e, index)}
-              onKeyDown={(e) => handleKeyDown(e, index)}
-              inputProps={{
-                maxLength: 1,
-                autoComplete: "off",
-                style: {
-                  textAlign: "center",
-                  fontSize: "4rem",
-                  fontWeight: "900",
-                  width: "90px",
-                  height: "120px",
-                  backgroundColor: "#f0f4f8",
-                  borderRadius: "0px",
-                  borderBottom: digit
-                    ? `6px solid ${mainBlue}`
-                    : "6px solid #d1d9e0",
-                  color: mainBlue,
-                  transition: "all 0.1s ease",
-                  textTransform: "uppercase",
-                },
-              }}
-            />
-          ))}
-        </Stack>
+        {/* 📍 코드 입력 텍스트 필드 */}
+        <Box sx={{ mb: 4, maxWidth: "340px", mx: "auto" }}>
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="EX: xxxxxxxxxxxxxx"
+            value={accessCode}
+            onChange={handleCodeChange}
+            autoComplete="off"
+            inputProps={{
+              style: {
+                textAlign: "center",
+                fontWeight: "800",
+                textTransform: "uppercase",
+                fontFamily: "monospace",
+                fontSize: dynamicStyle.fontSize,
+                letterSpacing: dynamicStyle.letterSpacing,
+                transition: "all 0.2s ease",
+              },
+            }}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                minHeight: "80px",
+                borderRadius: "16px",
+                bgcolor: "#f5f5f7",
+                "& fieldset": { border: "2px solid #d2d2d7" },
+                "&.Mui-focused fieldset": { border: `2px solid ${mainBlack}` },
+              },
+            }}
+          />
+        </Box>
 
+        {/* 📍 검색 버튼 (6자부터 활성화) */}
         <Button
           fullWidth
           variant="contained"
           onClick={handleSearch}
-          disabled={codes.join("").length !== 6}
+          disabled={accessCode.length < 6}
           sx={{
-            py: 3,
+            py: 2,
             fontSize: "1rem",
-            fontWeight: "900",
-            borderRadius: "0px",
-            backgroundColor: mainBlue,
-            color: "#fff",
-            "&:hover": { backgroundColor: "#1565c0" },
+            fontWeight: "700",
+            borderRadius: "14px",
+            backgroundColor: accessCode.length >= 6 ? mainBlack : "#e5e5e7",
+            color: accessCode.length >= 6 ? "#fff" : "#a1a1a6",
             boxShadow: "none",
+            maxWidth: "340px",
+            "&:hover": {
+              backgroundColor: accessCode.length >= 6 ? "#000" : "#e5e5e7",
+              boxShadow: "none",
+            },
+            "&.Mui-disabled": {
+              backgroundColor: "#f5f5f7",
+              color: "#d2d2d7",
+            },
           }}
         >
           VOIR MON DOSSIER
         </Button>
 
+        {/* 📍 코드 분실 링크 */}
         <Typography
           onClick={() => setOpenModal(true)}
-          variant="body1"
           sx={{
-            mt: 6,
-            color: "#999",
+            mt: 4,
+            color: "#a1a1a6",
             cursor: "pointer",
+            fontSize: "0.85rem",
             textDecoration: "underline",
-            "&:hover": { color: mainBlue },
+            "&:hover": { color: "#0071e3" },
           }}
         >
           Code perdu ? Recevoir par e-mail
@@ -184,46 +183,59 @@ const DashboardClient = () => {
         fullWidth
         maxWidth="sm"
         PaperProps={{
-          style: { height: "600px", maxHeight: "600px", minHeight: "600px" },
+          sx: {
+            // 📍 높이 600px 고정 (모바일/PC 공통)
+            height: "640px",
+            maxHeight: "640px",
+            minHeight: "600px",
+            borderRadius: "24px",
+            display: "flex",
+            flexDirection: "column",
+          },
         }}
       >
         <DialogTitle
           sx={{
             fontWeight: 900,
             textAlign: "center",
-            pt: 4,
+            pt: 5,
             fontSize: "1.5rem",
           }}
         >
           Récupérer mon code
         </DialogTitle>
-        <DialogContent sx={{ px: 4, pb: 4 }}>
+
+        <DialogContent sx={{ px: { xs: 3, sm: 5 }, flex: 1 }}>
           <Typography
             variant="body2"
             sx={{ mb: 4, textAlign: "center", color: "#666" }}
           >
-            Veuillez saisir votre nom et le contact utilisé lors du diagnostic.
+            Saisissez votre nom et le contact utilisé lors du diagnostic.
           </Typography>
 
-          <Stack spacing={3} sx={{ mt: 2 }}>
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-              <TextField
-                variant="standard"
-                label="Votre Nom et Prénom"
-                fullWidth
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-              />
-            </Stack>
+          {/* 📍 mt(Margin Top)를 모바일에서 더 확실하게 줌 */}
+          <Stack spacing={4} sx={{ mt: { xs: 2, sm: 4 } }}>
+            {/* 1. 성함 입력 칸 */}
+            <TextField
+              variant="standard"
+              label="Votre Nom et Prénom"
+              fullWidth
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+            />
 
+            {/* 2. 연락처 수단 선택 + 입력 필드 세트 (모바일은 세로로!) */}
             <Stack
               direction={{ xs: "column", sm: "row" }}
-              spacing={2}
-              alignItems="flex-end"
-              sx={{ width: "100%" }}
+              spacing={3}
+              alignItems={{ xs: "stretch", sm: "flex-end" }}
             >
-              <FormControl variant="standard" sx={{ minWidth: 150 }}>
+              {/* 수단 선택 셀렉터 */}
+              <FormControl
+                variant="standard"
+                sx={{ minWidth: { xs: "100%", sm: 150 } }}
+              >
                 <InputLabel>Moyen de contact</InputLabel>
                 <Select
                   value={formData.contactType}
@@ -235,21 +247,29 @@ const DashboardClient = () => {
                       emailUser: "",
                     })
                   }
-                  // 📍 [핵심] 셀렉터 눌렀을 때 모달 덜컹거림 방지
                   MenuProps={{ disableScrollLock: true }}
                 >
-                  <MenuItem value="phone">Téléphone</MenuItem>
-                  <MenuItem value="email">E-mail</MenuItem>
+                  <MenuItem value="@gmail.com">@gmail.com</MenuItem>
+                  <MenuItem value="@orange.fr">@orange.fr</MenuItem>
+                  <MenuItem value="@wanadoo.fr">@wanadoo.fr</MenuItem>
+                  <MenuItem value="@free.fr">@free.fr</MenuItem>
+                  <MenuItem value="@sfr.fr">@sfr.fr</MenuItem>
+                  <MenuItem value="@outlook.com">@outlook.com</MenuItem>
+                  <MenuItem value="@yahoo.fr">@yahoo.fr</MenuItem>
+                  <MenuItem value="@icloud.com">@icloud.com</MenuItem>
+                  <MenuItem value="custom">Autre</MenuItem>
                 </Select>
               </FormControl>
 
+              {/* 전화번호 필드 */}
               {formData.contactType === "phone" ? (
                 <TextField
                   variant="standard"
-                  label="Numéro de téléphone"
+                  label="Numéro"
                   fullWidth
                   placeholder="00 00 00 00 00"
                   value={formData.phoneValue}
+                  sx={{ mt: { xs: 1, sm: 0 } }} // 모바일 전용 mt
                   onChange={(e) => {
                     let val = e.target.value.replace(/\D/g, "");
                     if (val.length > 0 && val[0] !== "0") val = "0" + val;
@@ -259,103 +279,90 @@ const DashboardClient = () => {
                   }}
                 />
               ) : (
+                /* 이메일 입력 파트 (모바일 세로 배치) */
                 <Stack
-                  direction="column"
+                  direction={{ xs: "column", sm: "row" }}
                   spacing={2}
-                  sx={{ width: "100%", flex: 1 }}
+                  sx={{ flex: 1, width: "100%", mt: { xs: 1, sm: 0 } }}
                 >
-                  <Stack direction="row" alignItems="flex-end" spacing={1}>
-                    <TextField
-                      variant="standard"
-                      label="E-mail"
-                      sx={{ flex: 1 }}
-                      placeholder="jean.dupont"
-                      autoComplete="off"
-                      value={formData.emailUser}
-                      onChange={(e) => {
-                        let inputVal = e.target.value;
-                        if (inputVal.includes("@")) {
-                          inputVal = inputVal.split("@")[0];
-                        }
-                        setFormData({ ...formData, emailUser: inputVal });
-                      }}
-                    />
-                    <FormControl variant="standard" sx={{ minWidth: 140 }}>
-                      <Select
-                        value={formData.emailDomain}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            emailDomain: e.target.value,
-                            customDomain: "",
-                          })
-                        }
-                        // 📍 [핵심] 도메인 셀렉터 눌렀을 때도 덜컹거림 방지
-                        MenuProps={{ disableScrollLock: true }}
-                      >
-                        <MenuItem value="@gmail.com">@gmail.com</MenuItem>
-                        <MenuItem value="@orange.fr">@orange.fr</MenuItem>
-                        <MenuItem value="@wanadoo.fr">@wanadoo.fr</MenuItem>
-                        <MenuItem value="@free.fr">@free.fr</MenuItem>
-                        <MenuItem value="@sfr.fr">@sfr.fr</MenuItem>
-                        <MenuItem value="@outlook.com">@outlook.com</MenuItem>
-                        <MenuItem value="@yahoo.fr">@yahoo.fr</MenuItem>
-                        <MenuItem value="@icloud.com">@icloud.com</MenuItem>
-                        <MenuItem value="custom">Autre</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Stack>
-
-                  {formData.emailDomain === "custom" && (
-                    <TextField
-                      variant="standard"
-                      label="Nom de domaine"
-                      fullWidth
-                      placeholder="exemple.com"
-                      autoComplete="off"
-                      value={formData.customDomain}
-                      error={
-                        formData.customDomain.length > 0 &&
-                        !formData.customDomain.includes(".")
-                      }
-                      helperText={
-                        formData.customDomain.length > 0 &&
-                        !formData.customDomain.includes(".")
-                          ? "Le domaine doit contenir un point (ex: domaine.com)"
-                          : ""
-                      }
+                  <TextField
+                    variant="standard"
+                    label="E-mail (ID)"
+                    sx={{ flex: 2 }}
+                    placeholder="identifiant"
+                    value={formData.emailUser}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        emailUser: e.target.value.split("@")[0],
+                      })
+                    }
+                  />
+                  <FormControl variant="standard" sx={{ flex: 1 }}>
+                    <Select
+                      value={formData.emailDomain}
                       onChange={(e) =>
                         setFormData({
                           ...formData,
-                          customDomain: e.target.value,
+                          emailDomain: e.target.value,
+                          customDomain: "",
                         })
                       }
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">@</InputAdornment>
-                        ),
-                      }}
-                    />
-                  )}
+                      MenuProps={{ disableScrollLock: true }}
+                    >
+                      <MenuItem value="@gmail.com">@gmail.com</MenuItem>
+                      <MenuItem value="@orange.fr">@orange.fr</MenuItem>
+                      <MenuItem value="@free.fr">@free.fr</MenuItem>
+                      <MenuItem value="custom">Autre</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Stack>
               )}
             </Stack>
+
+            {/* 3. 기타 도메인 입력 (Autre 선택 시) */}
+            {isCustomDomain && (
+              <TextField
+                variant="standard"
+                label="Nom de domaine"
+                fullWidth
+                placeholder="exemple.com"
+                value={formData.customDomain}
+                onChange={(e) =>
+                  setFormData({ ...formData, customDomain: e.target.value })
+                }
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">@</InputAdornment>
+                  ),
+                }}
+                sx={{ mt: 2 }}
+              />
+            )}
           </Stack>
         </DialogContent>
-        <DialogActions sx={{ p: 4, justifyContent: "center", gap: 2 }}>
+
+        <DialogActions sx={{ p: 5, justifyContent: "center", gap: 2 }}>
           <Button
             onClick={() => setOpenModal(false)}
-            sx={{ color: "#666", fontWeight: 700 }}
+            sx={{ color: "#86868b", fontWeight: 700, px: 3 }}
           >
             ANNULER
           </Button>
           <Button
             variant="contained"
             disabled={!isComplete}
-            sx={{ bgcolor: mainBlue, px: 6, fontWeight: 900, borderRadius: 0 }}
+            sx={{
+              bgcolor: mainBlack,
+              px: 5,
+              py: 1.2,
+              fontWeight: 700,
+              borderRadius: "12px",
+              "&:hover": { bgcolor: "#000" },
+            }}
             onClick={() => {
               alert(
-                `Nom : ${formData.name}\nContact : ${finalContact}\n\nDemande envoyée avec succès.`,
+                `Demande envoyée pour : ${formData.name}\nContact : ${finalContact}`,
               );
               setOpenModal(false);
             }}

@@ -29,7 +29,9 @@ const FactureClient = () => {
     devisNumber: "DEV-2026-0042",
     date: "17/03/2026",
     validity: "17/04/2026",
-    isPaid: false, // 📍 false: 결제 대기 / true: 결제 완료 (도장 찍힘)
+    isPaid: true,
+    // 📍 DB에서 가져올 결제 수단 (예: "PayPal", "Espèces", "Virement", "CB")
+    paymentMethod: "PayPal", // 📍 false: 결제 대기 / true: 결제 완료 (도장 찍힘)
     company: {
       name: "KIM REPARATION",
       address: "123 Rue de la Réparation",
@@ -268,42 +270,25 @@ const FactureClient = () => {
             <Typography variant="h6" fontWeight="900" sx={{ letterSpacing: 1 }}>
               FACTURE N° {factureNumber}
             </Typography>
-
-            {factureData.isPaid ? (
-              <Typography
-                sx={{
-                  border: "2px solid #2e7d32",
-                  color: "#2e7d32",
-                  fontWeight: "bold",
-                  px: 2,
-                  py: 0.5,
-                  borderRadius: "4px",
-                  transform: "rotate(-5deg)",
-                  whiteSpace: "nowrap",
-                  flexShrink: 0,
-                  mr: 2,
-                }}
-              >
-                PAYÉE
-              </Typography>
-            ) : (
-              <Typography
-                sx={{
-                  border: "2px solid #d32f2f",
-                  color: "#d32f2f",
-                  fontWeight: "bold",
-                  px: 2,
-                  py: 0.5,
-                  borderRadius: "4px",
-                  transform: "rotate(-5deg)",
-                  whiteSpace: "nowrap",
-                  flexShrink: 0,
-                  mr: 2,
-                }}
-              >
-                EN ATTENTE DE PAIEMENT
-              </Typography>
-            )}
+            <Typography
+              sx={{
+                border: "3px solid #2e7d32", // 테두리 살짝 굵게 (도장 느낌)
+                color: "#2e7d32",
+                fontWeight: "600", // 글씨도 굵게
+                fontSize: "1.2rem",
+                px: 2,
+                py: 0.5,
+                borderRadius: "6px",
+                transform: "rotate(-5deg)",
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+                mr: 2,
+              }}
+            >
+              {factureData.paymentMethod
+                ? `PAYÉE PAR ${factureData.paymentMethod.toUpperCase()}`
+                : "PAYÉE"}
+            </Typography>
           </Stack>
           <Stack direction="row" spacing={4} sx={{ mt: 2 }}>
             <Typography variant="body2">
@@ -364,54 +349,8 @@ const FactureClient = () => {
           <Box
             sx={{
               width: "45%",
-              p: 2,
-              border: "1px dashed #ccc",
-              borderRadius: "8px",
-              bgcolor: "#fafafa",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
             }}
-          >
-            {factureData.isPaid ? (
-              <Box sx={{ textAlign: "center", py: 1 }}>
-                <Typography variant="h6" fontWeight="bold" color="success.main">
-                  Paiement bien reçu !
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ mt: 1 }}
-                >
-                  Merci pour votre confiance.
-                </Typography>
-              </Box>
-            ) : (
-              <>
-                <Typography variant="body2" fontWeight="bold" sx={{ mb: 1 }}>
-                  Informations de paiement
-                </Typography>
-                <Typography variant="caption" display="block">
-                  <strong>Banque :</strong> Nom de votre banque
-                </Typography>
-                <Typography variant="caption" display="block">
-                  <strong>IBAN :</strong> FR76 0000 0000 0000 0000 0000 000
-                </Typography>
-                <Typography variant="caption" display="block">
-                  <strong>BIC :</strong> XXXXXXXX
-                </Typography>
-                <Typography
-                  variant="caption"
-                  display="block"
-                  sx={{ mt: 1, fontStyle: "italic", color: "#666" }}
-                >
-                  Merci d'indiquer le numéro de facture
-                  <br />
-                  <strong>« {factureNumber} »</strong> lors de votre virement.
-                </Typography>
-              </>
-            )}
-          </Box>
+          ></Box>
 
           {/* 합계 요약 */}
           <Box sx={{ width: "300px" }}>
@@ -454,46 +393,7 @@ const FactureClient = () => {
           </Box>
         </Stack>
 
-        {/* 📍 조건부 렌더링: 미결제 상태일 때만 안내 박스 노출 */}
-        {!factureData.isPaid && (
-          <Paper
-            className="no-print"
-            elevation={0}
-            sx={{
-              p: 2,
-              mt: 8,
-              bgcolor: "#e3f2fd",
-              borderLeft: "4px solid #1976d2",
-              borderRadius: "4px",
-              display: "flex",
-              alignItems: "flex-start",
-              gap: 1.5,
-            }}
-          >
-            <InfoIcon sx={{ color: "#1976d2", mt: 0.2 }} />
-            <Box>
-              <Typography
-                variant="body2"
-                sx={{ color: "#0d47a1", fontWeight: 700, mb: 0.5 }}
-              >
-                Que faire après votre paiement ?
-              </Typography>
-              <Typography
-                variant="caption"
-                sx={{ color: "#0d47a1", display: "block", lineHeight: 1.6 }}
-              >
-                • Dès que nous aurons vérifié votre paiement, un tampon{" "}
-                <b>"PAYÉE"</b> apparaîtra sur cette facture.
-                <br />• Veuillez <b>rafraîchir la page</b> après 30 minutes.
-                <br />• Si le tampon de validation n'apparaît toujours pas, il
-                se peut que nous soyons en intervention.
-                <br />• Merci de rafraîchir à nouveau 30 minutes plus tard.
-              </Typography>
-            </Box>
-          </Paper>
-        )}
-
-        {/* 5. 하단 법적 고지 (청구서 필수 항목) */}
+        {/* 5. 하단 법적 고지 (결제 완료 영수증 전용) */}
         <Box
           sx={{
             mt: 10,
@@ -502,27 +402,19 @@ const FactureClient = () => {
             textAlign: "center",
           }}
         >
+          {/* 📍 돈 안 내면 연체료 물린다는 협박 삭제 -> 결제 증명 멘트로 교체 */}
           <Typography
             variant="caption"
             color="text.secondary"
             display="block"
-            sx={{ mb: 0.5 }}
+            sx={{ mb: 1, fontWeight: "bold" }}
           >
-            Conditions de paiement : Paiement à réception ou au plus tard le{" "}
-            {factureData.validity}.
+            Ce document atteste du règlement intégral de la prestation.
           </Typography>
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            display="block"
-            sx={{ mb: 0.5 }}
-          >
-            En cas de retard de paiement, une pénalité égale à 3 fois le taux
-            d'intérêt légal sera appliquée. Indemnité forfaitaire pour frais de
-            recouvrement : 40 €.
-          </Typography>
+
+          {/* 📍 사업자 필수 정보 (이건 영수증이라도 무조건 있어야 함) */}
           <Typography variant="caption" color="text.secondary" display="block">
-            Kim Reparation - {factureData.company.siret} - Dispensé
+            {factureData.company.name} - {factureData.company.siret} - Dispensé
             d'immatriculation au RCS.
           </Typography>
         </Box>
