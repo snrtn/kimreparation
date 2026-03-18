@@ -213,6 +213,12 @@ const ToyDevis = () => {
       c.parentNode.replaceChild(img, c);
     });
 
+    const styles = Array.from(
+      document.querySelectorAll('style, link[rel="stylesheet"]'),
+    )
+      .map((s) => s.outerHTML)
+      .join("");
+
     const printWindow = window.open("", "_blank");
     if (!printWindow) {
       alert("Veuillez autoriser les pop-ups pour imprimer.");
@@ -221,7 +227,11 @@ const ToyDevis = () => {
 
     // 📍 [핵심] 팝업창 head에 로컬의 모든 스타일을 직접 주입
     printWindow.document.write(
-      `<html><head><title>Impression - Contrat</title></head><body></body></html>`,
+      `<html><head>${styles}<style>
+        /* 여기에 인쇄용 커스텀 스타일 추가 */
+        @media print { .avoid-break { page-break-inside: avoid; } }
+      </style>
+      <title>Impression - Contrat</title></head><body></body></html>`,
     );
 
     // 스타일 주입
