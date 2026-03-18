@@ -190,17 +190,35 @@ const ToyDevis = () => {
     const element = pdfRef.current;
     if (!element) return;
 
-    // 📍 [수정] 모든 스타일(Style 태그 + 외부 CSS 링크)을 더 정확하게 긁어옴
-    const styleTags = Array.from(document.head.querySelectorAll("style")).map(
-      (s) => s.cloneNode(true),
-    );
-    const linkTags = Array.from(
-      document.head.querySelectorAll('link[rel="stylesheet"]'),
-    ).map((l) => l.cloneNode(true));
+    // 1. 현재 문서의 모든 스타일(MUI 포함)을 텍스트로 추출
+    let allStyles = "";
+    try {
+      // 스타일 태그 내용 긁기
+      const styleTags = document.querySelectorAll("style");
+      styleTags.forEach((tag) => {
+        allStyles += tag.innerHTML;
+      });
 
+      // 외부 링크 CSS(빌드된 파일) 내용 긁기
+      for (let i = 0; i < document.styleSheets.length; i++) {
+        const sheet = document.styleSheets[i];
+        try {
+          const rules = sheet.cssRules || sheet.rules;
+          for (let j = 0; j < rules.length; j++) {
+            allStyles += rules[j].cssText;
+          }
+        } catch (e) {
+          // 크로스 도메인 이슈 대비 (보통 무시 가능)
+          console.warn("Could not read stylesheet rules", e);
+        }
+      }
+    } catch (e) {
+      console.error("Error collecting styles", e);
+    }
+
+    // 2. 캔버스를 이미지로 변환한 클론 생성
     const canvasElements = element.querySelectorAll("canvas");
     const canvasDataUrls = Array.from(canvasElements).map((c) => c.toDataURL());
-
     const clone = element.cloneNode(true);
     const clonedCanvases = clone.querySelectorAll("canvas");
     clonedCanvases.forEach((c, i) => {
@@ -208,64 +226,54 @@ const ToyDevis = () => {
       img.src = canvasDataUrls[i];
       img.style.width = "100%";
       img.style.maxWidth = "600px";
-      img.style.display = "block"; // 이미지 밀림 방지
+      img.style.display = "block";
       img.style.margin = "0 auto";
       c.parentNode.replaceChild(img, c);
     });
 
-    const styles = Array.from(
-      document.querySelectorAll('style, link[rel="stylesheet"]'),
-    )
-      .map((s) => s.outerHTML)
-      .join("");
-
+    // 3. 팝업 창 열기
     const printWindow = window.open("", "_blank");
     if (!printWindow) {
       alert("Veuillez autoriser les pop-ups pour imprimer.");
       return;
     }
 
-    // 📍 [핵심] 팝업창 head에 로컬의 모든 스타일을 직접 주입
-    printWindow.document.write(
-      `<html><head>${styles}<style>
-        /* 여기에 인쇄용 커스텀 스타일 추가 */
-        @media print { .avoid-break { page-break-inside: avoid; } }
-      </style>
-      <title>Impression - Contrat</title></head><body></body></html>`,
-    );
-
-    // 스타일 주입
-    linkTags.forEach((tag) => printWindow.document.head.appendChild(tag));
-    styleTags.forEach((tag) => printWindow.document.head.appendChild(tag));
-
-    // 인쇄 전용 커스텀 스타일 추가
-    const customStyle = printWindow.document.createElement("style");
-    customStyle.innerHTML = `
-      @media print {
-        @page { size: A4 portrait; margin: 15mm; }
-        body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: white !important; }
-        .hide-on-print { display: none !important; }
-      }
-      body { margin: 0; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-      #print-container { width: 100%; }
-      /* MUI 컴포넌트 강제 스타일 유지 */
-      .MuiPaper-root { box-shadow: none !important; border: 1.5px solid #000 !important; }
-    `;
-    printWindow.document.head.appendChild(customStyle);
-
-    const container = printWindow.document.createElement("div");
-    container.id = "print-container";
-    container.innerHTML = clone.outerHTML;
-    printWindow.document.body.appendChild(container);
+    // 4. 팝업 내용 작성 (MUI 스타일 강제 주입)
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Impression - Contrat</title>
+          <style>
+            ${allStyles} /* MUI 빌드 스타일 포함 모든 스타일 주입 */
+            
+            /* 인쇄 전용 보정 스타일 */
+            @media print {
+              @page { size: A4 portrait; margin: 15mm; }
+              body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: white !important; }
+              .hide-on-print { display: none !important; }
+              .avoid-break { page-break-inside: avoid; break-inside: avoid; }
+            }
+            body { margin: 0; padding: 20px; font-family: sans-serif; background: white; }
+            #print-container { width: 100%; display: flex; justify-content: center; }
+            .MuiPaper-root { box-shadow: none !important; border: 1.5px solid #000 !important; }
+          </style>
+        </head>
+        <body>
+          <div id="print-container">
+            ${clone.outerHTML}
+          </div>
+        </body>
+      </html>
+    `);
 
     printWindow.document.close();
 
-    // 📍 이미지 로딩 시간을 고려해서 넉넉히 대기 후 인쇄
+    // 5. 이미지 로딩 및 폰트 렌더링을 위해 충분히 대기
     setTimeout(() => {
       printWindow.focus();
       printWindow.print();
-      // printWindow.close(); // 테스트 중에는 닫지 말고 확인해보세요
-    }, 3000);
+      // printWindow.close(); // 확인 완료 후 주석 해제
+    }, 1500);
   };
 
   const handleSendEmail = () => {
