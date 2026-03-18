@@ -14,11 +14,12 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  DialogActions, // 📍 팝업용 액션 추가
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PersonIcon from "@mui/icons-material/Person";
 import InfoIcon from "@mui/icons-material/Info";
-import BuildIcon from "@mui/icons-material/Build"; //
+import BuildIcon from "@mui/icons-material/Build";
 import SendIcon from "@mui/icons-material/Send";
 import PrintIcon from "@mui/icons-material/Print";
 import CloseIcon from "@mui/icons-material/Close";
@@ -28,7 +29,7 @@ import { useNavigate } from "react-router-dom";
 import SignatureCanvas from "react-signature-canvas";
 
 // ==========================================
-// 🧩 1. DevisHeader (보안 구역 적용)
+// 🧩 1. DevisHeader
 // ==========================================
 const DevisHeader = ({ devisData }) => (
   <Box className="protected-zone" sx={{ mb: 6 }}>
@@ -46,8 +47,10 @@ const DevisHeader = ({ devisData }) => (
         <Typography variant="body2" sx={{ mt: 1 }}>
           {devisData.company.siret}
         </Typography>
-        <Typography variant="body2">Tél : {devisData.company.phone}</Typography>
-        <Typography variant="body2">
+        <Typography className="ignore-security" variant="body2">
+          Tél : {devisData.company.phone}
+        </Typography>
+        <Typography className="ignore-security" variant="body2">
           E-mail : {devisData.company.email}
         </Typography>
       </Box>
@@ -68,7 +71,7 @@ const DevisHeader = ({ devisData }) => (
         </Typography>
         <Typography variant="body2">{devisData.client.address}</Typography>
         <Typography variant="body2">{devisData.client.city}</Typography>
-        <Typography variant="body2" sx={{ mt: 1 }}>
+        <Typography className="ignore-security" variant="body2" sx={{ mt: 1 }}>
           Contact : {devisData.client.contact}
         </Typography>
         <Typography
@@ -103,7 +106,7 @@ const DevisHeader = ({ devisData }) => (
 );
 
 // ==========================================
-// 🧩 2. DevisItems (보안 구역 적용)
+// 🧩 2. DevisItems
 // ==========================================
 const DevisItems = ({ items, onImageClick }) => (
   <Stack className="protected-zone" spacing={4} sx={{ mb: 6 }}>
@@ -212,7 +215,7 @@ const DevisItems = ({ items, onImageClick }) => (
 );
 
 // ==========================================
-// 🧩 3. DevisFooter (합계 금액 부분만 보안 구역 적용)
+// 🧩 3. DevisFooter (모바일/PC 하이브리드 서명 폼 💯)
 // ==========================================
 const DevisFooter = ({
   totalHT,
@@ -225,15 +228,47 @@ const DevisFooter = ({
   onApprove,
 }) => {
   const [isDrawing, setIsDrawing] = useState(false);
+  const [openSignModal, setOpenSignModal] = useState(false);
+  const [tempSig, setTempSig] = useState(null); // 모달에서 그린 임시 서명 이미지
+  const modalSigCanvas = useRef(null);
 
+  const [isMobile] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth <= 1024 || navigator.maxTouchPoints > 0;
+    }
+    return false;
+  });
+
+  // 메인 승인(Valider) 버튼 클릭 시
   const handleSave = () => {
-    if (sigCanvas.current.isEmpty())
-      return alert("Veuillez signer le document.");
-    const canvas = sigCanvas.current.getCanvas();
-    const dataUrl = canvas.toDataURL("image/png");
+    let finalDataUrl = "";
+    if (isMobile) {
+      if (!tempSig) return alert("Veuillez signer le document.");
+      finalDataUrl = tempSig; // 모달에서 받아온 임시 서명 사용
+    } else {
+      if (sigCanvas.current.isEmpty())
+        return alert("Veuillez signer le document.");
+      finalDataUrl = sigCanvas.current.getCanvas().toDataURL("image/png"); // PC에서 직접 그린 서명 사용
+    }
+
     const now = new Date();
-    const timestamp = `${now.toLocaleDateString("fr-FR")} à ${now.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}`;
-    onApprove(dataUrl, timestamp);
+    const timestamp = `${now.toLocaleDateString("fr-FR")} à ${now.toLocaleTimeString(
+      "fr-FR",
+      {
+        hour: "2-digit",
+        minute: "2-digit",
+      },
+    )}`;
+    onApprove(finalDataUrl, timestamp);
+  };
+
+  // 모달 안에서 '확인(Confirmer)' 버튼 클릭 시
+  const handleModalConfirm = () => {
+    if (modalSigCanvas.current.isEmpty()) return;
+    const dataUrl = modalSigCanvas.current.getCanvas().toDataURL("image/png");
+    setTempSig(dataUrl); // 임시 이미지 상태 저장
+    setIsDrawing(true); // 메인 화면의 Valider 버튼 활성화
+    setOpenSignModal(false); // 모달 닫기
   };
 
   return (
@@ -303,30 +338,71 @@ const DevisFooter = ({
               <Box className="no-print">
                 <Box
                   sx={{
+                    width: "300px",
+                    height: "120px",
                     border: "2px dashed #1976d2",
                     borderRadius: "8px",
                     bgcolor: "#f0f8ff",
                     mb: 1,
+                    position: "relative",
+                    overflow: "hidden",
                   }}
                 >
-                  <SignatureCanvas
-                    ref={sigCanvas}
-                    penColor="#0000ff"
-                    canvasProps={{
-                      width: 300,
-                      height: 120,
-                      className: "sigCanvas",
-                    }}
-                    onEnd={() => setIsDrawing(true)}
-                  />
+                  {isMobile ? (
+                    // 📱 [모바일/태블릿 뷰] 네모칸 클릭 시 팝업 띄우기
+                    <Box
+                      onClick={() => setOpenSignModal(true)}
+                      sx={{
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {tempSig ? (
+                        <img
+                          src={tempSig}
+                          alt="Temp Signature"
+                          style={{ maxWidth: "100%", maxHeight: "100%" }}
+                        />
+                      ) : (
+                        <Typography
+                          sx={{ color: "#1976d2", fontWeight: "bold" }}
+                        >
+                          ✍️ Appuyez pour signer
+                        </Typography>
+                      )}
+                    </Box>
+                  ) : (
+                    // 💻 [PC 뷰] 원래 있던 그대로 네모칸 안에서 바로 사인
+                    <SignatureCanvas
+                      ref={sigCanvas}
+                      penColor="#0000ff"
+                      canvasProps={{
+                        width: 300,
+                        height: 120,
+                        className: "sigCanvas",
+                      }}
+                      onEnd={() => setIsDrawing(true)}
+                    />
+                  )}
                 </Box>
+
+                {/* 지우기 & 승인 버튼 */}
                 <Stack direction="row" spacing={1} justifyContent="flex-end">
                   <Button
                     size="small"
                     color="error"
                     onClick={() => {
-                      sigCanvas.current.clear();
-                      setIsDrawing(false);
+                      if (isMobile) {
+                        setTempSig(null);
+                        setIsDrawing(false);
+                      } else {
+                        sigCanvas.current.clear();
+                        setIsDrawing(false);
+                      }
                     }}
                   >
                     Effacer
@@ -340,8 +416,75 @@ const DevisFooter = ({
                     Valider
                   </Button>
                 </Stack>
+
+                {/* 📍 모바일 전용 모달(팝업) 사인창 */}
+                <Dialog
+                  open={openSignModal}
+                  onClose={() => setOpenSignModal(false)}
+                  maxWidth="xs"
+                  fullWidth
+                >
+                  <DialogTitle
+                    sx={{
+                      bgcolor: "#1976d2",
+                      color: "#fff",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Votre Signature
+                  </DialogTitle>
+                  <DialogContent
+                    sx={{ p: 1, textAlign: "center", bgcolor: "#f9f9f9" }}
+                  >
+                    <Typography variant="body2" sx={{ my: 2, color: "#666" }}>
+                      Veuillez dessiner votre signature ci-dessous.
+                    </Typography>
+                    <Box
+                      sx={{
+                        border: "2px dashed #1976d2",
+                        borderRadius: "8px",
+                        bgcolor: "#fff",
+                        display: "inline-block",
+                        touchAction: "none", // 스크롤 뺏기 방지
+                      }}
+                    >
+                      <SignatureCanvas
+                        ref={modalSigCanvas}
+                        penColor="#0000ff"
+                        canvasProps={{
+                          width: 280,
+                          height: 150,
+                          style: { touchAction: "none" },
+                        }}
+                      />
+                    </Box>
+                  </DialogContent>
+                  <DialogActions sx={{ p: 2 }}>
+                    <Button
+                      onClick={() => setOpenSignModal(false)}
+                      sx={{ color: "#666", fontWeight: "bold" }}
+                    >
+                      Annuler
+                    </Button>
+                    <Button
+                      color="error"
+                      sx={{ fontWeight: "bold" }}
+                      onClick={() => modalSigCanvas.current.clear()}
+                    >
+                      Effacer
+                    </Button>
+                    <Button
+                      variant="contained"
+                      onClick={handleModalConfirm}
+                      sx={{ fontWeight: "bold" }}
+                    >
+                      Confirmer
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </Box>
             ) : (
+              // 최종 승인 완료된 뷰
               <Box>
                 <Box
                   sx={{
@@ -378,10 +521,27 @@ const DevisFooter = ({
 };
 
 // ==========================================
-// 🧩 4. DevisChat
+// 🧩 4. DevisChat (모바일 하이브리드 채팅창 + 보안 예외 적용!)
 // ==========================================
 const DevisChat = ({ devisData, comments, onAddComment }) => {
   const [msg, setMsg] = useState("");
+  const [openChatModal, setOpenChatModal] = useState(false); // 📍 채팅 모달 상태 추가
+
+  // 📍 모바일/태블릿 감지 (서명 패드와 동일한 로직)
+  const [isMobile] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth <= 1024 || navigator.maxTouchPoints > 0;
+    }
+    return false;
+  });
+
+  const handleSend = () => {
+    if (!msg.trim()) return;
+    onAddComment(msg);
+    setMsg("");
+    setOpenChatModal(false); // 전송 후 모달 닫기
+  };
+
   return (
     <Box sx={{ mt: 6, pt: 4, borderTop: "2px solid #1976d2" }}>
       <Typography variant="h6" fontWeight="bold" sx={{ mb: 4 }}>
@@ -428,6 +588,8 @@ const DevisChat = ({ devisData, comments, onAddComment }) => {
           </Box>
         </Stack>
       </Paper>
+
+      {/* 말풍선 목록 */}
       <Stack spacing={3}>
         {comments.map((c) => (
           <Stack
@@ -489,8 +651,10 @@ const DevisChat = ({ devisData, comments, onAddComment }) => {
           </Stack>
         ))}
       </Stack>
+
+      {/* 📍 채팅 입력 구역 (ignore-security 추가 완료!) */}
       <Box
-        className="no-print"
+        className="no-print ignore-security"
         sx={{
           mt: 4,
           p: 2,
@@ -499,31 +663,85 @@ const DevisChat = ({ devisData, comments, onAddComment }) => {
           border: "1px solid #ddd",
         }}
       >
-        <Stack direction="row" spacing={1}>
-          <TextField
-            fullWidth
-            size="small"
-            placeholder="Message..."
-            value={msg}
-            onChange={(e) => setMsg(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                onAddComment(msg);
-                setMsg("");
-              }
-            }}
-            sx={{ input: { userSelect: "text" } }} // 채팅은 드래그 허용
-          />
-          <Button
-            variant="contained"
-            onClick={() => {
-              onAddComment(msg);
-              setMsg("");
-            }}
-          >
-            <SendIcon fontSize="small" sx={{ color: "#fff" }} />
-          </Button>
-        </Stack>
+        {isMobile ? (
+          // 📱 [모바일/태블릿 뷰] 버튼 누르면 정상 크기의 모달창 띄움
+          <>
+            <Button
+              fullWidth
+              variant="outlined"
+              onClick={() => setOpenChatModal(true)}
+              sx={{
+                py: 1.5,
+                fontWeight: "bold",
+                borderRadius: "8px",
+                border: "2px solid #1976d2",
+              }}
+            >
+              💬 Écrire un message
+            </Button>
+
+            <Dialog
+              open={openChatModal}
+              onClose={() => setOpenChatModal(false)}
+              maxWidth="sm"
+              fullWidth
+            >
+              <DialogTitle
+                sx={{ bgcolor: "#1976d2", color: "#fff", fontWeight: "bold" }}
+              >
+                Nouveau message
+              </DialogTitle>
+              <DialogContent sx={{ p: 3, pt: 4 }}>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={4} // 📍 큼직하게 4줄짜리 입력창 제공
+                  placeholder="Écrivez votre message ici..."
+                  value={msg}
+                  onChange={(e) => setMsg(e.target.value)}
+                  autoFocus
+                />
+              </DialogContent>
+              <DialogActions sx={{ p: 2 }}>
+                <Button
+                  onClick={() => setOpenChatModal(false)}
+                  sx={{ color: "#666", fontWeight: "bold" }}
+                >
+                  Annuler
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleSend}
+                  disabled={!msg.trim()}
+                >
+                  Envoyer
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </>
+        ) : (
+          // 💻 [PC 뷰] 원래 있던 한 줄짜리 인라인 채팅창
+          <Stack direction="row" spacing={1}>
+            <TextField
+              fullWidth
+              size="small"
+              placeholder="Message..."
+              value={msg}
+              onChange={(e) => setMsg(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSend();
+              }}
+              sx={{ input: { userSelect: "text" } }}
+            />
+            <Button
+              variant="contained"
+              onClick={handleSend}
+              disabled={!msg.trim()}
+            >
+              Envoyer
+            </Button>
+          </Stack>
+        )}
       </Box>
     </Box>
   );
@@ -611,6 +829,7 @@ const DossierClient = () => {
     setApprovedTime(time);
     setOpenModal(true);
   };
+
   const handleAddComment = (text) => {
     if (!text.trim()) return;
     const now = new Date();
@@ -630,9 +849,7 @@ const DossierClient = () => {
     ]);
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
+  const handlePrint = () => window.print();
 
   const handleOpenGallery = (photos, idx) => {
     setGalleryImages(photos);
@@ -667,22 +884,43 @@ const DossierClient = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지
-  // [최종 수정] 모바일 브라우저의 오지랖(자동 링크 등) 충돌 방지를 위해 모바일에서는 감시를 끕니다.
+  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지 [특정 클래스 예외 처리 적용!]
   useEffect(() => {
-    // 📍 1. 현재 접속한 기기가 모바일(터치 기기)이거나 화면이 좁은지 확인합니다.
-    const isMobile = window.innerWidth <= 1024 || navigator.maxTouchPoints > 0;
+    const observer = new MutationObserver((mutations) => {
+      let isHacked = false;
 
-    // 📍 2. 모바일 기기라면 F12(개발자 도구) 조작이 불가능하므로, 감시자를 실행하지 않고 퇴근시킵니다!
-    if (isMobile) {
-      return;
-    }
+      for (let mutation of mutations) {
+        // 📍 [핵심] 형님이 말씀하신 바로 그 기능!
+        // 변화가 일어난 곳(target)이나 그 부모 중에 'ignore-security' 클래스가 있다면 눈감아줍니다.
+        if (
+          mutation.target.closest &&
+          mutation.target.closest(".ignore-security")
+        ) {
+          continue; // "어? 여긴 합법적인 구역이네? 통과!"
+        }
 
-    // 📍 3. PC(데스크탑)에서만 아래의 철통 보안 감시가 돌아갑니다.
-    // 👉 여기에 있던 mutations 단어를 지워서 에러를 없앴습니다!
-    const observer = new MutationObserver(() => {
-      alert("🚨 Sécurité : Tentative de modification du document détectée !");
-      window.location.reload();
+        // 브라우저가 몰래 넣는 링크나 번역기 태그는 기존처럼 봐줌
+        if (mutation.addedNodes.length > 0) {
+          const node = mutation.addedNodes[0];
+          if (node.nodeName === "A" || node.nodeName === "FONT") {
+            continue;
+          }
+        }
+
+        // 그 외의 진짜 조작(금액 위조, 텍스트 변경)은 얄짤없이 컷!
+        if (
+          mutation.type === "childList" ||
+          mutation.type === "characterData"
+        ) {
+          isHacked = true;
+          break;
+        }
+      }
+
+      if (isHacked) {
+        alert("🚨 Sécurité : Tentative de modification du document détectée !");
+        window.location.reload();
+      }
     });
 
     const config = {
@@ -692,11 +930,9 @@ const DossierClient = () => {
       characterData: true,
     };
 
+    // 문서 전체(또는 특정 구역)를 감시 시작
     const protectedZones = document.querySelectorAll(".protected-zone");
-
-    protectedZones.forEach((zone) => {
-      observer.observe(zone, config);
-    });
+    protectedZones.forEach((zone) => observer.observe(zone, config));
 
     return () => observer.disconnect();
   }, []);
@@ -715,7 +951,7 @@ const DossierClient = () => {
         alignItems: "center",
         py: 20,
         userSelect: "none",
-        overflowX: "hidden", // 📍 [추가] 모바일에서 800px DOM 영역 때문에 좌우 텅 빈 스크롤 생기는 것 방지
+        overflowX: "hidden",
         "@media print": { backgroundColor: "#fff", py: 0 },
       }}
     >
@@ -731,7 +967,7 @@ const DossierClient = () => {
       <Box
         className="no-print"
         sx={{
-          width: { xs: "90%", md: "800px" }, // 버튼 박스도 반응형 조절
+          width: { xs: "90%", md: "800px" },
           mb: 2,
           display: "flex",
           justifyContent: "space-between",
@@ -757,20 +993,17 @@ const DossierClient = () => {
         )}
       </Box>
 
-      {/* 📄 실제 문서 영역 */}
       <Paper
         id="printable-paper"
         elevation={10}
         sx={{
           width: "800px",
-          minWidth: "800px", // 📍 A4 너비 강제 고정
+          minWidth: "800px",
           minHeight: "1131px",
           p: "50px",
           bgcolor: "#ffffff",
-          // 📍 [핵심] 모바일/태블릿에서 PDF 전체 보기처럼 비율을 확 축소시킴
           transform: { xs: "scale(0.42)", sm: "scale(0.7)", md: "none" },
           transformOrigin: "top center",
-          // 📍 축소되면서 남는 하단 빈 공간을 위로 당겨서 없앰
           mb: { xs: "-650px", sm: "-340px", md: 0 },
         }}
       >
@@ -811,7 +1044,7 @@ const DossierClient = () => {
         </Box>
       </Paper>
 
-      {/* 🖼️ 이미지 확대 갤러리 모달 */}
+      {/* 이미지 모달 */}
       <Dialog
         open={galleryOpen}
         onClose={() => setGalleryOpen(false)}
@@ -896,7 +1129,7 @@ const DossierClient = () => {
         </Box>
       </Dialog>
 
-      {/* 🏆 승인 완료 모달창 */}
+      {/* 완료 모달창 */}
       <Dialog
         open={openModal}
         maxWidth="xs"
