@@ -30,7 +30,7 @@ const FactureClient = () => {
     devisNumber: "DEV-2026-0042",
     date: "17/03/2026",
     validity: "17/04/2026",
-    isPaid: true, // 📍 false: 결제 대기 / true: 결제 완료 (도장 찍힘)
+    isPaid: false, // 📍 false: 결제 대기 / true: 결제 완료 (도장 찍힘)
     company: {
       name: "KIM REPARATION",
       address: "123 Rue de la Réparation",

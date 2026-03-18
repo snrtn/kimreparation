@@ -195,7 +195,7 @@ const HeadMain = ({ isHome }) => {
         <Stack spacing={8} sx={{ alignItems: "center" }}>
           {dropdownData.map((menu) => {
             // ⬇️ 모바일에서도 아틀리에만 오렌지
-            const isAtelier = menu.title === "Votre Devis Personnalisé";
+            const isAtelier = menu.title === "Diagnostic Personnalisé";
             return (
               <Typography
                 key={menu.title}
@@ -203,7 +203,7 @@ const HeadMain = ({ isHome }) => {
                 to={menu.path}
                 onClick={handleDrawerToggle}
                 sx={{
-                  fontSize: { xs: "1.6rem", sm: "2rem" },
+                  fontSize: { xs: "1.2rem", sm: "1.6rem" },
                   fontWeight: 600,
                   textDecoration: "none",
                   color: isAtelier ? "#E65100" : "inherit",

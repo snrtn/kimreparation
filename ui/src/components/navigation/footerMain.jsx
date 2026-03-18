@@ -38,6 +38,13 @@ const FooterMain = () => {
       ],
     },
     {
+      title: "Suivi de Dossier",
+      links: [
+        { name: "Devis & Facture", path: "/client" },
+        { name: "Service History", path: "/client/drive" },
+      ],
+    },
+    {
       title: "L'Atelier & Infos",
       links: [
         { name: "Horaires d'ouverture", path: "/atelier" },

@@ -407,8 +407,7 @@ const DevisChat = ({ devisData, comments, onAddComment }) => {
               variant="body2"
               sx={{ color: "#0d47a1", fontWeight: 700 }}
             >
-              Nous faisons de notre mieux pour répondre rapidement (environ 30
-              minutes).
+              Nous faisons de notre mieux pour répondre rapidement.
             </Typography>
             <Typography
               variant="caption"

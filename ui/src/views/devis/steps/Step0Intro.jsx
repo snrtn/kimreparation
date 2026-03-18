@@ -443,10 +443,10 @@ const Step0Intro = ({ onUpdate, onNext }) => {
             }}
           >
             <AccessTimeIcon sx={{ fontSize: "1.1rem", mr: 0.5 }} /> Réponse sous
-            1 heure
+            41 minutes
           </Typography>
         </Stack>
-        <Typography
+        {/* <Typography
           variant="caption"
           sx={{
             display: "block",
@@ -459,7 +459,7 @@ const Step0Intro = ({ onUpdate, onNext }) => {
           * Sécurité et prévention des fraudes : Au titre de l'intérêt légitime
           (RGPD), tout envoi abusif ou frauduleux entraînera le blocage de
           l'adresse IP sans consentement préalable.
-        </Typography>
+        </Typography> */}
       </Box>
 
       {/* 📦 👈 여기에 [Guide d'envoi] 모달창 추가됨 */}
