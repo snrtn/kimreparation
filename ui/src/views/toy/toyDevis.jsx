@@ -190,23 +190,26 @@ const ToyDevis = () => {
     const element = pdfRef.current;
     if (!element) return;
 
-    const styles = Array.from(
-      document.querySelectorAll('style, link[rel="stylesheet"]'),
-    )
-      .map((s) => s.outerHTML)
-      .join("");
+    // 📍 [수정] 모든 스타일(Style 태그 + 외부 CSS 링크)을 더 정확하게 긁어옴
+    const styleTags = Array.from(document.head.querySelectorAll("style")).map(
+      (s) => s.cloneNode(true),
+    );
+    const linkTags = Array.from(
+      document.head.querySelectorAll('link[rel="stylesheet"]'),
+    ).map((l) => l.cloneNode(true));
 
     const canvasElements = element.querySelectorAll("canvas");
     const canvasDataUrls = Array.from(canvasElements).map((c) => c.toDataURL());
 
     const clone = element.cloneNode(true);
-
     const clonedCanvases = clone.querySelectorAll("canvas");
     clonedCanvases.forEach((c, i) => {
       const img = document.createElement("img");
       img.src = canvasDataUrls[i];
       img.style.width = "100%";
       img.style.maxWidth = "600px";
+      img.style.display = "block"; // 이미지 밀림 방지
+      img.style.margin = "0 auto";
       c.parentNode.replaceChild(img, c);
     });
 
@@ -216,39 +219,43 @@ const ToyDevis = () => {
       return;
     }
 
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>Impression - Bon de Prise en Charge</title>
-          ${styles}
-          <style>
-            .hide-on-print { display: none !important; }
-            @media print {
-              @page { size: A4 portrait; margin: 15mm; }
-              body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: white; }
-              .avoid-break { page-break-inside: avoid; break-inside: avoid; }
-            }
-            body { margin: 0; padding: 20px; display: flex; justify-content: center; font-family: sans-serif; }
-            #print-container { width: 100%; max-width: 800px; }
-          </style>
-        </head>
-        <body>
-          <div id="print-container">
-            ${clone.outerHTML}
-          </div>
-          <script>
-            window.onload = function() {
-              setTimeout(function() {
-                window.focus();
-                window.print();
-                window.close();
-              }, 500);
-            };
-          </script>
-        </body>
-      </html>
-    `);
+    // 📍 [핵심] 팝업창 head에 로컬의 모든 스타일을 직접 주입
+    printWindow.document.write(
+      `<html><head><title>Impression - Contrat</title></head><body></body></html>`,
+    );
+
+    // 스타일 주입
+    linkTags.forEach((tag) => printWindow.document.head.appendChild(tag));
+    styleTags.forEach((tag) => printWindow.document.head.appendChild(tag));
+
+    // 인쇄 전용 커스텀 스타일 추가
+    const customStyle = printWindow.document.createElement("style");
+    customStyle.innerHTML = `
+      @media print {
+        @page { size: A4 portrait; margin: 15mm; }
+        body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: white !important; }
+        .hide-on-print { display: none !important; }
+      }
+      body { margin: 0; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+      #print-container { width: 100%; }
+      /* MUI 컴포넌트 강제 스타일 유지 */
+      .MuiPaper-root { box-shadow: none !important; border: 1.5px solid #000 !important; }
+    `;
+    printWindow.document.head.appendChild(customStyle);
+
+    const container = printWindow.document.createElement("div");
+    container.id = "print-container";
+    container.innerHTML = clone.outerHTML;
+    printWindow.document.body.appendChild(container);
+
     printWindow.document.close();
+
+    // 📍 이미지 로딩 시간을 고려해서 넉넉히 대기 후 인쇄
+    setTimeout(() => {
+      printWindow.focus();
+      printWindow.print();
+      // printWindow.close(); // 테스트 중에는 닫지 말고 확인해보세요
+    }, 1000);
   };
 
   const handleSendEmail = () => {
