@@ -43,11 +43,12 @@ const solutionData = [
     title: "Vos Données",
     icon: <SecurityIcon />,
     headline: "Votre vie privée est entre de bonnes mains.",
-    summary: "Je répare le matériel, sans jamais toucher à vos fichiers.",
+    summary:
+      "Je répare le matériel, sans jamais consulter vos fichiers personnels.",
     firstPara:
-      "La protection de vos données est ma priorité.\n\nPour une sécurité absolue, je recommande toujours d'effectuer une sauvegarde préalable avant toute intervention.",
+      "La protection de vos données est ma priorité absolue.\n\n⚠️ Attention : Contrairement à Samsung, les appareils Apple (iPhone) et les autres marques Android ne possèdent pas de « Mode Réparation » bloquant l'accès à vos fichiers. Il est donc impératif d'effectuer une sauvegarde complète de vos données avant de déposer votre appareil.",
     restDesc:
-      "Je n'accède qu'aux menus techniques nécessaires aux tests de bon fonctionnement. Vos messages, photos et dossiers personnels restent strictement confidentiels.\n\nNotez que l'intégrité de vos fichiers demeure sous votre responsabilité logicielle.",
+      "🤖 Pour les Samsung :\nVous pouvez activer le « Mode Maintenance » (Paramètres > Batterie et maintenance de l'appareil > Mode Maintenance). Cela verrouille l'accès à vos données personnelles tout en me permettant de tester le téléphone.\n\n🔧 Tests techniques (Ce que je fais exactement) :\nPour valider la réparation, je dois uniquement tester le matériel.",
     color: "#1d1d1f",
   },
   {

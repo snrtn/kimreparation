@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 // Bases
@@ -9,7 +10,7 @@ import ScrollToTop from "./scrollToTop";
 import DevisPhone from "./views/devis/devisPhone";
 import DevisOther from "./views/devis/devisOther";
 
-// 📌 [Docs] 화면 품질별 컴포넌트들
+// 📌 [Docs]
 import ScreenOrigine from "./views/screen/docs/screenOrigine";
 import ScreenSoft from "./views/screen/docs/screenSoft";
 import ScreenHard from "./views/screen/docs/screenHard";
@@ -37,11 +38,10 @@ import ToyRepair from "./views/toy/toyRepair";
 import ToyJoyCon from "./views/toy/toyJoyCon";
 import ToyDevis from "./views/toy/toyDevis";
 
-// Client Drive 관련 컴포넌트 임포트
+// Client Drive 관련
 import DashboardClient from "./client/dashboardClient";
 import DossierClient from "./client/dossierClient";
 import FactureClient from "./client/factureClient";
-
 import DriveView from "./client/drive/driveView";
 import DriveDashboard from "./client/drive/driveDashboard";
 import DocsPreview from "./client/drive/docsPreview";
@@ -57,8 +57,28 @@ import FacturePreview from "./admin/facturePreview";
 
 function App() {
   const isVercelDomain = window.location.hostname.includes("vercel.app");
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return sessionStorage.getItem("siteLockAuth") === "true";
+  });
 
-  // 형님의 정식 도메인이 연결되었다면 정식 도메인 외에는 다 차단 가능
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    const correctPassword = import.meta.env.VITE_SITE_PASSWORD;
+
+    if (password === correctPassword) {
+      setIsAuthenticated(true);
+      sessionStorage.setItem("siteLockAuth", "true"); // 로그인 성공 기록
+      setError(false);
+    } else {
+      setError(true);
+      setPassword(""); // 틀리면 칸 비우기
+    }
+  };
+
+  // 🚧 1. Vercel 도메인 접속 시 가짜 Nginx 화면 노출
   if (isVercelDomain) {
     return (
       <div
@@ -70,7 +90,6 @@ function App() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          // 폰트를 더 서버 기본 폰트스럽게 수정
           fontFamily:
             "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
           textAlign: "center",
@@ -80,8 +99,8 @@ function App() {
           <h1
             style={{
               fontSize: "42px",
-              fontWeight: 400, // Nginx는 너무 두껍지 않은 게 포인트입니다
-              margin: 0, // 기본 마진 제거해서 짤림 방지
+              fontWeight: 400,
+              margin: 0,
               lineHeight: "1.2",
             }}
           >
@@ -94,13 +113,7 @@ function App() {
               margin: "15px 0",
             }}
           />
-          <div
-            style={{
-              fontSize: "14px",
-              color: "#000",
-              marginTop: "10px",
-            }}
-          >
+          <div style={{ fontSize: "14px", color: "#000", marginTop: "10px" }}>
             nginx
           </div>
         </div>
@@ -108,6 +121,88 @@ function App() {
     );
   }
 
+  // 🔒 2. 정식 도메인 접속 시, 아직 비밀번호 안 쳤으면 이 화면 노출
+  if (!isAuthenticated) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          height: "100vh",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#f5f5f7",
+        }}
+      >
+        <form
+          onSubmit={handleLogin}
+          style={{
+            padding: "40px",
+            backgroundColor: "#fff",
+            borderRadius: "20px",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+            textAlign: "center",
+            width: "320px",
+          }}
+        >
+          <h2
+            style={{ marginBottom: "24px", fontWeight: 800, color: "#1d1d1f" }}
+          >
+            Accès Restreint
+          </h2>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError(false);
+            }}
+            placeholder="Mot de passe"
+            style={{
+              padding: "14px",
+              width: "100%",
+              borderRadius: "12px",
+              border: error ? "2px solid #ff3b30" : "1px solid #d2d2d7",
+              marginBottom: "16px",
+              boxSizing: "border-box",
+              fontSize: "1rem",
+              outline: "none",
+            }}
+          />
+          {error && (
+            <p
+              style={{
+                color: "#ff3b30",
+                fontSize: "0.8rem",
+                marginTop: "-8px",
+                marginBottom: "16px",
+                fontWeight: 700,
+              }}
+            >
+              Mot de passe incorrect
+            </p>
+          )}
+          <button
+            type="submit"
+            style={{
+              width: "100%",
+              padding: "14px",
+              backgroundColor: "#0071e3",
+              color: "#fff",
+              border: "none",
+              borderRadius: "12px",
+              cursor: "pointer",
+              fontWeight: 800,
+              fontSize: "1rem",
+            }}
+          >
+            Entrer
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  // ✅ 3. 비밀번호 맞게 치면 보여줄 진짜 메인 사이트(App)
   return (
     <Router>
       <ScrollToTop />
@@ -115,7 +210,6 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
 
-          {/* 📌 [Screen] 새로운 구조: ScreenOrigine이 인덱스 */}
           <Route path="screen">
             <Route index element={<ScreenOrigine />} />
             <Route path="soft" element={<ScreenSoft />} />
@@ -125,7 +219,6 @@ function App() {
             <Route path="foldable" element={<ScreenFoldable />} />
           </Route>
 
-          {/* 📌 [Repair] 기존 구조 유지 */}
           <Route path="repair">
             <Route index element={<RepairScreen />} />
             <Route path="repairWater" element={<RepairWater />} />
@@ -155,18 +248,14 @@ function App() {
           </Route>
 
           <Route path="client">
-            {/* devis */}
             <Route index element={<DashboardClient />} />
             <Route path="dossier:docsId" element={<DossierClient />} />
             <Route path="facture:docsId" element={<FactureClient />} />
 
             <Route path="drive" element={<DriveView />} />
-
-            {/* App.js 라우트 부분 */}
             <Route path="driveDashboard/:repairId" element={<DriveDashboard />}>
               <Route index element={<DocsPreview />} />
               <Route path="docs" element={<DocsPreview />} />
-              {/* 📍 :itemId 추가 (어떤 폴더인지 알려줌) */}
               <Route path="imgs/:itemId" element={<ImgPreview />} />
             </Route>
           </Route>
@@ -174,15 +263,10 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
 
-        {/* --- 🛠️ 어드민 레이아웃 (여기서 사이드메뉴 문제 해결!) --- */}
         <Route path="admin">
-          {/* 1. 로그인 (사이드메뉴 없음) */}
           <Route index element={<BossRoom />} />
-
-          {/* 2. 대시보드 및 리스트 (사이드메뉴 고정) */}
           <Route element={<Dashboard />}>
             <Route path="dashboard" element={null} />
-            {/* Dashboard 컴포넌트 내에서 처리됨 */}
             <Route path="dossier/new" element={<DossierCreate />} />
             <Route path="dossier/view" element={<DossierPreview />} />
             <Route path="facture/new" element={<FactureCreate />} />

@@ -23,7 +23,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import SearchIcon from "@mui/icons-material/Search";
-import { DataGrid, getGridStringOperators } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import format from "date-fns/format";
@@ -102,15 +102,11 @@ const FacturePreview = () => {
   const [tabValue, setTabValue] = useState(0);
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  const [filterModel, setFilterModel] = useState({
-    items: [],
-    quickFilterValues: [],
-  });
+  // 📍 [핵심 변경] 데이터 그리드 필터 버리고, 독립적인 검색어 state 2개로 분리
+  const [searchClient, setSearchClient] = useState("");
+  const [searchContact, setSearchContact] = useState("");
 
-  const hasSearch =
-    filterModel.quickFilterValues &&
-    filterModel.quickFilterValues.length > 0 &&
-    filterModel.quickFilterValues[0] !== "";
+  const hasSearch = searchClient.trim() !== "" || searchContact.trim() !== "";
 
   const factures = useMemo(() => generateDummyData(1000), []);
 
@@ -131,6 +127,33 @@ const FacturePreview = () => {
       );
     });
   }, [factures, currentDate]);
+
+  // 📍 [핵심 로직] 우리가 직접 데이터 교집합(AND) 걸러서 표에 넣어줍니다.
+  const displayedRows = useMemo(() => {
+    // 검색 안 할 때는 그냥 이번 달 데이터 노출
+    if (!hasSearch) return currentMonthFactures;
+
+    // 검색 할 때는 '전체 데이터(factures)'에서 찾기 시작
+    let filtered = factures;
+
+    // 1. 이름 검색어가 있으면 필터링
+    if (searchClient.trim() !== "") {
+      const termClient = searchClient.toLowerCase();
+      filtered = filtered.filter((f) =>
+        f.client.toLowerCase().includes(termClient),
+      );
+    }
+
+    // 2. 연락처 검색어가 있으면 '앞에서 걸러진 결과' 안에서 또 필터링 (완벽한 교집합)
+    if (searchContact.trim() !== "") {
+      const termContact = searchContact.replace(/\s+/g, "").toLowerCase(); // 띄어쓰기 싹 제거
+      filtered = filtered.filter((f) =>
+        f.contact.replace(/\s+/g, "").toLowerCase().includes(termContact),
+      );
+    }
+
+    return filtered;
+  }, [hasSearch, factures, currentMonthFactures, searchClient, searchContact]);
 
   const currentMonthTotal = useMemo(() => {
     return currentMonthFactures.reduce((sum, f) => sum + f.amount, 0);
@@ -247,31 +270,6 @@ const FacturePreview = () => {
     );
   };
 
-  // 📍 [핵심] 전화번호 띄어쓰기 무시하고 검색되게 하는 커스텀 필터
-  const contactFilterOperators = getGridStringOperators().map((operator) => {
-    if (operator.value === "contains") {
-      return {
-        ...operator,
-        getApplyFilterFn: (filterItem) => {
-          if (!filterItem.value) return null;
-          // 검색어에서 공백 제거 (예: "0612" -> "0612")
-          const filterValue = filterItem.value
-            .replace(/\s+/g, "")
-            .toLowerCase();
-          return (params) => {
-            if (!params.value) return false;
-            // 실제 데이터에서 공백 제거 (예: "06 12 34" -> "061234")
-            const cellValue = String(params.value)
-              .replace(/\s+/g, "")
-              .toLowerCase();
-            return cellValue.includes(filterValue);
-          };
-        },
-      };
-    }
-    return operator;
-  });
-
   const columns = [
     { field: "id", headerName: "N° Facture", width: 110 },
     { field: "date", headerName: "Date", width: 110 },
@@ -286,7 +284,6 @@ const FacturePreview = () => {
       headerName: "Contact",
       flex: 1,
       minWidth: 200,
-      filterOperators: contactFilterOperators, // 📍 커스텀 검색 필터 적용
     },
     {
       field: "amount",
@@ -369,13 +366,13 @@ const FacturePreview = () => {
       >
         <Tab
           icon={<ViewListIcon />}
-          label="Liste (엑셀)"
+          label="Liste"
           iconPosition="start"
           sx={{ fontWeight: 700 }}
         />
         <Tab
           icon={<CalendarMonthIcon />}
-          label="Calendrier (달력)"
+          label="Calendrier"
           iconPosition="start"
           sx={{ fontWeight: 700 }}
           disabled={hasSearch}
@@ -420,7 +417,8 @@ const FacturePreview = () => {
                     1,
                   ),
                 );
-                setFilterModel({ items: [], quickFilterValues: [] });
+                setSearchClient("");
+                setSearchContact(""); // 달 넘기면 초기화
               }}
               sx={{ bgcolor: "#f5f5f7" }}
             >
@@ -429,7 +427,8 @@ const FacturePreview = () => {
             <Button
               onClick={() => {
                 setCurrentDate(new Date());
-                setFilterModel({ items: [], quickFilterValues: [] });
+                setSearchClient("");
+                setSearchContact("");
               }}
               sx={{
                 width: 180,
@@ -449,7 +448,8 @@ const FacturePreview = () => {
                     1,
                   ),
                 );
-                setFilterModel({ items: [], quickFilterValues: [] });
+                setSearchClient("");
+                setSearchContact("");
               }}
               sx={{ bgcolor: "#f5f5f7" }}
             >
@@ -463,21 +463,40 @@ const FacturePreview = () => {
               display: "flex",
               justifyContent: "center",
               px: 2,
+              gap: 2,
             }}
           >
+            {/* 이름 전용 검색창 */}
             <TextField
-              placeholder="Rechercher (Client, Facture, 061234...)"
+              placeholder="Nom du Client..."
               size="small"
-              value={filterModel?.quickFilterValues?.[0] || ""}
-              onChange={(e) =>
-                setFilterModel({
-                  items: [],
-                  quickFilterValues: [e.target.value],
-                })
-              }
+              value={searchClient}
+              onChange={(e) => setSearchClient(e.target.value)}
               sx={{
                 width: "100%",
-                maxWidth: 400,
+                maxWidth: 220,
+                bgcolor: "#f5f5f7",
+                borderRadius: "10px",
+                "& fieldset": { border: "none" },
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon sx={{ color: "#999" }} fontSize="small" />
+                  </InputAdornment>
+                ),
+              }}
+            />
+
+            {/* 연락처 전용 검색창 */}
+            <TextField
+              placeholder="061234... ou Email"
+              size="small"
+              value={searchContact}
+              onChange={(e) => setSearchContact(e.target.value)}
+              sx={{
+                width: "100%",
+                maxWidth: 220,
                 bgcolor: "#f5f5f7",
                 borderRadius: "10px",
                 "& fieldset": { border: "none" },
@@ -515,7 +534,6 @@ const FacturePreview = () => {
                 "&.Mui-disabled": { bgcolor: "#e0e0e0", color: "#9e9e9e" },
               }}
             >
-              {/* 📍 [수정] 월 숫자를 예쁜 프랑스어 달 이름(예: Mars)으로 변경 */}
               Imprimer{" "}
               {format(currentDate, "MMMM", { locale: fr }).replace(
                 /^./,
@@ -549,12 +567,9 @@ const FacturePreview = () => {
         >
           {tabValue === 0 ? (
             <DataGrid
-              rows={hasSearch ? factures : currentMonthFactures}
+              // 📍 [핵심] 우리가 직접 만든 교집합 데이터(displayedRows) 투입!
+              rows={displayedRows}
               columns={columns}
-              filterModel={filterModel}
-              onFilterModelChange={(newModel) => setFilterModel(newModel)}
-              // 📍 quickFilter가 모든 컬럼에 적용될 때, 전화번호 커스텀 필터를 태우도록 설정
-              slotProps={{ toolbar: { showQuickFilter: true } }}
               initialState={{
                 pagination: { paginationModel: { pageSize: 7 } },
                 sorting: { sortModel: [{ field: "date", sort: "desc" }] },
