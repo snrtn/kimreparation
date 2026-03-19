@@ -47,6 +47,15 @@ import DriveDashboard from "./client/drive/driveDashboard";
 import DocsPreview from "./client/drive/docsPreview";
 import ImgPreview from "./client/drive/imgPreview";
 
+// admin
+// import AdminView from "./admin/adminView";
+import AdminView from "./admin/adminVIew";
+import Dashboard from "./admin/dashboard";
+import DossierCreate from "./admin/DossierCreate";
+import DossierPreview from "./admin/dossierPreview";
+import FactureCreate from "./admin/factureCreate";
+import FacturePreview from "./admin/facturePreview";
+
 function App() {
   const isVercelDomain = window.location.hostname.includes("vercel.app");
 
@@ -164,6 +173,22 @@ function App() {
           </Route>
 
           <Route path="*" element={<NotFound />} />
+        </Route>
+
+        {/* --- 🛠️ 어드민 레이아웃 (여기서 사이드메뉴 문제 해결!) --- */}
+        <Route path="admin">
+          {/* 1. 로그인 (사이드메뉴 없음) */}
+          <Route index element={<AdminView />} />
+
+          {/* 2. 대시보드 및 리스트 (사이드메뉴 고정) */}
+          <Route element={<Dashboard />}>
+            <Route path="dashboard" element={null} />
+            {/* Dashboard 컴포넌트 내에서 처리됨 */}
+            <Route path="dossier/new" element={<DossierCreate />} />
+            <Route path="dossier/view" element={<DossierPreview />} />
+            <Route path="facture/new" element={<FactureCreate />} />
+            <Route path="facture/view" element={<FacturePreview />} />
+          </Route>
         </Route>
       </Routes>
     </Router>
