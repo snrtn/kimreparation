@@ -381,7 +381,7 @@ const ToyDevis = () => {
                   <Stack direction="row" alignItems="flex-end" spacing={1}>
                     <TextField
                       variant="standard"
-                      label="E-mail"
+                      label="Identifiant"
                       sx={{ flex: 1 }}
                       placeholder="jean.dupont"
                       autoComplete="off"

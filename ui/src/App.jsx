@@ -152,19 +152,15 @@ function App() {
             <Route path="dossier:docsId" element={<DossierClient />} />
             <Route path="facture:docsId" element={<FactureClient />} />
 
-            {/* drive */}
-            {/* 1. 로그인: ID와 코드 입력 화면 */}
             <Route path="drive" element={<DriveView />} />
-            {/* 2. 대시보드: 여기서 문서(PDF)와 사진 폴더 목록이 보임 */}
-            <Route
-              path="driveDashboard/:repairId"
-              element={<DriveDashboard />}
-            />
-            {/* 3. 문서 상세: 견적서(Devis)나 송장(Facture) PDF 보기 */}
-            <Route path="docs/:repairId/:fileId" element={<DocsPreview />} />
 
-            {/* 4. 사진 상세: 특정 폴더(항목)의 사진 슬라이더 보기 */}
-            <Route path="imgs/:repairId/:itemId" element={<ImgPreview />} />
+            {/* App.js 라우트 부분 */}
+            <Route path="driveDashboard/:repairId" element={<DriveDashboard />}>
+              <Route index element={<DocsPreview />} />
+              <Route path="docs" element={<DocsPreview />} />
+              {/* 📍 :itemId 추가 (어떤 폴더인지 알려줌) */}
+              <Route path="imgs/:itemId" element={<ImgPreview />} />
+            </Route>
           </Route>
 
           <Route path="*" element={<NotFound />} />

@@ -22,9 +22,11 @@ import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useNavigate } from "react-router-dom";
 
 const DriveView = () => {
   // 1. 메인 로그인 상태
+  const navigate = useNavigate(); //
   const [userId, setUserId] = useState("");
   const [userCode, setUserCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -61,14 +63,25 @@ const DriveView = () => {
   const isComplete = formData.name.trim() !== "" && isContactValid;
 
   // 📍 검증용 정규식 (영어/숫자 3자리 - 영어/숫자 4자리 이상)
-  const userIdRegex = /^[A-Z0-9]{3}-[A-Z0-9]{4,}$/;
-  const isUserIdValid = userIdRegex.test(userId); // 이미 대문자라 toUpperCase() 뺌
-  const isUserCodeValid = userCode.length >= 6;
+  // 📍 [ID 검증] 영어 대문자 또는 숫자 조합, 최소 6자 이상
+  const userIdRegex = /^[A-Z0-9]{6,}$/;
+  const isUserIdValid = userIdRegex.test(userId);
+
+  // 📍 [코드 검증] 영어 대문자 또는 숫자 조합, 최소 6자 이상
+  const userCodeRegex = /^[A-Z0-9]{6,}$/;
+  const isUserCodeValid = userCodeRegex.test(userCode);
+
+  // 📍 둘 다 6자 이상이고 정규식 통과하면 버튼 활성화
   const canSearch = isUserIdValid && isUserCodeValid;
 
   const handleSearch = () => {
     if (!canSearch) return;
-    console.log("Recherche...", { userId, userCode });
+
+    // 📍 3. 이동 로직: 입력한 ID를 repairId 파라미터로 사용하여 이동
+    // 예: /client/driveDashboard/ABC-12345/docs (보통 대시보드 진입 시 첫 페이지인 docs로 보냄)
+    navigate(`/client/driveDashboard/${userId}/docs`);
+
+    console.log("이동 중...", { userId, userCode });
   };
 
   return (
