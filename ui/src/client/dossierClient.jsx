@@ -71,8 +71,8 @@ const DevisHeader = ({ devisData, getValidityInfo }) => (
         <Typography variant="body1" fontWeight="bold">
           {devisData.client.name}
         </Typography>
-        <Typography variant="body2">{devisData.client.address}</Typography>
-        <Typography variant="body2">{devisData.client.city}</Typography>
+        {/* <Typography variant="body2">{devisData.client.address}</Typography> */}
+        {/* <Typography variant="body2">{devisData.client.city}</Typography> */}
         <Typography className="ignore-security" variant="body2" sx={{ mt: 1 }}>
           Contact : {devisData.client.contact}
         </Typography>
