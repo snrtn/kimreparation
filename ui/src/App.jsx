@@ -48,8 +48,7 @@ import DocsPreview from "./client/drive/docsPreview";
 import ImgPreview from "./client/drive/imgPreview";
 
 // admin
-// import AdminView from "./admin/adminView";
-import AdminView from "./admin/adminVIew";
+import BossRoom from "./admin/bossRoom";
 import Dashboard from "./admin/dashboard";
 import DossierCreate from "./admin/DossierCreate";
 import DossierPreview from "./admin/dossierPreview";
@@ -178,7 +177,7 @@ function App() {
         {/* --- 🛠️ 어드민 레이아웃 (여기서 사이드메뉴 문제 해결!) --- */}
         <Route path="admin">
           {/* 1. 로그인 (사이드메뉴 없음) */}
-          <Route index element={<AdminView />} />
+          <Route index element={<BossRoom />} />
 
           {/* 2. 대시보드 및 리스트 (사이드메뉴 고정) */}
           <Route element={<Dashboard />}>

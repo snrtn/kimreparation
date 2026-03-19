@@ -17,7 +17,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
 
-const AdminView = () => {
+const BossRoom = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loginData, setLoginData] = useState({ id: "", pw: "" });
@@ -31,7 +31,6 @@ const AdminView = () => {
       setError(true);
     }
   };
-
   return (
     <Box
       sx={{
@@ -194,4 +193,4 @@ const AdminView = () => {
   );
 };
 
-export default AdminView;
+export default BossRoom;
