@@ -173,7 +173,7 @@ const DashboardClient = () => {
             "&:hover": { color: "#0071e3" },
           }}
         >
-          Code perdu ? Recevoir par e-mail
+          Code perdu ?
         </Typography>
       </Box>
 

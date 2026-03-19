@@ -54,10 +54,10 @@ const HomeView = () => {
               boxShadow: "0 10px 30px rgba(0,0,0,0.05)",
             }}
           >
-            <InfoOutlinedIcon sx={{ fontSize: 48, color: "#0071e3", mb: 2 }} />
+            <InfoOutlinedIcon sx={{ fontSize: 32, color: "#0071e3", mb: 1 }} />
 
             <Typography
-              variant="h5"
+              variant="h6"
               sx={{ fontWeight: 800, color: "#1d1d1f", mb: 2 }}
             >
               Version de Démonstration
@@ -65,7 +65,7 @@ const HomeView = () => {
 
             <Typography
               sx={{
-                fontSize: "1rem",
+                fontSize: "0.8rem",
                 color: "#424245",
                 mb: 4,
                 lineHeight: 1.6,
@@ -101,7 +101,7 @@ const HomeView = () => {
                 label={
                   <Typography
                     sx={{
-                      fontSize: "0.9rem",
+                      fontSize: "0.8rem",
                       color: "#1d1d1f",
                       fontWeight: 600,
                     }}
@@ -118,11 +118,10 @@ const HomeView = () => {
                 onClick={handleClose}
                 sx={{
                   py: 2,
-                  borderRadius: "14px",
                   bgcolor: "#0071e3",
                   color: "white",
                   fontWeight: 800,
-                  fontSize: "1rem",
+                  fontSize: "0.8rem",
                   boxShadow: "none",
                   "&:hover": { bgcolor: "#005bb5", boxShadow: "none" },
                   "&.Mui-disabled": { bgcolor: "#f5f5f7", color: "#d2d2d7" },

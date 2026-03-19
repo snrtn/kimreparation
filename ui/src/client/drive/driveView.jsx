@@ -230,7 +230,7 @@ const DriveView = () => {
               "&:hover": { color: "#0071e3" },
             }}
           >
-            ID ou Code perdu ? Recevoir par e-mail
+            ID ou Code perdu ?
           </Typography>
         </Paper>
       </Container>

@@ -21,11 +21,16 @@ const DocsPreview = () => {
   const [selectedTitle, setSelectedTitle] = useState("");
 
   const docs = [
-    { id: "DOC_01", title: "Diagnostic.pdf", date: "2026-03-8", size: "1.2MB" },
-    { id: "DOC_02", title: "Devis_v1.pdf", date: "2026-03-10", size: "1.2MB" },
-    { id: "DOC_03", title: "Devis_v2.pdf", date: "2026-03-12", size: "2.3MB" },
-    { id: "DOC_04", title: "Devis_v3.pdf", date: "2026-03-14", size: "4.2MB" },
-    { id: "DOC_05", title: "Facture.pdf", date: "2026-03-14", size: "1.2MB" },
+    {
+      id: "DOC_01",
+      title: "Diagnostic.pdf",
+      date: "08.03.2026",
+      size: "1.2MB",
+    },
+    { id: "DOC_02", title: "Devis_v1.pdf", date: "10.03.2026", size: "1.2MB" },
+    { id: "DOC_03", title: "Devis_v2.pdf", date: "12.03.2026", size: "2.3MB" },
+    { id: "DOC_04", title: "Devis_v3.pdf", date: "14.03.2026", size: "4.2MB" },
+    { id: "DOC_05", title: "Facture.pdf", date: "14.03.2026", size: "1.2MB" },
   ];
 
   const samplePdfUrl =
