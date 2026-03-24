@@ -265,12 +265,16 @@ function App() {
 
         <Route path="admin">
           <Route index element={<BossRoom />} />
+
+          {/* Dashboard 레이아웃이 감싸고 있는 녀석들 */}
           <Route element={<Dashboard />}>
-            <Route path="dashboard" element={null} />
-            <Route path="dossier/new" element={<DossierCreate />} />
+            {/* 👇 드디어 추가된 dashboard 주소! 들어오면 DossierPreview를 보여줌 */}
+            <Route path="dashboard" element={<DossierPreview />} />
+
             <Route path="dossier/view" element={<DossierPreview />} />
-            <Route path="facture/new" element={<FactureCreate />} />
+            <Route path="dossier/new" element={<DossierCreate />} />
             <Route path="facture/view" element={<FacturePreview />} />
+            <Route path="facture/new" element={<FactureCreate />} />
           </Route>
         </Route>
       </Routes>

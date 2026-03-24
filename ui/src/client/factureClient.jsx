@@ -21,17 +21,22 @@ import { useNavigate } from "react-router-dom";
 // ==========================================
 // 🚀 FactureClient (청구서 메인 컴포넌트)
 // ==========================================
-const FactureClient = () => {
+
+// 📍 [핵심] 데이터를 받기 위해 `({ data })` 추가!
+const FactureClient = ({ data }) => {
   const navigate = useNavigate();
 
-  // 사장님이 주신 데이터에 📍 'isPaid' 상태 추가
+  // 📍 외부 데이터가 있으면 그 금액을 쓰고, 없으면 테스트용 50유로 적용
+  const baseAmount = data ? data.amount : 50.0;
+  const calcHT = baseAmount / 1.2; // 부가세 20% 역산 (그래야 하단 총합이 딱 맞음)
+
+  // 사장님이 주신 데이터 구조에 외부 데이터(data) 연결
   const factureData = {
-    devisNumber: "DEV-2026-0042",
-    date: "17/03/2026",
-    dateEmission: "22/04/2026",
+    devisNumber: data ? data.id.replace("F-", "DEV-") : "DEV-2026-0042",
+    date: data ? data.date : "17/03/2026",
+    dateEmission: data ? data.date : "22/04/2026",
     isPaid: true,
-    // 📍 DB에서 가져올 결제 수단 (예: "PayPal", "Espèces", "Virement", "CB")
-    paymentMethod: "PayPal", // 📍 false: 결제 대기 / true: 결제 완료 (도장 찍힘)
+    paymentMethod: data ? data.method : "PayPal",
     company: {
       name: "KIM REPARATION",
       address: "123 Rue de la Réparation",
@@ -41,25 +46,119 @@ const FactureClient = () => {
       email: "contact@kimreparation.fr",
     },
     client: {
-      name: "Jean Dupont",
+      name: data ? data.client : "Jean Dupont",
       address: "456 Avenue des Champs",
       city: "Arras",
-      contact: "07 11 22 33 44",
+      contact: data ? data.contact : "07 11 22 33 44",
       toyName: "Nintendo Switch (Modèle OLED)",
     },
-    items: [
-      {
-        title: "Diagnostic complet",
-        description:
-          "Analyse complète du système. Traces de surchauffe détectées sur la carte mère.",
-        price: 15.0,
-      },
-      {
-        title: "Remplacement joystick gauche",
-        description: "Installation d'un nouveau module pour corriger le drift.",
-        price: 35.0,
-      },
-    ],
+    // 리스트에서 넘어올 땐 세부 항목이 없으므로 '수리비 총합'으로 하나만 띄움
+    items: data
+      ? [
+          {
+            title: "Prestation de réparation",
+            description: "Détails selon le livre des recettes.",
+            price: calcHT,
+          },
+        ]
+      : [
+          {
+            title: "Diagnostic complet",
+            description:
+              "Analyse complète du système. Traces de surchauffe détectées sur la carte mère.",
+            price: 15.0,
+          },
+          {
+            title: "Remplacement joystick gauche",
+            description:
+              "Installation d'un nouveau module pour corriger le drift.",
+            price: 35.0,
+          },
+          {
+            title: "Diagnostic complet",
+            description:
+              "Analyse complète du système. Traces de surchauffe détectées sur la carte mère.",
+            price: 15.0,
+          },
+          {
+            title: "Remplacement joystick gauche",
+            description:
+              "Installation d'un nouveau module pour corriger le drift.",
+            price: 35.0,
+          },
+          {
+            title: "Diagnostic complet",
+            description:
+              "Analyse complète du système. Traces de surchauffe détectées sur la carte mère.",
+            price: 15.0,
+          },
+          {
+            title: "Remplacement joystick gauche",
+            description:
+              "Installation d'un nouveau module pour corriger le drift.",
+            price: 35.0,
+          },
+          {
+            title: "Diagnostic complet",
+            description:
+              "Analyse complète du système. Traces de surchauffe détectées sur la carte mère.",
+            price: 15.0,
+          },
+          {
+            title: "Remplacement joystick gauche",
+            description:
+              "Installation d'un nouveau module pour corriger le drift.",
+            price: 35.0,
+          },
+          {
+            title: "Diagnostic complet",
+            description:
+              "Analyse complète du système. Traces de surchauffe détectées sur la carte mère.",
+            price: 15.0,
+          },
+          {
+            title: "Remplacement joystick gauche",
+            description:
+              "Installation d'un nouveau module pour corriger le drift.",
+            price: 35.0,
+          },
+          {
+            title: "Diagnostic complet",
+            description:
+              "Analyse complète du système. Traces de surchauffe détectées sur la carte mère.",
+            price: 15.0,
+          },
+          {
+            title: "Remplacement joystick gauche",
+            description:
+              "Installation d'un nouveau module pour corriger le drift.",
+            price: 35.0,
+          },
+          {
+            title: "Diagnostic complet",
+            description:
+              "Analyse complète du système. Traces de surchauffe détectées sur la carte mère.",
+            price: 15.0,
+          },
+          {
+            title: "Remplacement joystick gauche",
+            description:
+              "Installation d'un nouveau module pour corriger le drift.",
+            price: 35.0,
+          },
+          {
+            title: "Diagnostic complet",
+            description:
+              "Analyse complète du système. Traces de surchauffe détectées sur la carte mère.",
+            price: 15.0,
+          },
+          {
+            title: "Remplacement joystick gauche",
+            description:
+              "Installation d'un nouveau module pour corriger le drift.",
+            price: 35.0,
+          },
+        ],
   };
 
   // 견적서 번호(DEV)를 청구서 번호(FAC)로 변환
@@ -74,7 +173,7 @@ const FactureClient = () => {
     window.print();
   };
 
-  // 🛡️ 📍 보안 1: 개발자 도구 단축키 차단
+  // 🛡️ 📍 보안 1: 개발자 도구 단축키 차단 (원본 유지)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (
@@ -94,37 +193,26 @@ const FactureClient = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지
-  // [최종 수정] 모바일 브라우저의 오지랖(자동 링크 등) 충돌 방지를 위해 모바일에서는 감시를 끕니다.
+  // 🛡️ 📍 보안 2: 문서 위변조 (DOM 수정) 완벽 감지 (원본 유지)
   useEffect(() => {
-    // 📍 1. 현재 접속한 기기가 모바일(터치 기기)이거나 화면이 좁은지 확인합니다.
     const isMobile = window.innerWidth <= 1024 || navigator.maxTouchPoints > 0;
-
-    // 📍 2. 모바일 기기라면 F12(개발자 도구) 조작이 불가능하므로, 감시자를 실행하지 않고 퇴근시킵니다!
     if (isMobile) {
       return;
     }
-
-    // 📍 3. PC(데스크탑)에서만 아래의 철통 보안 감시가 돌아갑니다.
-    // 👉 여기에 있던 mutations 단어를 지워서 에러를 없앴습니다!
     const observer = new MutationObserver(() => {
       alert("🚨 Sécurité : Tentative de modification du document détectée !");
       window.location.reload();
     });
-
     const config = {
       attributes: false,
       childList: true,
       subtree: true,
       characterData: true,
     };
-
     const protectedZones = document.querySelectorAll(".protected-zone");
-
     protectedZones.forEach((zone) => {
       observer.observe(zone, config);
     });
-
     return () => observer.disconnect();
   }, []);
 
@@ -142,8 +230,8 @@ const FactureClient = () => {
         flexDirection: "column",
         alignItems: "center",
         py: 20,
-        userSelect: "none", // 🛡️ 📍 보안 4: 전체 텍스트 드래그 및 복사 방지
-        overflowX: "hidden", // 📍 모바일에서 화면 넘어가는 가로 스크롤 방지
+        userSelect: "none",
+        overflowX: "hidden",
         "@media print": { backgroundColor: "#fff", py: 0 },
       }}
     >
@@ -165,17 +253,19 @@ const FactureClient = () => {
           width: { xs: "90%", md: "800px" },
           mb: 2,
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: data ? "flex-end" : "space-between", // 📍 팝업일 땐 Retour 숨김
         }}
       >
-        <Button
-          variant="contained"
-          startIcon={<ArrowBackIcon />}
-          onClick={() => navigate(-1)}
-          sx={{ bgcolor: "#fff", color: "#333" }}
-        >
-          Retour
-        </Button>
+        {!data && (
+          <Button
+            variant="contained"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate(-1)}
+            sx={{ bgcolor: "#fff", color: "#333" }}
+          >
+            Retour
+          </Button>
+        )}
         {factureData.isPaid && (
           <Button
             variant="contained"
@@ -188,14 +278,14 @@ const FactureClient = () => {
         )}
       </Box>
 
-      {/* 📄 실제 청구서 문서 영역 */}
+      {/* 📄 실제 청구서 문서 영역 (여기부터 아래는 형님 원본 100% 유지) */}
       <Paper
         id="printable-facture"
         className="protected-zone"
         elevation={10}
         sx={{
           width: "800px",
-          minWidth: "800px", // 📍 A4 너비 강제 고정
+          minWidth: "800px",
           minHeight: "1131px",
           p: "50px",
           bgcolor: "#ffffff",
@@ -243,10 +333,6 @@ const FactureClient = () => {
             <Typography variant="body1" fontWeight="bold">
               {factureData.client.name}
             </Typography>
-            {/* <Typography variant="body2">
-              {factureData.client.address}
-            </Typography> */}
-            {/* <Typography variant="body2">{factureData.client.city}</Typography> */}
             <Typography variant="body2" sx={{ mt: 1 }}>
               Contact : {factureData.client.contact}
             </Typography>
@@ -291,7 +377,6 @@ const FactureClient = () => {
             </Typography>
           </Stack>
 
-          {/* 📍 군더더기 빼고 발행/결제 날짜 하나만 놔둠! */}
           <Stack direction="row" spacing={4} sx={{ mt: 2 }}>
             <Typography variant="body2">
               <strong>Date d'émission :</strong> {factureData.dateEmission}
@@ -356,7 +441,6 @@ const FactureClient = () => {
             }}
           ></Box>
 
-          {/* 합계 요약 */}
           <Box sx={{ width: "300px" }}>
             <Stack
               direction="row"
@@ -410,7 +494,6 @@ const FactureClient = () => {
             textAlign: "center",
           }}
         >
-          {/* 📍 돈 안 내면 연체료 물린다는 협박 삭제 -> 결제 증명 멘트로 교체 */}
           <Typography
             variant="caption"
             color="text.secondary"
@@ -419,8 +502,6 @@ const FactureClient = () => {
           >
             Ce document atteste du règlement intégral de la prestation.
           </Typography>
-
-          {/* 📍 사업자 필수 정보 (이건 영수증이라도 무조건 있어야 함) */}
           <Typography variant="caption" color="text.secondary" display="block">
             {factureData.company.name} - {factureData.company.siret} - Dispensé
             d'immatriculation au RCS.

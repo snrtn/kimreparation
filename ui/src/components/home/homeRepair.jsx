@@ -44,11 +44,19 @@ const solutionData = [
     icon: <SecurityIcon />,
     headline: "Votre vie privée est entre de bonnes mains.",
     summary:
-      "Je répare le matériel, sans jamais consulter vos fichiers personnels.",
+      "Je prends grand soin de votre matériel. Pensez simplement à sauvegarder vos fichiers avant la réparation.",
     firstPara:
-      "La protection de vos données est ma priorité absolue.\n\n⚠️ Attention : Contrairement à Samsung, les appareils Apple (iPhone) et les autres marques Android ne possèdent pas de « Mode Réparation » bloquant l'accès à vos fichiers. Il est donc impératif d'effectuer une sauvegarde complète de vos données avant de déposer votre appareil.",
+      "La protection de vos données personnelles me tient à cœur.\n\nBien que je travaille avec la plus grande précaution, une perte de données peut exceptionnellement survenir lors d'une intervention. C'est pourquoi, si votre écran s'allume encore, je vous invite chaleureusement à faire une sauvegarde complète de votre appareil avant de me le confier. Veuillez noter que la préservation de vos fichiers reste sous votre responsabilité.",
     restDesc:
-      "🤖 Pour les Samsung :\nVous pouvez activer le « Mode Maintenance » (Paramètres > Batterie et maintenance de l'appareil > Mode Maintenance). Cela verrouille l'accès à vos données personnelles tout en me permettant de tester le téléphone.\n\n🔧 Tests techniques (Ce que je fais exactement) :\nPour valider la réparation, je dois uniquement tester le matériel.",
+      "Voici un petit guide pour sécuriser vos données en toute sérénité :\n\n" +
+      "🍏 iPhone (Sauvegarde) :\n" +
+      "Allez dans Réglages > [Votre Nom] > iCloud > Sauvegarde iCloud > touchez « Sauvegarder maintenant ».\n\n" +
+      "🤖 Samsung (Sauvegarde & Astuce) :\n" +
+      "• Sauvegarde : Allez dans Paramètres > Comptes et sauvegarde > Sauvegarde des données > touchez « Sauvegarder maintenant » (ou utilisez l'application Smart Switch).\n" +
+      "• 💡 Astuce (Mode Maintenance) : Allez dans Paramètres > Batterie et maintenance > Mode Maintenance. Ce mode génial bloque l'accès à vos données sans les effacer, tout en me laissant tester le téléphone !\n\n" +
+      "📱 Autres Android (Sauvegarde) :\n" +
+      "Allez dans Paramètres > Google > Sauvegarder > touchez « Sauvegarder maintenant ».\n\n" +
+      "Soyez tranquille : je teste uniquement les composants techniques (écran, caméras, son...) et n'ouvre jamais vos applications personnelles.",
     color: "#1d1d1f",
   },
   {

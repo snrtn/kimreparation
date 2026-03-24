@@ -9,7 +9,6 @@ import {
   Typography,
   Divider,
 } from "@mui/material";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import AssignmentIcon from "@mui/icons-material/Assignment"; // Dossier용
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong"; // Facture용
 import { useNavigate, useLocation } from "react-router-dom";
@@ -18,22 +17,21 @@ const SidemenuAdmin = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 메뉴 구성: 딱 필요한 것만!
+  // 📍 메뉴 구성: 어떤 주소(match)에 있을 때 불을 켤지 똑똑하게 배열로 지정!
   const menuItems = [
     {
-      text: "Tableau de Bord",
-      icon: <DashboardIcon />,
-      path: "/admin/dashboard",
-    },
-    {
-      text: "Dossiers (Devis)",
+      text: "Dossiers",
       icon: <AssignmentIcon />,
       path: "/admin/dossier/view",
+      // dashboard로 들어오든, dossier/new로 가든 다 Dossiers에 불 켜짐!
+      match: ["/admin/dashboard", "/admin/dossier"],
     },
     {
       text: "Factures",
       icon: <ReceiptLongIcon />,
       path: "/admin/facture/view",
+      // facture 관련 페이지면 다 Factures에 불 켜짐!
+      match: ["/admin/facture"],
     },
   ];
 
@@ -41,7 +39,7 @@ const SidemenuAdmin = () => {
     <Box
       sx={{
         width: 280,
-        height: "95vh",
+        height: "100vh",
         bgcolor: "#fff",
         borderRight: "1px solid #eaeaea",
         display: "flex",
@@ -55,7 +53,7 @@ const SidemenuAdmin = () => {
           variant="h6"
           sx={{ fontWeight: 800, letterSpacing: "-0.05em" }}
         >
-          REPAIR ADMIN
+          Kim Reparation
         </Typography>
         <Typography variant="caption" color="text.secondary">
           Gestion de l'atelier v1.0
@@ -67,7 +65,11 @@ const SidemenuAdmin = () => {
       {/* --- 메뉴 리스트 --- */}
       <List sx={{ flexGrow: 1 }}>
         {menuItems.map((item) => {
-          const isActive = location.pathname === item.path;
+          // 💡 핵심 로직: 현재 주소가 match 배열 안의 단어 중 하나라도 포함하고 있으면 true!
+          const isActive = item.match.some((keyword) =>
+            location.pathname.includes(keyword),
+          );
+
           return (
             <ListItem key={item.text} disablePadding sx={{ mb: 1 }}>
               <ListItemButton
@@ -103,7 +105,7 @@ const SidemenuAdmin = () => {
         })}
       </List>
 
-      {/* --- 하단 정보 (선택 사항) --- */}
+      {/* --- 하단 정보 --- */}
       <Box sx={{ p: 2, bgcolor: "#fafafa", borderRadius: "12px" }}>
         <Typography
           variant="caption"
@@ -113,7 +115,7 @@ const SidemenuAdmin = () => {
           Connecté en tant que :
         </Typography>
         <Typography variant="body2" sx={{ fontWeight: 600 }}>
-          Boss (Admin)
+          Hanjun Kim
         </Typography>
       </Box>
     </Box>

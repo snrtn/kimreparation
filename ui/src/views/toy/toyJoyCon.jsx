@@ -77,8 +77,8 @@ const ToyJoyCon = () => {
             Cette usure mécanique est la cause physique principale des
             dysfonctionnements rencontrés. Chez <strong>Kim Réparation</strong>,
             nous proposons une solution fiable de remise en état en remplaçant
-            le module mécanique usé par un composant neuf de qualité, afin de
-            prolonger durablement l'usage de votre manette actuelle.
+            le module mécanique usé par un composant neuf, afin de prolonger
+            durablement l'usage de votre manette actuelle.
           </Typography>
         </Box>
 
@@ -91,9 +91,7 @@ const ToyJoyCon = () => {
             sx={{ color: "#424245", lineHeight: 1.8, fontSize: "1rem", mb: 4 }}
           >
             Bien que nous nous efforcions de proposer un service de maintenance
-            accessible, le remplacement physique du mecanisme de joystick
-            necessite l'utilisation d'une piece detachee neuve et specifique.
-            Par consequent, nous tenons a informer notre clientele que si la
+            accessible, nous tenons a informer notre clientele que si la
             main-d'oeuvre peut etre offerte dans le cadre de notre service
             gracieux, **le cout du composant de remplacement reste a la charge
             du proprietaire de l'appareil**.

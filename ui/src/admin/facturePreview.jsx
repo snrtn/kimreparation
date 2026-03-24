@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react"; // 📍 useEffect 추가
 import {
   Box,
   Typography,
@@ -23,6 +23,8 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import SearchIcon from "@mui/icons-material/Search";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { DataGrid } from "@mui/x-data-grid";
 
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
@@ -35,6 +37,8 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+
+import FactureCreate from "./factureCreate";
 
 const locales = { fr: fr };
 const localizer = dateFnsLocalizer({
@@ -102,9 +106,22 @@ const FacturePreview = () => {
   const [tabValue, setTabValue] = useState(0);
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  // 📍 [핵심 변경] 데이터 그리드 필터 버리고, 독립적인 검색어 state 2개로 분리
   const [searchClient, setSearchClient] = useState("");
   const [searchContact, setSearchContact] = useState("");
+
+  // 📍 [추가] PDF 미리보기 모달 상태
+  const [openPreview, setOpenPreview] = useState(false);
+
+  // 📍 [핵심] 로직: 로컬 스토리지에서 초기값을 가져옴
+  const [hideAmount, setHideAmount] = useState(() => {
+    const saved = localStorage.getItem("hideAmountSettings");
+    return saved === "true"; // 저장된 값이 "true"면 true, 아니면 false
+  });
+
+  // 📍 [핵심] 로직: hideAmount 상태가 바뀔 때마다 로컬 스토리지에 저장
+  useEffect(() => {
+    localStorage.setItem("hideAmountSettings", hideAmount);
+  }, [hideAmount]);
 
   const hasSearch = searchClient.trim() !== "" || searchContact.trim() !== "";
 
@@ -128,30 +145,21 @@ const FacturePreview = () => {
     });
   }, [factures, currentDate]);
 
-  // 📍 [핵심 로직] 우리가 직접 데이터 교집합(AND) 걸러서 표에 넣어줍니다.
   const displayedRows = useMemo(() => {
-    // 검색 안 할 때는 그냥 이번 달 데이터 노출
     if (!hasSearch) return currentMonthFactures;
-
-    // 검색 할 때는 '전체 데이터(factures)'에서 찾기 시작
     let filtered = factures;
-
-    // 1. 이름 검색어가 있으면 필터링
     if (searchClient.trim() !== "") {
       const termClient = searchClient.toLowerCase();
       filtered = filtered.filter((f) =>
         f.client.toLowerCase().includes(termClient),
       );
     }
-
-    // 2. 연락처 검색어가 있으면 '앞에서 걸러진 결과' 안에서 또 필터링 (완벽한 교집합)
     if (searchContact.trim() !== "") {
-      const termContact = searchContact.replace(/\s+/g, "").toLowerCase(); // 띄어쓰기 싹 제거
+      const termContact = searchContact.replace(/\s+/g, "").toLowerCase();
       filtered = filtered.filter((f) =>
         f.contact.replace(/\s+/g, "").toLowerCase().includes(termContact),
       );
     }
-
     return filtered;
   }, [hasSearch, factures, currentMonthFactures, searchClient, searchContact]);
 
@@ -169,12 +177,12 @@ const FacturePreview = () => {
 
   const calendarEvents = useMemo(() => {
     return currentMonthFactures.map((f) => ({
-      title: `${f.amount}€ (${f.client})`,
+      title: hideAmount ? `***€ (${f.client})` : `${f.amount}€ (${f.client})`,
       start: new Date(f.date),
       end: new Date(f.date),
       allDay: true,
     }));
-  }, [currentMonthFactures]);
+  }, [currentMonthFactures, hideAmount]);
 
   const handlePrintLedger = () => {
     const doc = new jsPDF();
@@ -254,7 +262,7 @@ const FacturePreview = () => {
         </Typography>
         {total > 0 && (
           <Chip
-            label={`+${total.toFixed(0)}€`}
+            label={hideAmount ? `+***€` : `+${total.toFixed(0)}€`}
             size="small"
             sx={{
               bgcolor: "#d32f2f !important",
@@ -291,7 +299,7 @@ const FacturePreview = () => {
       width: 110,
       renderCell: (p) => (
         <Typography variant="body2" sx={{ fontWeight: 800, mt: 1.5 }}>
-          {p.value.toFixed(2)} €
+          {hideAmount ? "**** €" : `${p.value.toFixed(2)} €`}
         </Typography>
       ),
     },
@@ -306,6 +314,7 @@ const FacturePreview = () => {
           size="small"
           variant="contained"
           sx={{ bgcolor: "#333", color: "#fff", mt: 0.5, boxShadow: "none" }}
+          onClick={() => setOpenPreview(true)} // 📍 [추가] 모달 열기 버튼
         >
           PDF
         </Button>
@@ -320,10 +329,11 @@ const FacturePreview = () => {
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
-        bgcolor: "#f8f9fa",
-        p: 4,
       }}
     >
+      {/* 📍 [추가] PDF 팝업 모달 */}
+      {openPreview && <FactureCreate onClose={() => setOpenPreview(false)} />}
+
       <GlobalStyles
         styles={{
           ".rbc-month-row": { minHeight: "250px !important" },
@@ -341,20 +351,50 @@ const FacturePreview = () => {
 
       <Box sx={{ flexShrink: 0 }}>
         <Card sx={{ border: "none", bgcolor: "#f6ffed", mb: 4 }}>
-          <CardContent sx={{ display: "flex", alignItems: "center", p: 3 }}>
-            <Box
-              sx={{ p: 1.5, bgcolor: "#4caf50", borderRadius: "12px", mr: 2 }}
+          <CardContent
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              p: 3,
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box
+                sx={{ p: 1.5, bgcolor: "#4caf50", borderRadius: "12px", mr: 2 }}
+              >
+                <EuroIcon sx={{ color: "#fff" }} />
+              </Box>
+              <Box>
+                <Typography variant="body2" sx={{ color: "#666" }}>
+                  Total Annuel ({currentDate.getFullYear()}년)
+                </Typography>
+                <Typography variant="h4" sx={{ fontWeight: 800 }}>
+                  {hideAmount
+                    ? "****** €"
+                    : `${currentYearEncaisse.toLocaleString()} €`}
+                </Typography>
+              </Box>
+            </Box>
+
+            <Button
+              variant="outlined"
+              onClick={() => setHideAmount(!hideAmount)}
+              startIcon={
+                hideAmount ? <VisibilityIcon /> : <VisibilityOffIcon />
+              }
+              sx={{
+                color: "#2e7d32",
+                borderColor: "#2e7d32",
+                fontWeight: 700,
+                p: 1,
+                px: 4,
+                borderRadius: "10px",
+                "&:hover": { borderColor: "#1b5e20", bgcolor: "#e8f5e9" },
+              }}
             >
-              <EuroIcon sx={{ color: "#fff" }} />
-            </Box>
-            <Box>
-              <Typography variant="body2" sx={{ color: "#666" }}>
-                Total Annuel ({currentDate.getFullYear()}년)
-              </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 800 }}>
-                {currentYearEncaisse.toLocaleString()} €
-              </Typography>
-            </Box>
+              {hideAmount ? "Afficher les montants" : "Masquer les montants"}
+            </Button>
           </CardContent>
         </Card>
       </Box>
@@ -418,9 +458,8 @@ const FacturePreview = () => {
                   ),
                 );
                 setSearchClient("");
-                setSearchContact(""); // 달 넘기면 초기화
+                setSearchContact("");
               }}
-              sx={{ bgcolor: "#f5f5f7" }}
             >
               <ArrowBackIosNewIcon fontSize="small" />
             </IconButton>
@@ -451,7 +490,6 @@ const FacturePreview = () => {
                 setSearchClient("");
                 setSearchContact("");
               }}
-              sx={{ bgcolor: "#f5f5f7" }}
             >
               <ArrowForwardIosIcon fontSize="small" />
             </IconButton>
@@ -466,7 +504,6 @@ const FacturePreview = () => {
               gap: 2,
             }}
           >
-            {/* 이름 전용 검색창 */}
             <TextField
               placeholder="Nom du Client..."
               size="small"
@@ -488,7 +525,6 @@ const FacturePreview = () => {
               }}
             />
 
-            {/* 연락처 전용 검색창 */}
             <TextField
               placeholder="061234... ou Email"
               size="small"
@@ -531,6 +567,8 @@ const FacturePreview = () => {
                 color: "#fff",
                 fontWeight: 700,
                 textTransform: "none",
+                py: 1,
+                borderRadius: "10px",
                 "&.Mui-disabled": { bgcolor: "#e0e0e0", color: "#9e9e9e" },
               }}
             >
@@ -538,8 +576,7 @@ const FacturePreview = () => {
               {format(currentDate, "MMMM", { locale: fr }).replace(
                 /^./,
                 (str) => str.toUpperCase(),
-              )}{" "}
-              (PDF)
+              )}
             </Button>
 
             <Box sx={{ width: 200, textAlign: "right" }}>
@@ -551,7 +588,10 @@ const FacturePreview = () => {
                   transition: "color 0.3s",
                 }}
               >
-                Total CA : {currentMonthTotal.toLocaleString()} €
+                Total CA :{" "}
+                {hideAmount
+                  ? "**** €"
+                  : `${currentMonthTotal.toLocaleString()} €`}
               </Typography>
             </Box>
           </Stack>
@@ -567,11 +607,10 @@ const FacturePreview = () => {
         >
           {tabValue === 0 ? (
             <DataGrid
-              // 📍 [핵심] 우리가 직접 만든 교집합 데이터(displayedRows) 투입!
               rows={displayedRows}
               columns={columns}
               initialState={{
-                pagination: { paginationModel: { pageSize: 7 } },
+                pagination: { paginationModel: { pageSize: 8 } },
                 sorting: { sortModel: [{ field: "date", sort: "desc" }] },
               }}
               disableRowSelectionOnClick
