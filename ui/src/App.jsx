@@ -147,7 +147,7 @@ function App() {
           <h2
             style={{ marginBottom: "24px", fontWeight: 800, color: "#1d1d1f" }}
           >
-            Accès Restreint
+            Ouverture Prochaine
           </h2>
           <input
             type="password"
