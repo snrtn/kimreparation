@@ -34,11 +34,11 @@ const sidemenuData = {
   ],
 
   // ✅ 장난감 그룹 (💡 toys 가 아니라 toy 로 수정완료!)
-  toy: [
-    { title: "Prise en charge", path: "/toy" },
-    { title: "Jouets Electroniques", path: "/toy/repair" },
-    { title: "Nintendo Switch Joy-Con", path: "/toy/joycon" },
-  ],
+  // toy: [
+  //   { title: "Prise en charge", path: "/toy" },
+  //   { title: "Jouets Electroniques", path: "/toy/repair" },
+  //   { title: "Nintendo Switch Joy-Con", path: "/toy/joycon" },
+  // ],
 
   client: [
     { title: "Devis & Facture", path: "/client" },

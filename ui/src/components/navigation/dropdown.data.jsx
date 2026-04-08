@@ -25,11 +25,11 @@ const dropdownData = [
     desc: "Découvrez notre espace et nos engagements.",
     path: "/atelier",
   },
-  {
-    title: "Réparation Jouets",
-    desc: "Service bénévole.",
-    path: "/toy",
-  },
+  // {
+  //   title: "Réparation Jouets",
+  //   desc: "Service bénévole.",
+  //   path: "/toy",
+  // },
 ];
 
 export default dropdownData;

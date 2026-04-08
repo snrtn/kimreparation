@@ -139,7 +139,7 @@ const HomeView = () => {
         <HomeScreen />
         <HomeRepair />
         <HomeDevis />
-        <HomeToy />
+        {/* <HomeToy /> */}
         <HomeInfos />
       </Box>
     </div>
