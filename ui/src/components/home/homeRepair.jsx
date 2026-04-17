@@ -30,21 +30,22 @@ const solutionData = [
   {
     id: 1,
     title: "Confidentialité & Données",
-
-    headline: "Votre vie privée est entre de bonnes mains.",
-    summary:
-      "Je respecte votre intimité. Pour une sérénité totale, voici comment préparer votre appareil avant l'intervention.",
+    headline: "Protection de votre vie privée",
+    summary: "Comment sécuriser votre appareil avant l'intervention.",
     firstPara:
-      "La sécurité de vos photos, messages et fichiers est ma priorité. Si votre écran s'allume encore et que le tactile fonctionne, je vous conseille vivement d'effectuer une sauvegarde ou d'activer un mode de protection avant de me confier l'appareil. Même si l'intervention est purement matérielle, le risque zéro n'existe pas en informatique : c'est la meilleure garantie pour vos souvenirs !",
+      "Sauvegarder vos données est la meilleure sécurité. Si votre écran fonctionne, nous vous conseillons d'utiliser les modes de protection intégrés. Donner votre code est un droit, pas une obligation.",
     restDesc:
-      "Voici les solutions simples pour sécuriser vos données selon votre modèle :\n\n" +
-      "Pour les iPhone (iOS 17.5+) : Mode Réparation\n" +
-      "C'est la solution idéale. Allez dans l'application Localiser, puis Appareils, choisissez votre iPhone et activez le Mode Réparation. Cela me permet de tester les fonctions techniques sans avoir accès à vos codes personnels.\n\n" +
-      "Pour les Samsung : Mode Maintenance\n" +
-      "C'est très pratique. Allez dans Paramètres, puis Entretien de l'appareil et activez le Mode Maintenance. Ce mode bloque l'accès à vos photos et messages tout en me permettant de vérifier le bon fonctionnement du nouvel écran.\n\n" +
-      "Pour les autres modèles Android :\n" +
-      "Pensez à faire une sauvegarde rapide. Allez dans Paramètres, puis Google et enfin Sauvegarde pour mettre vos fichiers à l'abri dans votre Cloud.\n\n" +
-      "Mon engagement : Je teste uniquement les fonctions techniques comme le tactile, les caméras ou le son. Je n'ouvre jamais vos applications personnelles. Votre vie privée reste privée.",
+      "Étapes de préparation et sauvegarde :\n\n" +
+      "• iPhone (iOS 17.5+) :\n" +
+      "1. Sauvegarde : Réglages > [Nom] > iCloud > Sauvegarde iCloud > Sauvegarder maintenant.\n" +
+      "2. Sécurité : Activez le « Mode Réparation » (Localiser > Appareils).\n\n" +
+      "• Samsung :\n" +
+      "1. Sauvegarde : Paramètres > Google > Sauvegarde.\n" +
+      "2. Sécurité : Activez le « Mode Maintenance » (Paramètres > Entretien de l'appareil).\n\n" +
+      "• Autres modèles Android :\n" +
+      "Sauvegarde : Paramètres > Google > Sauvegarde > Sauvegarder.\n\n" +
+      "Note technique : Si vous ne donnez pas votre code, nous effectuons les tests de base et nous vous contactons. À votre venue, vous saisirez votre code pour finir les tests restants avec nous. Si un problème est détecté, nous le réparons immédiatement. Toutefois, si vous choisissez de repartir avec un défaut constaté ensemble, nous devrons vérifier si la garantie peut s'appliquer ou si un nouveau devis est nécessaire pour cette fonction.\n\n" +
+      "Engagement : Nous testons uniquement le matériel (tactile, caméras, son). Vos applications personnelles ne sont jamais ouvertes.",
     color: "#1d1d1f",
   },
   {

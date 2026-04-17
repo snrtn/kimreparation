@@ -7,8 +7,8 @@ const slideData = [
   {
     id: 0,
     title: "Kim Reparation",
-    point: "Atelier de Réparation Téléphone",
-    headline: "Carte mère",
+    point: "L'atelier de Réparation Téléphone",
+    headline: "Carte mère · Écran · Batterie",
     desc: "Nous identifions la cause de la panne et nous réparons tout ce qui est techniquement possible.",
     path: "",
   },

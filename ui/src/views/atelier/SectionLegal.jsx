@@ -53,7 +53,6 @@ const SectionLegal = () => {
     <Container maxWidth="md">
       <Box sx={{ py: { xs: 16, xl: 20 }, borderTop: "1px solid #e5e5e7" }}>
         <Box sx={{ mb: 15 }}>
-
           {/* SECTION 1 : Données Personnelles */}
           <Typography
             sx={{
@@ -74,13 +73,15 @@ const SectionLegal = () => {
                 expandIcon={<ExpandMoreIcon sx={{ color: "#0066cc" }} />}
                 sx={summarySx}
               >
-                <Typography sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}>
-                  Comment sécuriser mes données avant de déposer mon appareil ?
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}
+                >
+                  Comment protéger mes données avant de déposer mon appareil ?
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={detailsSx}>
                 <Typography sx={textSx}>
-                  {`Avant toute intervention, nous vous recommandons d'effectuer une sauvegarde complète de vos données. Voici les méthodes disponibles selon votre appareil :\n\n• iPhone : Rendez-vous dans Réglages > [votre prénom] > iCloud > Sauvegarde iCloud, puis appuyez sur « Sauvegarder maintenant ».\n• Android : Accédez à Paramètres > Google > Sauvegarde, puis lancez la sauvegarde.\n• Via ordinateur : Connectez votre appareil et utilisez iTunes (Windows), Finder (Mac) ou tout logiciel de transfert compatible.\n\nCette étape préventive est dans votre intérêt : même si notre intervention est purement matérielle, aucun technicien ne peut garantir à 100 % l'intégrité des données en cas de panne électronique imprévisible.`}
+                  {`La sécurité de vos données est notre priorité. Si votre écran fonctionne, voici les étapes à suivre :\n\n• Étape 1 : Faire une sauvegarde\n- iPhone : Réglages > [Nom] > iCloud > Sauvegarde iCloud > Sauvegarder maintenant.\n- Android : Paramètres > Google > Sauvegarde > Sauvegarder maintenant.\n\n• Étape 2 : Activer un mode de protection\n- iPhone (iOS 17.5+) : Mode Réparation (Localiser > Appareils). Vos données sont masquées et l'appareil reste localisable.\n- Samsung : Mode Maintenance (Paramètres > Entretien de l'appareil). Cela bloque l'accès à vos photos et messages.\n\nNote technique : Ces modes bloquent certains tests (Face ID, Wi-Fi). Nous effectuons d'abord les tests de base et nous vous contactons. À votre venue, vous saisirez votre code pour finir les tests système avec nous. Si un problème est détecté, nous le réparons immédiatement. Toutefois, si vous choisissez de repartir avec un défaut constaté ensemble, nous devrons vérifier si la garantie peut s'appliquer ou si un nouveau devis est nécessaire.`}
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -90,13 +91,15 @@ const SectionLegal = () => {
                 expandIcon={<ExpandMoreIcon sx={{ color: "#0066cc" }} />}
                 sx={summarySx}
               >
-                <Typography sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}>
-                  Mon écran est noir, pourquoi avez-vous besoin de mon code de déverrouillage ?
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}
+                >
+                  Mon écran est noir, pourquoi avez-vous besoin de mon code ?
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={detailsSx}>
                 <Typography sx={textSx}>
-                  {`Lorsque l'écran est hors service, la première étape est de restaurer l'affichage afin de rendre l'appareil fonctionnel. Une fois cela effectué, votre code de déverrouillage nous permet d'accéder aux réglages système pour réaliser les tests de vérification post-réparation : Wi-Fi, Bluetooth, Face ID, Touch ID, etc.\n\nCe code n'est utilisé qu'à des fins techniques et n'est jamais conservé. Si vous préférez saisir vous-même le code au moment des tests, nous pouvons organiser cela en votre présence à l'atelier.`}
+                  {`En cas d'écran noir, notre priorité est de rétablir l'affichage pour vous permettre de mettre vos données en sécurité rapidement. Donner votre code est un droit et reste votre choix personnel.\n\nSi vous préférez ne pas le donner, nous faisons les tests de base dès que l'image est de retour. Pour la sauvegarde de vos fichiers et les tests complets, nous vous invitons à taper votre code lors de votre passage à l'atelier. Nous pourrons alors vérifier ensemble que tout fonctionne bien.`}
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -106,13 +109,16 @@ const SectionLegal = () => {
                 expandIcon={<ExpandMoreIcon sx={{ color: "#0066cc" }} />}
                 sx={summarySx}
               >
-                <Typography sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}>
-                  Que se passe-t-il si je préfère ne pas fournir mon code ?
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}
+                >
+                  Je préfère ne pas donner mon code, comment se passe la
+                  garantie ?
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={detailsSx}>
                 <Typography sx={textSx}>
-                  {`Vous êtes entièrement libre de ne pas communiquer votre code. Dans ce cas, notre vérification sera limitée aux fonctions accessibles depuis l'écran de verrouillage : tactile, luminosité, haut-parleur, caméras.\n\nLes fonctions nécessitant l'accès au système (Wi-Fi, Bluetooth, sécurité biométrique, etc.) ne pourront pas être contrôlées. Notre garantie portera alors uniquement sur les composants que nous avons pu tester.`}
+                  {`C'est tout à fait possible et nous respectons votre choix. Dans ce cas, nous testons ce qui est visible (écran, tactile, son) et nous vous attendons pour tester le reste ensemble (Wi-Fi, Bluetooth, etc.) lors de la remise de l'appareil.\n\nSi on découvre un souci lors de ce test avec vous, nous pouvons le corriger tout de suite. Notre garantie s'applique normalement sur toutes les fonctions que nous avons pu valider ensemble. C'est la solution la plus simple pour repartir l'esprit tranquille.`}
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -122,13 +128,16 @@ const SectionLegal = () => {
                 expandIcon={<ExpandMoreIcon sx={{ color: "#0066cc" }} />}
                 sx={summarySx}
               >
-                <Typography sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}>
-                  Mon appareil est très endommagé. Y a-t-il des risques lors de l'intervention ?
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}
+                >
+                  Mon appareil est très endommagé. Y a-t-il des risques lors de
+                  l'intervention ?
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={detailsSx}>
                 <Typography sx={textSx}>
-                  {`Oui, et nous préférons vous en informer clairement plutôt que de vous laisser une fausse impression de sécurité.\n\nLorsqu'un appareil présente des dommages préexistants importants (chute grave, châssis tordu, composants fragilisés), l'intervention peut révéler ou aggraver des problèmes internes qui n'étaient pas visibles avant l'ouverture. Ce n'est pas une défaillance de notre part, mais une réalité technique inhérente à l'état de l'appareil.\n\nNous réalisons un état des lieux photographique avant toute ouverture. Si une situation particulière est découverte à l'intérieur, nous vous en informons immédiatement avant de poursuivre.`}
+                  {`Oui, et nous préférons vous en informer clairement plutôt que de vous laisser une fausse impression de sécurité.\n\nLorsqu'un appareil présente des dommages préexistants importants (chute grave, boîtier déformé, composants fragilisés), l'intervention peut révéler ou aggraver des problèmes internes qui n'étaient pas visibles avant l'ouverture. Ce n'est pas une défaillance de notre part, mais une réalité technique inhérente à l'état de l'appareil.\n\nNous réalisons un état des lieux photographique avant toute ouverture. Si une situation particulière est découverte à l'intérieur, nous vous en informons immédiatement avant de poursuivre.`}
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -154,7 +163,9 @@ const SectionLegal = () => {
                 expandIcon={<ExpandMoreIcon sx={{ color: "#0066cc" }} />}
                 sx={summarySx}
               >
-                <Typography sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}>
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}
+                >
                   Mon appareil est tombé dans l'eau. Peut-il être sauvé ?
                 </Typography>
               </AccordionSummary>
@@ -170,8 +181,11 @@ const SectionLegal = () => {
                 expandIcon={<ExpandMoreIcon sx={{ color: "#0066cc" }} />}
                 sx={summarySx}
               >
-                <Typography sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}>
-                  Pourquoi un nettoyage anti-oxydation comporte-t-il des risques ?
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}
+                >
+                  Pourquoi un nettoyage anti-oxydation comporte-t-il des risques
+                  ?
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={detailsSx}>
@@ -186,8 +200,11 @@ const SectionLegal = () => {
                 expandIcon={<ExpandMoreIcon sx={{ color: "#0066cc" }} />}
                 sx={summarySx}
               >
-                <Typography sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}>
-                  Les réparations après dommages liquides sont-elles couvertes par une garantie ?
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}
+                >
+                  Les réparations après dommages liquides sont-elles couvertes
+                  par une garantie ?
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={detailsSx}>
@@ -218,7 +235,9 @@ const SectionLegal = () => {
                 expandIcon={<ExpandMoreIcon sx={{ color: "#0066cc" }} />}
                 sx={summarySx}
               >
-                <Typography sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}>
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}
+                >
                   Comment fonctionne la garantie sur les pièces remplacées ?
                 </Typography>
               </AccordionSummary>
@@ -234,7 +253,9 @@ const SectionLegal = () => {
                 expandIcon={<ExpandMoreIcon sx={{ color: "#0066cc" }} />}
                 sx={summarySx}
               >
-                <Typography sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}>
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}
+                >
                   Dans quels cas la garantie ne s'applique-t-elle pas ?
                 </Typography>
               </AccordionSummary>
@@ -250,8 +271,11 @@ const SectionLegal = () => {
                 expandIcon={<ExpandMoreIcon sx={{ color: "#0066cc" }} />}
                 sx={summarySx}
               >
-                <Typography sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}>
-                  Mon écran présente des lignes ou des taches sans être fissuré, est-ce pris en charge ?
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}
+                >
+                  Mon écran présente des lignes ou des taches sans être fissuré,
+                  est-ce pris en charge ?
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={detailsSx}>
@@ -266,8 +290,11 @@ const SectionLegal = () => {
                 expandIcon={<ExpandMoreIcon sx={{ color: "#0066cc" }} />}
                 sx={summarySx}
               >
-                <Typography sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}>
-                  Puis-je faire vérifier mon appareil par un autre réparateur après votre intervention ?
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}
+                >
+                  Puis-je faire vérifier mon appareil par un autre réparateur
+                  après votre intervention ?
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={detailsSx}>
@@ -282,7 +309,9 @@ const SectionLegal = () => {
                 expandIcon={<ExpandMoreIcon sx={{ color: "#0066cc" }} />}
                 sx={summarySx}
               >
-                <Typography sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}>
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}
+                >
                   En cas de désaccord, vers qui puis-je me tourner ?
                 </Typography>
               </AccordionSummary>
@@ -298,7 +327,9 @@ const SectionLegal = () => {
                 expandIcon={<ExpandMoreIcon sx={{ color: "#0066cc" }} />}
                 sx={summarySx}
               >
-                <Typography sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}>
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: "1rem", color: "#1d1d1f" }}
+                >
                   Collecte de données techniques & sécurité du service
                 </Typography>
               </AccordionSummary>
@@ -347,7 +378,9 @@ const SectionLegal = () => {
                 sx={{ borderBottom: "1px solid #f5f5f7", pb: 1.5 }}
               >
                 <Typography sx={itemLabelStyle}>SIRET</Typography>
-                <Typography sx={itemValueStyle}>00 00 00 00 00 00 00</Typography>
+                <Typography sx={itemValueStyle}>
+                  00 00 00 00 00 00 00
+                </Typography>
               </Stack>
               <Stack
                 direction="row"
@@ -384,7 +417,9 @@ const SectionLegal = () => {
               >
                 <Typography sx={itemLabelStyle}>DNS / Domain</Typography>
                 <Box sx={{ textAlign: "right" }}>
-                  <Typography sx={itemValueStyle}>OVHcloud (OVH SAS)</Typography>
+                  <Typography sx={itemValueStyle}>
+                    OVHcloud (OVH SAS)
+                  </Typography>
                   <Typography sx={{ fontSize: "0.7rem", color: "#c1c1c1" }}>
                     Roubaix, France
                   </Typography>

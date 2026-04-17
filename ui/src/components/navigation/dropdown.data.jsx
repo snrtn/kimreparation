@@ -20,7 +20,7 @@ const dropdownData = [
   //   path: "/client",
   // },
   {
-    title: "L'Atelier & Infos",
+    title: "L'atelier & Infos",
     // ✅ 쓸데없는 소리 빼고 "공간 안내 및 우리의 약속(보증)"으로 담백하게 수정
     desc: "Découvrez notre espace et nos engagements.",
     path: "/atelier",
