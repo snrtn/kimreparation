@@ -23,7 +23,7 @@ const HomeDevis = () => {
               textTransform: "uppercase",
             }}
           >
-            Diagnostic Personnalisé
+            Diagnostic
           </Typography>
 
           <Typography
@@ -38,8 +38,8 @@ const HomeDevis = () => {
               textAlign: "left",
             }}
           >
-            Un diagnostic précis, <br />
-            une réparation parfaite.
+            Comprendre la panne, <br />
+            réparer l'appareil.
           </Typography>
 
           <Typography
@@ -52,20 +52,20 @@ const HomeDevis = () => {
               textAlign: "left",
             }}
           >
-            Merci de nous indiquer les symptômes de votre appareil. <br />
-            Bien comprendre le problème nous permet de réaliser la réparation
-            adéquate.
+            Dites-nous ce qui ne va pas avec votre appareil. <br />
+            Un diagnostic clair nous permet d'appliquer la solution technique
+            adaptée.
           </Typography>
 
           <Button
             component={RouterLink} // 💡 MUI 버튼을 리액트 라우터 링크로 변환
-            to="/devis"
+            // to="/devis"
             disableRipple
             sx={{
               p: 0,
               pb: 0.5, // 📌 모바일에서도 밑줄이 들어갈 공간 확보
-              color: "#E65100",
               fontSize: "1.5rem",
+              color: "#E65100",
               fontWeight: 800,
               textTransform: "uppercase",
               letterSpacing: "0.05em",
@@ -97,7 +97,7 @@ const HomeDevis = () => {
               },
             }}
           >
-            Diagnostic Personnalisé
+            Choisir l'appareil
             {/* 📌 0단: 모바일 전용 심플 밑줄 (PC에선 숨김) */}
             <Box
               className="line-mobile"
@@ -191,10 +191,10 @@ const HomeDevis = () => {
             <Typography
               sx={{ color: "#86868b", fontSize: "0.85rem", lineHeight: 1.6 }}
             >
-              • <strong>Budget :</strong> Le premier devis correspond au
-              remplacement d'une pièce (budget maximum). <br />
-              Le montant final sera ajusté à l'atelier selon l'intervention
-              réellement effectuée.
+              • <strong>Estimation :</strong> Le montant du devis est basé sur
+              un remplacement standard de pièce. <br />
+              Le tarif final sera validé à l'atelier après l'examen technique de
+              votre appareil.
             </Typography>
           </Stack>
         </Box>

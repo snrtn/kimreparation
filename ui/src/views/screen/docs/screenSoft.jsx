@@ -5,22 +5,22 @@ import { SCREEN_NAV } from "./screenNav";
 const ScreenSoft = () => {
   const content = {
     title: "Soft OLED (Copie)",
-    subtitle: "Technologie flexible haute performance",
+    subtitle: "Technologie d'affichage flexible",
     recommendation:
-      "Le meilleur rapport qualité-prix pour retrouver une structure d'affichage proche de l'originale.",
+      "Une solution technique reconnue pour sa robustesse au quotidien.",
     description:
-      "Un écran 'Soft OLED' utilise un substrat flexible (souple), identique à la technologie utilisée lors de l'assemblage initial par les grands constructeurs. Contrairement aux versions rigides, cette structure permet de mieux absorber les chocs et les pressions mécaniques, réduisant ainsi le risque de fissures internes après un impact. Les bordures d'affichage sont plus fines et la colorimétrie est nettement supérieure aux copies standards. C'est l'option privilégiée pour ceux qui cherchent la durabilité d'une dalle flexible sans le coût d'une pièce d'origine.\n\nNote technique Apple : Comme pour tout écran de remplacement (Original ou Copie), un message 'Pièce inconnue' peut apparaître dans les réglages en raison de la sérialisation logicielle. Le transfert des données (ex: True Tone) est réalisé via programmateur, mais la notification peut persister si la puce IC n'est pas transférée.",
+      "L'écran Soft OLED repose sur une structure flexible (souple) qui lui permet d'absorber les pressions et les chocs physiques sans interrompre l'affichage interne. Cette technologie permet d'obtenir des bordures fines pour un ajustement précis avec le châssis du téléphone. Il offre une restitution vive des couleurs et des contrastes profonds, assurant une expérience visuelle fluide et une grande fiabilité lors d'un usage intensif.",
     forWhom: [
-      "Utilisateurs recherchant une résistance accrue aux chocs quotidiens",
-      "Besoin de bordures d'affichage fines et d'une intégration parfaite",
-      "Usage intensif nécessitant une fiabilité proche de l'original",
+      "Utilisateurs recherchant une résistance accrue aux chocs",
+      "Besoin d'un ajustement esthétique précis des bordures",
+      "Usage quotidien sollicitant régulièrement l'appareil",
     ],
     features: [
-      "Dalle à technologie organique flexible (Soft OLED)",
-      "Haute tolérance aux pressions et aux torsions mécaniques",
-      "Bordures d'affichage réduites pour un ajustement précis au châssis",
-      "Rendu des couleurs et contrastes supérieurs aux dalles rigides",
-      "Alternative économique aux composants d'origine (Pull/Éco)",
+      "Structure flexible absorbant les contraintes mécaniques",
+      "Bordures fines pour une intégration parfaite",
+      "Technologie OLED offrant des contrastes élevés",
+      "Grande stabilité de l'affichage sur le long terme",
+      "Réactivité tactile optimale pour une navigation fluide",
     ],
     color: "#0071e3",
   };

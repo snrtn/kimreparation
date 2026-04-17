@@ -12,115 +12,106 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
-// ✅ Icones MUI
-import SecurityIcon from "@mui/icons-material/Security";
-import TouchAppIcon from "@mui/icons-material/TouchApp";
-import ConstructionIcon from "@mui/icons-material/Construction";
-import PsychologyIcon from "@mui/icons-material/Psychology";
-import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
-import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
-import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-
 const solutionData = [
   {
     id: 0,
-    title: "Photos de suivi",
-    icon: <CameraAltIcon />,
-    headline: "La transparence avant tout : Je photographie l'étape.",
+    title: "Photos & Transparence",
+
+    headline:
+      "Votre appareil sous tous les angles pour une réparation sereine.",
     summary:
-      "Un suivi visuel précis de l'état de votre appareil, avant et après.",
+      "Un suivi visuel complet pour une transparence totale sur l'intervention.",
     firstPara:
-      "Pour votre sérénité, je documente l'état cosmétique de votre appareil dès sa réception.\n\nChaque rayure ou impact préexistant est répertorié : c'est la garantie d'une relation de confiance.",
+      "Pour votre tranquillité, je prends le temps de photographier l'état de votre appareil dès sa réception. \n\nNoter chaque détail extérieur (rayures ou impacts déjà présents) me permet de vous garantir que votre téléphone vous sera rendu exactement dans le même état, la réparation en plus.",
     restDesc:
-      "L'ouverture d'un châssis scellé est une intervention délicate qui peut parfois laisser de micro-marques techniques sur les joints d'origine, malgré l'usage d'outils professionnels.\n\nSi une anomalie interne (corrosion, réparation antérieure) est découverte au démontage, vous recevez immédiatement une photo pour valider la suite ensemble.",
+      "L'ouverture d'un châssis est une opération délicate. Même avec des outils professionnels, de légères marques techniques peuvent parfois apparaître sur les joints d'origine.\n\nSi je découvre une surprise à l'intérieur (traces d'eau, vis manquantes ou ancienne réparation mal faite), je vous envoie immédiatement une photo. Comme ça, on décide ensemble de la suite, sans mauvaise surprise.",
     color: "#000000",
   },
   {
     id: 1,
-    title: "Vos Données",
-    icon: <SecurityIcon />,
+    title: "Confidentialité & Données",
+
     headline: "Votre vie privée est entre de bonnes mains.",
     summary:
-      "Je prends grand soin de votre matériel. Pensez simplement à sauvegarder vos fichiers avant la réparation.",
+      "Je respecte votre intimité. Pour une sérénité totale, voici comment préparer votre appareil avant l'intervention.",
     firstPara:
-      "La protection de vos données personnelles me tient à cœur.\n\nBien que je travaille avec la plus grande précaution, une perte de données peut exceptionnellement survenir lors d'une intervention. C'est pourquoi, si votre écran s'allume encore, je vous invite chaleureusement à faire une sauvegarde complète de votre appareil avant de me le confier. Veuillez noter que la préservation de vos fichiers reste sous votre responsabilité.",
+      "La sécurité de vos photos, messages et fichiers est ma priorité. Si votre écran s'allume encore et que le tactile fonctionne, je vous conseille vivement d'effectuer une sauvegarde ou d'activer un mode de protection avant de me confier l'appareil. Même si l'intervention est purement matérielle, le risque zéro n'existe pas en informatique : c'est la meilleure garantie pour vos souvenirs !",
     restDesc:
-      "Voici un petit guide pour sécuriser vos données en toute sérénité :\n\n" +
-      "🍏 iPhone (Sauvegarde) :\n" +
-      "Allez dans Réglages > [Votre Nom] > iCloud > Sauvegarde iCloud > touchez « Sauvegarder maintenant ».\n\n" +
-      "🤖 Samsung (Sauvegarde & Astuce) :\n" +
-      "• Sauvegarde : Allez dans Paramètres > Comptes et sauvegarde > Sauvegarde des données > touchez « Sauvegarder maintenant » (ou utilisez l'application Smart Switch).\n" +
-      "• 💡 Astuce (Mode Maintenance) : Allez dans Paramètres > Batterie et maintenance > Mode Maintenance. Ce mode génial bloque l'accès à vos données sans les effacer, tout en me laissant tester le téléphone !\n\n" +
-      "📱 Autres Android (Sauvegarde) :\n" +
-      "Allez dans Paramètres > Google > Sauvegarder > touchez « Sauvegarder maintenant ».\n\n" +
-      "Soyez tranquille : je teste uniquement les composants techniques (écran, caméras, son...) et n'ouvre jamais vos applications personnelles.",
+      "Voici les solutions simples pour sécuriser vos données selon votre modèle :\n\n" +
+      "Pour les iPhone (iOS 17.5+) : Mode Réparation\n" +
+      "C'est la solution idéale. Allez dans l'application Localiser, puis Appareils, choisissez votre iPhone et activez le Mode Réparation. Cela me permet de tester les fonctions techniques sans avoir accès à vos codes personnels.\n\n" +
+      "Pour les Samsung : Mode Maintenance\n" +
+      "C'est très pratique. Allez dans Paramètres, puis Entretien de l'appareil et activez le Mode Maintenance. Ce mode bloque l'accès à vos photos et messages tout en me permettant de vérifier le bon fonctionnement du nouvel écran.\n\n" +
+      "Pour les autres modèles Android :\n" +
+      "Pensez à faire une sauvegarde rapide. Allez dans Paramètres, puis Google et enfin Sauvegarde pour mettre vos fichiers à l'abri dans votre Cloud.\n\n" +
+      "Mon engagement : Je teste uniquement les fonctions techniques comme le tactile, les caméras ou le son. Je n'ouvre jamais vos applications personnelles. Votre vie privée reste privée.",
     color: "#1d1d1f",
   },
   {
     id: 2,
     title: "Diagnostic & Tarifs",
-    icon: <PsychologyIcon />,
-    headline: "Une tarification claire, sans frais cachés.",
+
+    headline: "Une tarification claire, sans surprise.",
     summary: "Le diagnostic est offert pour toute réparation effectuée.",
     firstPara:
-      "Qu'il s'agisse d'un écran noir ou d'une panne complexe, je mobilise mon expertise et mes outils de mesure (multimètre) pour isoler l'origine exacte du problème.",
+      "Identifier l'origine exacte d'une panne, qu'il s'agisse d'un écran noir ou d'un défaut de circuit, demande une expertise précise. J'utilise des outils de mesure professionnels comme le multimètre pour isoler le problème et vous proposer la solution la plus adaptée.",
     restDesc:
-      "L'expertise technique demande du temps et de la précision :\n\n1. Réparation validée : Le diagnostic est totalement offert.\n2. Interruption à votre demande : Un forfait de 50% de la main-d'œuvre est appliqué pour le travail de recherche effectué.\n\nImportant : Une garantie ne peut être appliquée sur une intervention interrompue avant sa finalisation.",
+      "Le temps passé à analyser votre appareil est une étape technique essentielle :\n\n" +
+      "Si nous procédons à la réparation :\n" +
+      "Le diagnostic est totalement gratuit. Vous ne payez que le forfait de réparation convenu, sans frais cachés.\n\n" +
+      "En cas d'interruption à votre demande :\n" +
+      "Si vous décidez de ne pas poursuivre la réparation après que le travail de recherche a été effectué, un forfait correspondant à 50% de la main-d'œuvre est appliqué. Cela permet de couvrir le temps de démontage et l'expertise technique mobilisée.\n\n" +
+      "Note importante : Une garantie ne peut être appliquée sur une intervention qui a été interrompue avant sa finalisation complète.",
     color: "#0066cc",
   },
   {
     id: 3,
-    title: "Le choix de l'écran",
-    icon: <WorkspacePremiumIcon />,
-    headline: "À chaque usage, sa technologie d'affichage.",
-    summary:
-      "Original, OLED ou LCD : je vous oriente vers le meilleur compromis.",
+    title: "Le choix de votre écran",
+
+    headline: "Plusieurs options pour votre réparation.",
+    summary: "Original, OLED ou LCD : des solutions adaptées à votre usage.",
     firstPara:
-      "La luminosité et le rendu des couleurs varient selon la gamme choisie.\n\nMon rôle est de vous conseiller la pièce la plus cohérente avec votre utilisation et votre budget.",
+      "Il existe différentes technologies d'affichage sur le marché. Mon rôle est d'installer la pièce qui correspond au choix que vous avez fait, que vous privilégiez la fidélité des couleurs d'origine ou une solution plus économique pour votre budget.",
     restDesc:
-      "Toutes mes pièces sont rigoureusement sélectionnées et garanties.\n\nNotez que sur les gammes 'Budget' (LCD), une légère variation de contraste est normale par rapport à l'écran d'origine.\n\nPrenez le temps de consulter mon guide technique pour choisir en toute connaissance de cause.",
+      "Le rendu visuel varie selon la gamme choisie. \n\nPar exemple, sur un écran LCD (gamme Budget), les contrastes et la luminosité sont techniquement différents de l'écran initial. C'est une alternative courante pour remettre en état un appareil à moindre coût.\n\nJe vous invite à consulter mon guide technique pour comparer les caractéristiques de chaque dalle et choisir l'option qui vous convient avant l'intervention.",
     color: "#6f42c1",
     link: "/screen",
   },
   {
     id: 4,
-    title: "Accès & Confidentialité",
-    icon: <TouchAppIcon />,
-    headline: "Pas de code ? Gardez vos accès rapides actifs.",
-    summary: "Vérification des fonctions de base sans déverrouillage.",
+    title: "Écran noir et accès technique",
+
+    headline: "Le diagnostic sur un appareil bloqué.",
+    summary: "Comment tester votre téléphone si l'écran ne s'allume plus.",
     firstPara:
-      "Si vous préférez ne pas partager votre code confidentiel, c'est tout à fait possible.\n\nPour que je puisse néanmoins tester l'essentiel, veillez simplement à autoriser l'accès à l'Appareil photo et au Centre de contrôle depuis votre écran verrouillé (dans vos réglages iOS/Android).",
+      "Si votre écran est totalement noir ou que le tactile ne répond plus, il est impossible d'activer les modes de protection ou de faire une sauvegarde. Dans ce cas, ma priorité est d'installer une nouvelle dalle pour restaurer l'image et le tactile afin de commencer les tests techniques.",
     restDesc:
-      "C'est indispensable pour valider le son, les caméras et l'activation des signaux.\n\nImportant : Sans accès au menu complet 'Réglages', je ne peux pas confirmer la stabilité réelle du Wi-Fi, la qualité du Bluetooth ou le bon appairage du Face ID / Touch ID.\n\nPar conséquent, si ces options ne sont pas accessibles ou si le code n'est pas fourni, le bon fonctionnement de ces fonctions de sécurité et de réseau ne pourra pas être couvert par ma garantie technique.",
+      "Une fois l'image revenue, l'accès au menu reste nécessaire pour une vérification complète. \n\nSans votre code confidentiel, le test sera limité aux fonctions visibles depuis l'écran de verrouillage (caméras, son, tactile de base). Je ne pourrai pas confirmer le bon fonctionnement du Wi-Fi, du Bluetooth ou des systèmes de sécurité comme le Face ID et le Touch ID. \n\nC'est pourquoi, pour un contrôle total de l'appareil après la réparation, votre collaboration pour l'accès aux réglages est indispensable. Sans cela, ma vérification technique ne portera que sur les composants que j'ai pu réellement tester.",
     color: "#28a745",
   },
   {
     id: 5,
-    title: "Micro-soudure & Eau",
-    icon: <SettingsSuggestIcon />,
-    headline: "Sauver l'appareil ou vos souvenirs.",
-    summary: "Expertise dédiée aux cartes mères et aux appareils oxydés.",
+    title: "Micro-soudure & Oxydation",
+
+    headline: "La priorité : sauver vos souvenirs.",
+    summary:
+      "Intervention technique sur les appareils en contact avec un liquide.",
     firstPara:
-      "Face à une oxydation, chaque minute compte.\n\nMon objectif prioritaire est de stabiliser l'électronique pour tenter d'extraire vos données précieuses.",
+      "Face à l'oxydation, chaque minute compte. Mon objectif est de stabiliser les circuits de la carte mère pour tenter d'extraire vos photos et vos fichiers personnels. C'est une intervention de précision qui vise avant tout à récupérer ce qui est irremplaçable : vos données.",
     restDesc:
-      "Le travail sous microscope permet de traiter les composants critiques, mais un appareil ayant subi un contact avec un liquide reste imprévisible par nature.\n\nAttention : Aucune réussite n'est garantie à 100%.\n\nMon intervention vise avant tout la récupération de vos souvenirs. En raison de l'oxydation, la fiabilité matérielle sur le long terme ne peut être assurée, et aucune garantie de réparation durable ne sera appliquée sur ces cas spécifiques.",
+      "Le travail sous microscope permet de traiter les zones touchées par la corrosion, mais un appareil mouillé reste techniquement imprévisible. \n\nIl est important de comprendre que l'oxydation peut continuer à évoluer avec le temps. Pour cette raison, l'intervention se concentre sur la survie immédiate de l'appareil pour le transfert de vos données. La fiabilité matérielle sur le long terme ne pouvant être certifiée, aucune responsabilité technique ne sera engagée sur la durée de vie du téléphone après ce type de réparation spécifique.",
     color: "#e83e8c",
   },
   {
     id: 6,
-    title: "Garantie & SAV",
-    icon: <ConstructionIcon />,
-    headline:
-      "Une expertise technique pour définir les limites de l'intervention.",
-    summary:
-      "Diagnostic précis pour différencier une pièce neuve d'une réparation de fortune.",
+    title: "Suivi Technique & SAV",
+
+    headline: "Une expertise pour identifier l'origine de la panne.",
+    summary: "Différencier un défaut de pièce d'une panne de carte mère.",
     firstPara:
-      "Ma garantie s'applique **uniquement** sur les pièces neuves installées (Écran, Batterie, Connecteur).\n\nEn cas de retour, je réalise un audit rigoureux : test au programmateur et mesure des tensions au multimètre. Cela permet de vérifier si le défaut vient de la pièce neuve (garantie) ou d'une défaillance interne de votre carte mère (non garantie).",
+      "Ma responsabilité s'applique sur les pièces neuves que j'installe, comme l'écran, la batterie ou le connecteur. En cas de problème après la réparation, je réalise un audit technique complet : je teste la pièce avec un programmateur et je mesure les tensions avec un multimètre.",
     restDesc:
-      "**Attention : Aucune garantie n'est possible sur les interventions de désoxydation ou de micro-soudure.**\n\nL'oxydation est un processus instable : un composant critique (CPU, AP, IC, Mémoire) peut lâcher à tout moment. \n\nNote : Pour les ajustements mineurs (nettoyage externe, vérification de connectique), je m'efforcerai de vous aider gracieusement. En revanche, toute nouvelle panne matérielle, changement de pièce ou court-circuit complexe fera l'objet d'un nouveau devis.",
+      "Ce contrôle permet de vérifier si le défaut vient de la pièce neuve ou d'une défaillance interne de votre carte mère. Si le composant est défectueux, il est remplacé. En revanche, si la panne provient d'un autre circuit de votre téléphone, cela fera l'objet d'un nouveau diagnostic.\n\nIl est important de noter qu'aucune garantie n'est possible sur les interventions liées à l'oxydation ou à la micro-soudure. L'état d'un appareil mouillé est instable par nature : un composant critique peut lâcher à tout moment à cause de la corrosion passée.\n\nPour les petits ajustements comme un nettoyage externe, je le fais avec plaisir et gratuitement. Mais pour toute nouvelle panne matérielle ou choc survenu après la réparation, un nouveau devis sera nécessaire.",
     color: "#ff3b30",
   },
 ];
@@ -221,9 +212,6 @@ const HomeRepair = () => {
                   gap: 1.5,
                 }}
               >
-                <Box sx={{ color: index === current ? item.color : "#86868b" }}>
-                  {React.cloneElement(item.icon, { sx: { fontSize: 24 } })}
-                </Box>
                 <Typography
                   sx={{
                     fontSize: "0.85rem",
@@ -246,26 +234,6 @@ const HomeRepair = () => {
               position: "relative",
             }}
           >
-            {/* ✅ 워터마크 아이콘 (기능만 추가됨) */}
-            <Box
-              sx={{
-                position: "absolute",
-                right: { xs: -20, md: 0 },
-                bottom: { xs: -20, md: 0 },
-                zIndex: 0,
-                opacity: 0.02,
-                pointerEvents: "none",
-                transition: "all 0.5s ease",
-                color: slide.color,
-                // ✅ 핵심: xs(모바일)에서만 block, sm(태블릿) 이상부터는 none으로 숨김
-                display: { xs: "none", md: "block", lg: "block" },
-              }}
-            >
-              {React.cloneElement(slide.icon, {
-                sx: { fontSize: { xs: "100px", md: "200px" } },
-              })}
-            </Box>
-
             <Box
               key={slide.id}
               sx={{
@@ -305,7 +273,6 @@ const HomeRepair = () => {
                   {slide.id === 3 && (
                     <Button
                       variant="outlined"
-                      endIcon={<OpenInNewIcon />}
                       sx={{
                         mt: 1,
                         mb: 2,
@@ -371,9 +338,6 @@ const HomeRepair = () => {
                       </Collapse>
                       <Button
                         onClick={() => setIsExpanded(!isExpanded)}
-                        endIcon={
-                          isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />
-                        }
                         sx={{
                           color: slide.color,
                           fontWeight: 700,
@@ -393,7 +357,7 @@ const HomeRepair = () => {
             </Box>
           </Box>
         </Container>
-        <Divider sx={{ mt: 3 }} />
+        {/* <Divider sx={{ mt: 10 }} /> */}
 
         <style>{`
         @keyframes fadeInStable {

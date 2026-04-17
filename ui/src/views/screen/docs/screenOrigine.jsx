@@ -4,24 +4,23 @@ import { SCREEN_NAV } from "./screenNav";
 
 const ScreenOrigine = () => {
   const content = {
-    title: "Origine (Pull)",
-    subtitle: "Pièce originale extraite d'un matériel identique",
+    title: "Origine",
+    subtitle: "Composant 100% Officiel (Service Pack & Démontage)",
     recommendation:
-      "Maintien des composants d'usine et de la structure matérielle du fabricant.",
+      "La référence absolue pour retrouver les performances initiales de l'appareil.",
     description:
-      "Un écran 'Pull' est une pièce authentique récupérée sur un autre appareil. Il s'agit de la dalle et du verre utilisés lors de l'assemblage en usine. Ce composant possède les propriétés physiques (rendu visuel, tactile, robustesse) définies par le constructeur. C'est l'option la plus coûteuse du marché en raison de la rareté des pièces et de la complexité de l'extraction.\n\nNote technique Apple : Le système lie l'écran à la carte mère par un numéro de série. Lors d'un remplacement, qu'il s'agisse d'un écran Original, Éco ou Copie, un message 'Pièce inconnue' s'affiche systématiquement car les identifiants ne concordent plus. Nous utilisons un programmateur pour transférer les données (ex: True Tone). Si la puce IC de votre écran d'origine est défaillante, le transfert de données est impossible et la notification restera visible malgré l'authenticité de la pièce.",
+      "L'écran 'Origine' désigne la pièce certifiée par le constructeur. Pour les modèles Samsung, il s'agit du 'Service Pack' officiel, un composant livré neuf par la marque dans son emballage d'origine. \n\nConcernant l'iPhone, le fabricant ne vendant pas ses pièces détachées au détail sur le marché, un écran authentique provient nécessairement d'un démontage effectué sur un appareil neuf. C'est l'unique méthode pour obtenir une dalle et un verre tactile officiels avec la colorimétrie, la luminosité et la résistance d'usine.",
     forWhom: [
-      "Utilisateurs exigeant les composants de série du constructeur",
-      "Besoin de retrouver la densité et la résistance du verre d'origine",
-      "Maintien des spécifications énergétiques d'usine",
+      "Utilisateurs exigeant la perfection visuelle officielle du fabricant",
+      "Maintien de la résistance physique et thermique conforme aux normes",
+      "Préservation de l'autonomie de la batterie et de la valeur de l'appareil",
     ],
-    // 🔥 키포인트에서 애플 관련 내용 싹 뺐습니다. 오직 하드웨어 팩트만 남김.
     features: [
-      "Dalle d'affichage et tactile d'origine (OEM)",
-      "Verre de protection certifié par le fabricant",
-      "Consommation électrique conforme aux normes d'usine",
-      "Coût élevé lié à la rareté et au processus de démontage",
-      "Disponibilité soumise aux stocks de pièces de retrait",
+      "Pièce officielle certifiée (Samsung Service Pack / iPhone Démontage)",
+      "L'unique solution pour un affichage iPhone 100% authentique",
+      "Dalle et vitre tactile strictement identiques à la sortie d'usine",
+      "Consommation énergétique optimisée selon les standards officiels",
+      "Qualité d'image, contrastes et luminosité d'origine constructeur",
     ],
     color: "#1d1d1f",
   };

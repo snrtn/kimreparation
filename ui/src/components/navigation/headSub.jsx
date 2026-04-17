@@ -60,7 +60,7 @@ const HeadSub = ({ onDrawerToggle, hasSideMenu }) => {
 
     if (!isMobile) {
       // 💡 여기서 아틀리에 타이틀인지 확인!
-      const isAtelier = mainTitleText === "Diagnostic Personnalisé";
+      const isAtelier = mainTitleText === "Diagnostic";
 
       return (
         <Box

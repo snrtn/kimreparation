@@ -136,7 +136,7 @@ const HeadMain = ({ isHome }) => {
               >
                 {dropdownData.map((menu) => {
                   // ⬇️ 아틀리에 메뉴 색상 조건 (에르메스 오렌지)
-                  const isAtelier = menu.title === "Diagnostic Personnalisé";
+                  const isAtelier = menu.title === "Diagnostic";
                   return (
                     <Typography
                       key={menu.title}

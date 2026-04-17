@@ -5,22 +5,22 @@ import { SCREEN_NAV } from "./screenNav";
 const ScreenLcd = () => {
   const content = {
     title: "In-Cell LCD (Copie)",
-    subtitle: "Technologie à cristaux liquides avec rétroéclairage",
+    subtitle: "Technologie LCD avec rétroéclairage",
     recommendation:
-      "Solution d'entrée de gamme privilégiant le coût minimal pour une remise en état fonctionnelle.",
+      "Une solution économique pour une remise en état fonctionnelle de base.",
     description:
-      "L'écran LCD In-Cell est une technologie radicalement différente des dalles organiques. Contrairement à l'OLED, il nécessite un rétroéclairage permanent (Backlight), ce qui rend le composant physiquement plus épais et entraîne une consommation d'énergie nettement supérieure. Sur les appareils conçus à l'origine pour l'OLED, l'installation d'un LCD peut provoquer une légère chauffe de l'appareil et une réduction de l'autonomie de la batterie. Le rendu des noirs est également moins profond car la lumière traverse toute la dalle.\n\nNote technique Apple : Comme pour tout changement d'écran tiers, le message 'Pièce inconnue' apparaîtra en raison de la sérialisation logicielle. Le transfert des données (ex: True Tone) est tenté par programmateur, mais la notification peut persister si la puce IC d'origine n'est pas transférée.",
+      "L'écran In-Cell LCD repose sur une technologie de cristaux liquides avec un système de rétroéclairage intégré. En raison de sa structure multicouche, cette dalle présente une épaisseur physique plus importante, ce qui peut légèrement modifier l'ajustement avec le châssis. \n\nCe mode de fonctionnement nécessite une gestion d'énergie constante pour éclairer l'affichage, ce qui peut solliciter davantage la batterie et générer une légère chaleur interne. Le rendu visuel offre des couleurs naturelles, bien que la profondeur des noirs soit différente des dalles auto-émissives.",
     forWhom: [
-      "Budget restreint cherchant le prix le plus bas possible",
-      "Usage basique de l'appareil (appels, SMS, consultation rapide)",
-      "Appareil de secours ou destiné à un usage secondaire",
+      "Budgets priorisant le coût de réparation le plus bas",
+      "Utilisation de secours ou téléphone secondaire",
+      "Usage basique axé sur les appels et les messages",
     ],
     features: [
-      "Technologie d'affichage In-Cell LCD (Cristaux liquides)",
-      "Présence d'un rétroéclairage constant (consommation d'énergie élevée)",
-      "Épaisseur de dalle supérieure pouvant affecter l'ajustement au châssis",
-      "Luminosité et contrastes inférieurs aux technologies OLED",
-      "Possibilité de chauffe accrue de l'appareil lors d'un usage prolongé",
+      "Technologie à cristaux liquides (LCD)",
+      "Gestion d'énergie liée au rétroéclairage permanent",
+      "Structure légèrement plus épaisse (ajustement mécanique)",
+      "Luminosité adaptée à un usage quotidien standard",
+      "Solution de remplacement la plus accessible du marché",
     ],
     color: "#86868b",
   };

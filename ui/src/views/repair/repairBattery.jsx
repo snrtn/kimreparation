@@ -4,49 +4,48 @@ import RepairLayout from "./repairLayout";
 const RepairBattery = () => {
   const [content] = useState({
     subTitle: "Batterie & Énergie",
-    mainTitle: "Vieillissement chimique, gonflement ou instabilité.",
+    mainTitle: "Batterie qui gonfle, chauffe ou s'éteint toute seule.",
     accentColor: "#0071e3",
     criticalColor: "#ff3b30",
 
     steps: [
       {
         id: "01",
-        title: "Surchauffe et résistance",
-        desc: "Une batterie qui chauffe anormalement indique une forte résistance interne. Dans cet état, forcer la charge ne fait qu'user prématurément les puces de gestion d'énergie situées sur la carte mère.",
-        tip: "La chaleur excessive est le premier signe d'usure chimique.",
+        title: "Surchauffe (Chaleur)",
+        desc: "Une batterie qui chauffe trop est le signe d'une usure chimique. Forcer la charge dans cet état peut abîmer les composants de gestion d'énergie sur la carte mère.",
+        tip: "La chaleur excessive fatigue l'ensemble du téléphone.",
       },
       {
         id: "02",
-        title: "Gonflement (Réaction gazeuse)",
-        desc: "L'accumulation de gaz à l'intérieur d'une cellule déforme le boîtier. Il ne faut jamais appuyer sur un écran qui se soulève, car la pression peut percer l'enveloppe et libérer des substances chimiques.",
-        tip: "Un boîtier déformé indique une batterie à remplacer d'urgence.",
+        title: "Batterie gonflée",
+        desc: "Si votre écran se soulève, ne pressez jamais dessus. La pression peut percer l'enveloppe de la batterie et libérer des produits chimiques dangereux.",
+        tip: "Un écran qui se soulève = Danger immédiat.",
       },
       {
         id: "03",
-        title: "Cycles et chutes de tension",
-        desc: "Passé un certain nombre de cycles, la batterie ne peut plus fournir une tension stable. C'est ce qui provoque des extinctions soudaines de l'appareil, même quand il affiche encore 20 ou 30%.",
-        tip: "Le pourcentage affiché ne reflète pas toujours la santé réelle.",
+        title: "Coupure à 20% ou 30%",
+        desc: "Avec le temps, la batterie n'arrive plus à donner une tension stable. C'est pour cela que le téléphone s'éteint soudainement, même s'il reste de l'énergie.",
+        tip: "Le pourcentage affiché n'est pas toujours la vérité.",
       },
       {
-        // ✅ 형님의 핵심 팩트: 수리 시 정상이나 잠재적 균열이 존재함
         id: "04",
-        title: "Micro-fissures et tests en atelier",
-        desc: "Une nouvelle batterie peut passer tous les tests de contrôle avec succès en atelier. Cependant, des micro-fissures sur la carte mère, causées par des chocs anciens, peuvent laisser passer le courant normalement au début avant de provoquer des pannes aléatoires dues aux variations de température.",
-        tip: "Un appareil peut fonctionner normalement lors du test malgré des failles internes invisibles.",
+        title: "Tests et micro-fissures",
+        desc: "Nous testons nos batteries, mais des chocs anciens peuvent avoir créé des fissures invisibles sur la carte mère. Cela peut provoquer des pannes aléatoires plus tard.",
+        tip: "Un test réussi n'efface pas les dégâts des chocs passés.",
       },
       {
         id: "05",
-        title: "Usure du port de charge",
-        desc: "Un câble qu'il faut bouger pour charger finit par arracher les micro-soudures internes. Ce jeu mécanique crée des arcs électriques invisibles qui peuvent endommager le nouveau cycle de la batterie.",
-        tip: "Un connecteur instable fatigue prématurément la batterie.",
+        title: "Port de charge instable",
+        desc: "Si vous devez bouger le câble pour charger, vous créez des micro-étincelles. Cela finit par arracher les soudures et abîmer votre batterie neuve.",
+        tip: "Un mauvais contact fatigue prématurément la batterie.",
       },
     ],
 
-    alertTitle: "Réalités techniques à connaître",
+    alertTitle: "À savoir avant la réparation",
     alertDesc:
-      "• Condensation interne : Passer d'un environnement froid à une pièce chaude crée de l'humidité interne. Ces micro-gouttes d'eau sont la cause principale de l'oxydation lente des circuits.\n\n" +
-      "• Qualité du courant : Les chargeurs non certifiés envoient un courant instable qui détruit les cellules de stockage beaucoup plus vite qu'une charge standard.\n\n" +
-      "• Décharge profonde : Laisser un appareil éteint pendant plusieurs mois peut vider la batterie sous son seuil de sécurité, rendant toute recharge ultérieure impossible.",
+      "• Condensation : Passer du froid au chaud crée de l'humidité interne. C'est la cause numéro 1 de la rouille (oxydation) des circuits.\n" +
+      "• Chargeurs bas de gamme : Les câbles non certifiés envoient un courant instable qui détruit les cellules de la batterie très rapidement.\n" +
+      "• Stockage prolongé : Laisser un appareil déchargé pendant des mois peut tuer la batterie définitivement. Elle ne pourra plus jamais reprendre la charge.",
   });
 
   return <RepairLayout data={content} />;

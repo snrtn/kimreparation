@@ -36,7 +36,7 @@ const DropDown = ({ anchorEl, open, onClose, menus, onDrawerToggle }) => {
       >
         {menus.map((menu, i) => {
           // ⬇️ 여기서 타이틀 체크를 합니다
-          const isAtelier = menu.title === "Diagnostic Personnalisé";
+          const isAtelier = menu.title === "Diagnostic";
 
           return (
             <Box

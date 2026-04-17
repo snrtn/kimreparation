@@ -4,49 +4,48 @@ import RepairLayout from "./repairLayout";
 const RepairScreen = () => {
   const [content] = useState({
     subTitle: "Écran & Tactile",
-    mainTitle: "Vitre brisée, tactile incontrôlable ou affichage noir.",
+    mainTitle: "Vitre cassée, tactile qui bugue ou écran noir.",
     accentColor: "#0071e3",
     criticalColor: "#ff3b30",
 
     steps: [
       {
         id: "01",
-        title: "Sécuriser la surface (Vitre brisée)",
-        desc: "Une vitre cassée libère de minuscules éclats de verre. Appliquer un ruban adhésif transparent maintient les morceaux en place et évite de se couper les doigts lors de l'utilisation.",
-        tip: "Le ruban adhésif : une protection simple pour l'utilisateur.",
+        title: "Protéger la vitre (Vitre brisée)",
+        desc: "Une vitre cassée lâche de petits éclats de verre. Mettre du ruban adhésif transparent permet de tenir les morceaux et d'éviter de vous couper les doigts.",
+        tip: "Le ruban adhésif : une protection simple pour vos mains.",
       },
       {
         id: "02",
-        title: "Dalle LCD/OLED (Affichage interne)",
-        desc: "Même si l'affichage semble intact, les débris de verre appuient sur la dalle interne qui est extrêmement fine. Cela finit par créer des taches noires ou des lignes colorées définitives.",
-        tip: "Une pression excessive sur le verre brisé détruit l'image.",
+        title: "Écran interne (LCD/OLED)",
+        desc: "Même si l'image est là, les débris de verre appuient sur l'écran interne qui est très fragile. Cela finit par créer des taches noires ou des lignes colorées.",
+        tip: "Appuyer sur le verre brisé détruit l'affichage.",
       },
       {
         id: "03",
-        title: "Tactile incontrôlable (Ghost Touch)",
-        desc: "Un écran endommagé peut envoyer des signaux erronés au système. Si l'appareil tape seul des codes faux, il peut se verrouiller définitivement et entraîner la perte totale des données.",
-        tip: "Si l'écran devient fou, il est plus prudent d'éteindre l'appareil.",
+        title: "Tactile fou (Ghost Touch)",
+        desc: "Un écran cassé peut taper des codes tout seul. Si l'appareil fait trop d'erreurs, il peut se bloquer définitivement et vous perdrez vos données.",
+        tip: "Si l'écran devient fou, éteignez vite l'appareil.",
       },
       {
-        // ✅ Étape 04 : Séquelles post-réparation (Pas de métaphore médicale)
         id: "04",
-        title: "Séquelles du choc (Dommages invisibles)",
-        desc: "Le choc qui brise une vitre se propage jusqu'à la carte mère. Même avec un écran neuf, des micro-fissures internes causées par l'accident peuvent provoquer des pannes secondaires plus tard.",
-        tip: "Le choc initial peut laisser des traces cachées sous l'écran neuf.",
+        title: "Dégâts invisibles (Le choc)",
+        desc: "Le choc qui casse la vitre se propage jusqu'à la carte mère. Nous pouvons changer l'écran, mais des micro-fissures internes peuvent créer d'autres pannes plus tard.",
+        tip: "Le choc peut laisser des traces cachées sous l'écran neuf.",
       },
       {
         id: "05",
-        title: "Torsion du châssis (Cadre plié)",
-        desc: "Un cadre légèrement tordu exerce une pression constante sur la nouvelle vitre. Si la structure est déformée, le nouvel écran risque de se décoller ou de se briser à nouveau très rapidement.",
-        tip: "Un châssis droit est essentiel pour la survie du nouvel écran.",
+        title: "Châssis tordu (Cadre plié)",
+        desc: "Un cadre même légèrement tordu appuie sur la nouvelle vitre. Si la structure est déformée, le nouvel écran risque de se décoller ou de casser très vite.",
+        tip: "Un châssis droit est obligatoire pour que l'écran tienne.",
       },
     ],
 
-    alertTitle: "Réalités techniques à connaître",
+    alertTitle: "À savoir avant la réparation",
     alertDesc:
-      "• Ne pas appuyer sur les taches : Tenter de 'pousser' une tache noire détruit instantanément les pixels voisins et agrandit la zone morte.\n\n" +
-      "• Infiltration d'humidité : Les fissures laissent passer la transpiration et l'humidité ambiante, ce qui oxyde les composants internes en quelques jours.\n\n" +
-      "• Capteurs biométriques (Face ID) : Les capteurs de reconnaissance faciale sont couplés à l'écran d'origine. Une vitre brisée à cet endroit peut rendre cette fonction inutilisable.",
+      "• Ne pas appuyer sur les taches : Pousser sur une tache noire détruit les pixels et agrandit la zone morte immédiatement.\n" +
+      "• Humidité : Les fissures laissent passer la transpiration et l'humidité. Cela fait rouiller les composants en quelques jours.\n" +
+      "• Face ID : Les capteurs sont liés à l'écran d'origine. Si la vitre est trop brisée à cet endroit, le Face ID peut ne plus fonctionner.",
   });
 
   return <RepairLayout data={content} />;

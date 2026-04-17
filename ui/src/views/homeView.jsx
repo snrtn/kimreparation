@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -15,18 +15,18 @@ import HomeToy from "@components/home/homeToy";
 import HomeInfos from "@components/home/homeInfos";
 
 const HomeView = () => {
-  const [showBanner, setShowBanner] = useState(true);
-  const [isCheck, setIsCheck] = useState(false);
+  // const [showBanner, setShowBanner] = useState(true);
+  // const [isCheck, setIsCheck] = useState(false);
 
-  const handleClose = () => {
-    if (isCheck) {
-      setShowBanner(false);
-    }
-  };
+  // const handleClose = () => {
+  //   if (isCheck) {
+  //     setShowBanner(false);
+  //   }
+  // };
 
   return (
     <div style={{ height: "100%", position: "relative" }}>
-      {showBanner && (
+      {/* {showBanner && (
         <Box
           sx={{
             position: "fixed",
@@ -132,7 +132,7 @@ const HomeView = () => {
             </Box>
           </Box>
         </Box>
-      )}
+      )} */}
 
       <Box>
         <HeroSection />

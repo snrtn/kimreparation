@@ -351,6 +351,11 @@ const StepSummary = ({ data, sigCanvasRef, onUpdate, isSubmitted }) => {
         { label: "Incident", val: data.incident, cat: "incident" },
         { label: "Liquide", val: data.waterType, cat: "waterType" },
         { label: "Délai eau", val: data.waterTime, cat: "waterTime" },
+        {
+          label: "",
+          val: data.waterGoal,
+          cat: "waterGoal",
+        },
         { label: "Vibrations", val: data.environment, cat: "environment" },
       ],
     },

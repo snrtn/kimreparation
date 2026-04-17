@@ -2,11 +2,12 @@ const sidemenuData = {
   // ✅ 화면 품질별 메뉴
   screen: [
     { title: "Écran Origine", path: "/screen" },
-    { title: "Écran ECO / Refurb", path: "/screen/eco" },
+    { title: "Écran ÉCO", path: "/screen/eco" },
     { title: "Écran Soft OLED", path: "/screen/soft" },
     { title: "Écran Hard OLED", path: "/screen/hard" },
-    { title: "Écran LCD / Incell", path: "/screen/lcd" },
+    { title: "Écran In-Cell LCD", path: "/screen/lcd" },
     { title: "Écran Pliable", path: "/screen/foldable" },
+    { title: "Écran iPhone", path: "/screen/iphone" },
   ],
 
   // ✅ 리페어 그룹
@@ -22,15 +23,16 @@ const sidemenuData = {
 
   devis: [
     { title: "Diagnostic Téléphone", path: "/devis" },
-    { title: "Diagnostic Autres", path: "/devis/other" },
+    // { title: "Diagnostic Galaxy", path: "/devis" },
+    // { title: "Diagnostic Autres", path: "/devis/other" },
   ],
 
   // ✅ 아뜰리에 그룹
   atelier: [
     { title: "Horaires d'ouverture", path: "/atelier" }, // 아뜰리에 정보 (영업시간 등)
-    { title: "Excellence & Qualité", path: "/atelier/atelierConditions" }, // 1번: 품질/신뢰/영상
-    { title: "Conditions d'Usage", path: "/atelier/atelierExcellence" }, // 2번: 방수/보증주의사항
-    { title: "Mentions Légales", path: "/atelier/atelierLegal" }, // 3번: 법적면책/데이터/소비자법
+    { title: "Garanties", path: "/atelier/atelierConditions" }, // 1번: 품질/신뢰/영상
+    { title: "Engagement & Suivi", path: "/atelier/atelierExcellence" }, // 2번: 방수/보증주의사항
+    { title: "Infos Légales & FAQ", path: "/atelier/atelierLegal" }, // 3번: 법적면책/데이터/소비자법
   ],
 
   // ✅ 장난감 그룹 (💡 toys 가 아니라 toy 로 수정완료!)
@@ -40,10 +42,10 @@ const sidemenuData = {
   //   { title: "Nintendo Switch Joy-Con", path: "/toy/joycon" },
   // ],
 
-  client: [
-    { title: "Devis & Facture", path: "/client" },
-    { title: "Espace Client", path: "/client/drive" },
-  ],
+  // client: [
+  //   { title: "Devis & Facture", path: "/client" },
+  //   { title: "Espace Client", path: "/client/drive" },
+  // ],
 };
 
 export default sidemenuData;

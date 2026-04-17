@@ -222,6 +222,8 @@ const Step0Intro = ({ onUpdate, onNext }) => {
                 la longévité de l'appareil.{" "}
                 <a
                   href="/screen"
+                  target="_blank" // 👈 새 탭(창)으로 열기
+                  rel="noopener noreferrer" // 👈 보안 및 성능을 위한 국룰
                   style={{
                     color: "#0071e3",
                     textDecoration: "none",
@@ -362,6 +364,7 @@ const Step0Intro = ({ onUpdate, onNext }) => {
           elevation={0}
           sx={{
             p: 2,
+            px: 8,
             bgcolor: "#f0f7ff",
             border: "1px solid #cce3ff",
             borderRadius: "14px",
@@ -369,7 +372,7 @@ const Step0Intro = ({ onUpdate, onNext }) => {
             alignItems: "center",
           }}
         >
-          <InfoOutlinedIcon sx={{ color: "#0071e3", mr: 1.5 }} />
+          {/* <InfoOutlinedIcon sx={{ color: "#0071e3", mr: 1.5 }} /> */}
           <FormControlLabel
             control={
               <Checkbox
@@ -427,7 +430,6 @@ const Step0Intro = ({ onUpdate, onNext }) => {
           COMMENCER LE DIAGNOSTIC
         </Button>
 
-        {/* 신뢰 문구 섹션 */}
         <Stack
           direction="row"
           justifyContent="center"
@@ -450,7 +452,7 @@ const Step0Intro = ({ onUpdate, onNext }) => {
             }}
           >
             <AccessTimeIcon sx={{ fontSize: "1.1rem", mr: 0.5 }} /> Réponse sous
-            41 minutes
+            2 heures
           </Typography>
         </Stack>
       </Box>

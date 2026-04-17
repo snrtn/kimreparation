@@ -6,58 +6,66 @@ import { Link as RouterLink } from "react-router-dom";
 const slideData = [
   {
     id: 0,
-    title: "Écran & Tactile",
-    point: "Écran & Tactile",
-    headline: "Vitre brisée, tactile incontrôlable ou affichage noir.",
-    desc: "Les éclats de verre brisé exercent une pression destructrice sur la dalle OLED/LCD interne.\nUn châssis tordu ou des micro-fissures invisibles sur la carte mère peuvent compromettre la survie d'un écran neuf bien après l'intervention.",
-    path: "/repair",
+    title: "Kim Reparation",
+    point: "Atelier de Réparation Téléphone",
+    headline: "Carte mère",
+    desc: "Nous identifions la cause de la panne et nous réparons tout ce qui est techniquement possible.",
+    path: "",
   },
   {
     id: 1,
-    title: "Tombé dans l'eau",
-    point: "Tombé dans l'eau",
-    headline: "Ce qui se passe quand un appareil prend l'eau.",
-    desc: "Le courant de la batterie combiné à l'eau crée des micro-étincelles destructrices.\nLe riz et le sèche-cheveux aggravent la situation ; seul un traitement technique peut stopper la gangrène de l'oxydation qui progresse sous les puces.",
-    path: "/repair/repairWater",
+    title: "Écran & Tactile",
+    point: "Écran & Tactile",
+    headline: "Vitre cassée, tactile instable ou écran noir.",
+    desc: "Le verre brisé abîme l'affichage interne. Nous vérifions aussi le châssis pour que votre nouvel écran reste bien en place sans se décoller.",
+    path: "/repair",
   },
   {
     id: 2,
-    title: "Batterie & Énergie",
-    point: "Batterie & Énergie",
-    headline: "Vieillissement chimique, gonflement ou instabilité.",
-    desc: "Une batterie gonflée est une réaction chimique dangereuse qui ne doit jamais être pressée.\nLes micro-fissures internes peuvent fausser les tests en atelier, provoquant des pannes aléatoires malgré une batterie neuve.",
-    path: "/repair/repairBattery",
+    title: "Tombé dans l'eau",
+    point: "Désoxydation",
+    headline: "Ce qui se passe quand l'eau pénètre l'appareil.",
+    desc: "L'eau et la batterie provoquent des courts-circuits. Le riz ne sert à rien. Seul un nettoyage technique peut arrêter la rouille sous les composants.",
+    path: "/repair/repairWater",
   },
   {
     id: 3,
-    title: "Système & Logiciel",
-    point: "Système & Logiciel",
-    headline: "Instabilité logicielle et sécurité des données.",
-    desc: "100% de stockage saturé mène au 'Bootloop' définitif.\nToute mise à jour système doit impérativement se faire sur prise murale pour éviter de corrompre la puce mémoire NAND lors de l'écriture.",
-    path: "/repair/repairSystem",
+    title: "Batterie & Énergie",
+    point: "Batterie & Énergie",
+    headline: "Batterie gonflée ou perte d'autonomie.",
+    desc: "Une batterie gonflée est dangereuse : ne la pressez jamais. Parfois, le problème vient de la carte mère et non de la batterie elle-même.",
+    path: "/repair/repairBattery",
   },
   {
     id: 4,
-    title: "Caméra & Son",
-    point: "Caméra & Son",
-    headline: "Dysfonctionnement optique, audio ou capteurs.",
-    desc: "Les vibrations (supports moto) désalignent les aimants de stabilisation optique.\nPour l'audio, évitez les objets pointus : les grilles obstruées nécessitent un nettoyage doux pour ne pas déchirer l'étanchéité des haut-parleurs.",
-    path: "/repair/repairHardware",
+    title: "Système & Logiciel",
+    point: "Système & Logiciel",
+    headline: "Téléphone bloqué ou stockage plein.",
+    desc: "Si le stockage est saturé à 100%, le téléphone peut s'arrêter de démarrer. Branchez toujours votre chargeur pendant une mise à jour pour éviter de bloquer le système.",
+    path: "/repair/repairSystem",
   },
   {
     id: 5,
-    title: "Étanchéité",
-    point: "Étanchéité",
-    headline: "WATERPROOF",
-    desc: "Les joints adhésifs sèchent naturellement avec la chaleur et le temps.\nLa vapeur d'eau traverse là où le liquide s'arrête, et aucune intervention ne peut restaurer l'indice IP68 certifié en usine à 100%.",
-    path: "/repair/waterproof",
+    title: "Caméra & Son",
+    point: "Caméra & Son",
+    headline: "Photos floues, pas de son ou capteurs HS.",
+    desc: "Les vibrations (moto) cassent le stabilisateur photo. Ne nettoyez pas les grilles avec une aiguille : vous risquez de percer la membrane de protection.",
+    path: "/repair/repairHardware",
   },
   {
     id: 6,
+    title: "Étanchéité",
+    point: "Étanchéité",
+    headline: "La vérité sur la protection IP68.",
+    desc: "Les joints s'usent naturellement avec le temps et la chaleur. Après une ouverture, aucun téléphone n'est plus jamais étanche à 100% comme à la sortie d'usine.",
+    path: "/repair/waterproof",
+  },
+  {
+    id: 7,
     title: "Réalité Technique",
-    point: "Réalité Technique",
-    headline: "Les limites de la matière.",
-    desc: "Alliages rigides sans plomb, stress thermique à 350°C et fragilité structurelle du PCB : découvrez la réalité physique de vos composants.\nUne approche transparente pour comprendre pourquoi une réparation dépend avant tout de l'état résiduel de la matière.",
+    point: "Limites Techniques",
+    headline: "Ce que nous pouvons réparer.",
+    desc: "La réussite d'une réparation dépend de l'état réel des composants. Nous vous disons honnêtement si votre appareil est sauvable ou non.",
     path: "/repair/repairLimit",
   },
 ];
@@ -140,19 +148,31 @@ const HeroSection = () => {
                 {slide.desc}
               </Typography>
 
-              <Link
-                component={RouterLink} // 💡 Ajoute cette ligne
-                to={slide.path}
-                sx={{
-                  fontSize: "1rem",
-                  color: "#0066cc",
-                  fontWeight: 600,
-                  textDecoration: "none",
-                  "&:hover": { textDecoration: "underline" },
-                }}
-              >
-                En savoir plus sur ce sujet {">"}
-              </Link>
+              {slide.id === 0 ? (
+                <Typography
+                  sx={{
+                    fontSize: "1rem",
+                    color: "#0066cc",
+                    fontWeight: 600,
+                  }}
+                >
+                  Kim Reparation
+                </Typography>
+              ) : (
+                <Link
+                  component={RouterLink}
+                  to={slide.path}
+                  sx={{
+                    fontSize: "1rem",
+                    color: "#0066cc",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                    "&:hover": { textDecoration: "underline" },
+                  }}
+                >
+                  En savoir plus sur ce sujet {">"}
+                </Link>
+              )}
             </Box>
           ))}
         </Container>

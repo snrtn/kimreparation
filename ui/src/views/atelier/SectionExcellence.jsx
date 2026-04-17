@@ -14,50 +14,45 @@ const SectionExcellence = () => {
   return (
     <Container maxWidth="md">
       <Box sx={{ py: { xs: 16, xl: 20 }, borderTop: "1px solid #e5e5e7" }}>
-        <Typography sx={labelStyle}>Excellence & Confiance</Typography>
+        <Typography sx={labelStyle}>Engagement & Suivi</Typography>
 
         <Stack spacing={8}>
-          {/* Engagement Qualité */}
+          {/* 1. Cadre professionnel */}
           <Box>
             <Typography
               sx={{
                 fontWeight: 800,
                 fontSize: "1.5rem",
                 mb: 2,
-                letterSpacing: "-0.03em",
                 color: "#1d1d1f",
               }}
             >
-              Engagement Qualité & Partenaires
+              Cadre Professionnel
             </Typography>
             <Typography
               sx={{
                 color: "#424245",
                 lineHeight: 1.6,
                 fontSize: "1rem",
-                whiteSpace: "pre-line",
               }}
             >
-              {/* ✅ Kim Reparation 으로 수정 완료 */}
-              Kim Reparation est une structure officiellement enregistrée
-              (SIRET) et couverte par une assurance RC Pro. Nous sélectionnons
-              nos composants auprès de grossistes certifiés afin de vous
-              garantir une fiabilité optimale et une traçabilité totale.
+              Kim Reparation est une structure enregistrée (SIRET) avec
+              assurance RC Pro. Les composants sont sélectionnés auprès de
+              grossistes certifiés pour assurer la fiabilité des réparations.
             </Typography>
           </Box>
 
-          {/* La Photo 섹션 */}
+          {/* 2. Suivi technique */}
           <Box>
             <Typography
               sx={{
                 fontWeight: 800,
                 fontSize: "1.5rem",
                 mb: 2,
-                letterSpacing: "-0.03em",
                 color: "#1d1d1f",
               }}
             >
-              La Photo : Notre gage de traçabilité
+              Suivi Technique
             </Typography>
             <Typography
               sx={{
@@ -67,16 +62,7 @@ const SectionExcellence = () => {
                 whiteSpace: "pre-line",
               }}
             >
-              Suivi Photographique & Transparence : {"\n"}Avant de commencer, je
-              photographie l'état esthétique (rayures ou impacts) pour un
-              constat clair. L'ouverture peut laisser de très légères traces sur
-              les bordures dues à la résistance des joints d'étanchéité
-              d'origine. {"\n\n"}
-              Si je découvre de la corrosion ou une anomalie interne dès
-              l'ouverture, je vous envoie la photo immédiatement. Les autres
-              clichés de l'intervention sont conservés à l'atelier et ne seront
-              partagés qu'en cas de question ou sur demande expresse après la
-              réparation.
+              {`Un état des lieux photographique de l'appareil est réalisé avant toute intervention.\nL'ouverture peut laisser de très légères traces sur les bordures en raison de la résistance de l'adhésif d'origine.\n\nEn cas de découverte de corrosion ou d'un défaut interne, le client est immédiatement informé par photo. Les clichés d'intervention sont archivés à l'atelier.`}
             </Typography>
           </Box>
         </Stack>

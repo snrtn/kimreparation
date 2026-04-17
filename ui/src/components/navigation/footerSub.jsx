@@ -25,23 +25,42 @@ const FooterSub = () => {
                 mb: 1.5,
               }}
             >
-              AVERTISSEMENT SUR LA SECURITE DE VOS DONNEES PERSONNELLES
+              SÉCURITÉ DES DONNÉES PERSONNELLES
             </Typography>
             <Typography
               sx={{ fontSize: "0.8rem", color: "#86868b", lineHeight: 1.8 }}
             >
-              Nous tenons a informer notre aimable clientele que la sauvegarde
-              integrale de vos donnees (photographies, contacts, messages) reste
-              sous votre responsabilite exclusive avant toute intervention
-              technique. Un appareil endommage par un choc ou un liquide peut
-              presenter des defaillances imprevisibles.{" "}
-              <strong>Kim Reparation</strong> ne pourra etre tenu responsable de
-              la perte de vos fichiers numeriques lors du processus de
-              maintenance.
+              La sauvegarde intégrale des données (photos, contacts, messages)
+              relève de la responsabilité exclusive du client avant toute
+              intervention. Un appareil endommagé par un choc ou un liquide peut
+              présenter des défaillances imprévisibles. Kim Reparation ne peut
+              être tenu responsable de la perte de fichiers numériques survenant
+              durant le processus de maintenance.
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: "0.8rem",
+                color: "#86868b",
+                lineHeight: 1.8,
+                mt: 2,
+              }}
+            >
+              <strong>Cas d'écran noir ou tactile HS :</strong> Le client est
+              libre de ne pas communiquer son code de déverrouillage. Dans ce
+              cas, l'atelier réalise uniquement les tests accessibles sans accès
+              au système.
+              {"\n\n"}
+              Les vérifications nécessitant le code (Wi-Fi, Bluetooth, capteurs,
+              etc.) seront effectuées **en présence du client** lors de la
+              récupération de l'appareil. Si un défaut est identifié durant
+              cette phase conjointe, une nouvelle intervention pourra être
+              réalisée. Toutefois, si le client choisit de ne pas faire corriger
+              une anomalie détectée lors de ces tests, la garantie ne pourra
+              s'appliquer aux fonctions concernées.
             </Typography>
           </Box>
 
-          {/* 기술적 한계 및 투명성 고지 */}
+          {/* 2. 기술적 위험 및 방수 (팩트 폭격) */}
           <Box>
             <Typography
               sx={{
@@ -51,24 +70,24 @@ const FooterSub = () => {
                 mb: 1.5,
               }}
             >
-              TRANSPARENCE SUR LES RISQUES TECHNIQUES ET STRUCTURELS
+              RISQUES TECHNIQUES ET ÉTANCHÉITÉ
             </Typography>
             <Typography
-              sx={{ fontSize: "0.8rem", color: "#86868b", lineHeight: 1.8 }}
+              sx={{
+                fontSize: "0.8rem",
+                color: "#86868b",
+                lineHeight: 1.8,
+                mb: 2,
+              }}
             >
-              Toute intervention materielle comporte des risques intrinseques
-              lies a l'etat initial de l'appareil. Des dommages invisibles a
-              l'oeil nu, tels que des micro-fissures structurelles, peuvent
-              evoluer lors du demontage. De meme, bien que nous installions
-              systematiquement de nouveaux joints, l'impermeabilite d'origine
-              (normes IP67 ou IP68) ne peut etre garantie a l'identique apres
-              une ouverture. Nous partageons ces informations par souci
-              d'honnetete envers nos clients.
+              Toute intervention matérielle comporte des risques liés à l'état
+              initial de l'appareil. Des dommages invisibles, comme des
+              micro-fissures structurelles, peuvent évoluer lors du démontage.
+              Après l'ouverture de l'appareil, l'étanchéité d'origine (normes
+              IP67 ou IP68) n'est plus garantie, même avec l'installation
+              systématique d'un nouveau joint de protection.
             </Typography>
-          </Box>
 
-          {/* 독립성 명시 (법적 보호) */}
-          <Box>
             <Typography
               sx={{
                 fontSize: "0.8rem",
@@ -77,11 +96,12 @@ const FooterSub = () => {
                 fontStyle: "italic",
               }}
             >
-              Note d'independance : Kim Reparation est un prestataire de
-              services independant. Nous ne sommes ni affilies ni autorises par
-              les societes constructrices (telles que Nintendo, Apple ou
-              Samsung). Les noms de marques sont mentionnes uniquement a titre
-              informatif.
+              Note d'indépendance : Kim Reparation est un prestataire de
+              services indépendant, non affilié aux sociétés constructrices
+              (Apple, Samsung, Xiaomi, Oppo, Google Pixel, Huawei, PlayStation,
+              Xbox, Nintendo, Tesla, etc). Les noms de marques sont mentionnés
+              uniquement à titre informatif pour identifier la compatibilité des
+              services proposés.
             </Typography>
           </Box>
 

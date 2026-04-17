@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Container, Typography, Stack, Divider } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
 
 const FooterMain = () => {
   const currentYear = new Date().getFullYear();
@@ -23,44 +22,45 @@ const FooterMain = () => {
       title: "Détails des Écrans",
       links: [
         { name: "Écran Origine", path: "/screen" },
-        { name: "Écran ECO / Refurb", path: "/screen/eco" },
+        { name: "Écran ÉCO", path: "/screen/eco" },
         { name: "Écran Soft OLED", path: "/screen/soft" },
         { name: "Écran Hard OLED", path: "/screen/hard" },
-        { name: "Écran LCD / Incell", path: "/screen/lcd" },
+        { name: "Écran In-Cell LCD", path: "/screen/lcd" },
         { name: "Écran Pliable", path: "/screen/foldable" },
+        { name: "Écran iPhone", path: "/screen/iphone" },
       ],
     },
-    {
-      title: "Diagnostic Personnalisé",
-      links: [
-        { name: "Diagnostic Téléphone", path: "/devis" },
-        { name: "Diagnostic Autres", path: "/devis/other" },
-      ],
-    },
-    {
-      title: "Suivi de Dossier",
-      links: [
-        { name: "Devis & Facture", path: "/client" },
-        { name: "Service History", path: "/client/drive" },
-      ],
-    },
+    // {
+    //   title: "Diagnostic",
+    //   links: [
+    //     { name: "Diagnostic Téléphone", path: "/devis" },
+    //     // { name: "Diagnostic Autres", path: "/devis/other" },
+    //   ],
+    // },
+    // {
+    //   title: "Suivi de Dossier",
+    //   links: [
+    //     { name: "Devis & Facture", path: "/client" },
+    //     { name: "Service History", path: "/client/drive" },
+    //   ],
+    // },
     {
       title: "L'Atelier & Infos",
       links: [
         { name: "Horaires d'ouverture", path: "/atelier" },
-        { name: "Excellence & Qualité", path: "/atelier/atelierConditions" },
-        { name: "Conditions d'Usage", path: "/atelier/atelierExcellence" },
+        { name: "Garanties", path: "/atelier/atelierConditions" },
+        { name: "Engagement & Suivi", path: "/atelier/atelierExcellence" },
         { name: "Mentions Légales", path: "/atelier/atelierLegal" },
       ],
     },
-    {
-      title: "Réparation Jouets",
-      links: [
-        { name: "Prise en charge", path: "/toy" },
-        { name: "Jouets Electroniques", path: "/toy/repair" },
-        { name: "Nintendo Switch Joy-Con", path: "/toy/joycon" },
-      ],
-    },
+    // {
+    //   title: "Réparation Jouets",
+    //   links: [
+    //     { name: "Prise en charge", path: "/toy" },
+    //     { name: "Jouets Electroniques", path: "/toy/repair" },
+    //     { name: "Nintendo Switch Joy-Con", path: "/toy/joycon" },
+    //   ],
+    // },
   ];
 
   return (
@@ -70,8 +70,9 @@ const FooterMain = () => {
         width: "100%",
         bgcolor: "#FCFCFC",
         pt: { xs: 8, md: 10 },
+        px: { xs: 2, md: 0 },
         pb: 4,
-        borderTop: "1px solid #d2d2d7",
+        // borderTop: "1px solid #d2d2d7",
       }}
     >
       <Container maxWidth="lg">
@@ -83,9 +84,8 @@ const FooterMain = () => {
             alignItems="center"
             sx={{ mb: 2, color: "#1d1d1f" }}
           >
-            <VerifiedUserOutlinedIcon sx={{ fontSize: "1.3rem" }} />
             <Typography sx={{ fontSize: "1rem", fontWeight: 700 }}>
-              Engagement de qualité et traçabilité des composants
+              Provenance et Traçabilité des Composants
             </Typography>
           </Stack>
           <Typography
@@ -96,12 +96,13 @@ const FooterMain = () => {
               maxWidth: "1000px",
             }}
           >
-            Chez <strong>Kim Reparation</strong>, nous apportons une attention
-            particulière à la provenance de nos pièces détachées. Nos composants
-            sont exclusivement sélectionnés auprès de réseaux de distribution
-            agréés garantissant une traçabilité totale. Notre démarche est
-            fondée sur la transparence technique et le respect des standards
-            constructeurs afin de prolonger la durée de vie de vos appareils.
+            Les pièces de rechange (OLED, LCD, etc.) utilisées à l'atelier
+            proviennent exclusivement de fournisseurs professionnels certifiés.
+            Ce choix permet de contrôler la qualité et l'origine de chaque écran
+            avant son installation. En utilisant des composants issus de réseaux
+            de distribution sérieux, nous assurons le bon fonctionnement et la
+            stabilité technique de votre appareil. Cette approche garantit un
+            service honnête et fiable pour votre matériel.
           </Typography>
         </Box>
 

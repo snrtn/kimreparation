@@ -1,9 +1,10 @@
 // src/views/screen/docs/screenNav.js
 export const SCREEN_NAV = [
-  { title: "Origine (Pull)", path: "/screen" },
-  { title: "Reconditionné", path: "/screen/eco" },
-  { title: "Copie Soft", path: "/screen/soft" },
-  { title: "Copie Hard", path: "/screen/hard" },
-  { title: "Copie LCD", path: "/screen/lcd" },
+  { title: "Origine", path: "/screen" },
+  { title: "ÉCO", path: "/screen/eco" },
+  { title: "Soft OLED", path: "/screen/soft" },
+  { title: "Hard OLED", path: "/screen/hard" },
+  { title: "In-Cell LCD", path: "/screen/lcd" },
   { title: "Pliable", path: "/screen/foldable" },
+  { title: "iPhone", path: "/screen/iphone" },
 ];

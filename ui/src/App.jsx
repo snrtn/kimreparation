@@ -17,6 +17,7 @@ import ScreenHard from "./views/screen/docs/screenHard";
 import ScreenLcd from "./views/screen/docs/screenLcd";
 import ScreenEco from "./views/screen/docs/screenEco";
 import ScreenFoldable from "./views/screen/docs/screenFoldable";
+import ScreenIphoneProcess from "./views/screen/docs/ScreenIphoneProcess";
 
 // Repair
 import RepairScreen from "./views/repair/repairScreen";
@@ -217,6 +218,7 @@ function App() {
             <Route path="lcd" element={<ScreenLcd />} />
             <Route path="eco" element={<ScreenEco />} />
             <Route path="foldable" element={<ScreenFoldable />} />
+            <Route path="iphone" element={<ScreenIphoneProcess />} />
           </Route>
 
           <Route path="repair">

@@ -3,52 +3,51 @@ import RepairLayout from "./repairLayout";
 
 const RepairLimit = () => {
   const [content] = useState({
-    // 'Physique' 대신 'Matérielle(재료/물질)'을 사용해 신체 느낌을 완전히 없앴습니다.
     subTitle: "Réalité Technique",
-    mainTitle: "Les limites de la matière.",
+    mainTitle: "Les limites de la matière",
     description:
-      "Informations factuelles sur les contraintes des circuits électroniques de vos appareils.",
+      "Informations honnêtes sur les contraintes physiques de vos composants électroniques.",
     accentColor: "#86868b",
     criticalColor: "#ff3b30",
 
     steps: [
       {
         id: "01",
-        title: "Rigidité de l'alliage sans plomb",
-        desc: "Les soudures actuelles utilisent des alliages sans plomb. Ce matériau est structurellement rigide. Contrairement aux anciens métaux, il ne supporte pas les torsions et se fissure comme du verre sous l'effet des chocs ou des vibrations répétées.",
-        tip: "C'est une caractéristique mécanique imposée par les matériaux modernes.",
+        title: "Soudure sans plomb",
+        desc: "Les soudures modernes n'utilisent plus de plomb. Elles sont donc plus rigides. Contrairement aux anciens métaux, cet alliage ne supporte pas les torsions et se fissure comme du verre en cas de choc.",
+        tip: "C'est une limite mécanique des matériaux d'aujourd'hui.",
       },
       {
         id: "02",
-        title: "Cycles thermiques et micro-fissures",
-        desc: "L'usage d'un appareil produit de la chaleur. Ces variations de température dilatent et contractent le métal des circuits. À terme, des fissures microscopiques se forment sous les composants, créant des pannes intermittentes.",
-        tip: "L'usure thermique est un processus de vieillissement naturel de la matière.",
+        title: "Chaleur et micro-fissures",
+        desc: "L'utilisation de votre téléphone produit de la chaleur, ce qui fait bouger le métal des circuits. Avec le temps, de minuscules fissures se forment sous les puces et provoquent des pannes aléatoires.",
+        tip: "L'usure thermique est un vieillissement naturel du matériel.",
       },
       {
         id: "03",
-        title: "État de la structure interne (PCB)",
-        desc: "Une carte mère possède plusieurs couches de circuits. Si un choc rompt les liaisons de cuivre à l'intérieur de ces couches, la structure devient instable. Une soudure en surface ne peut pas restaurer une base interne endommagée.",
-        tip: "La stabilité finale dépend exclusivement de l'état structurel d'origine.",
+        title: "Structure interne (PCB)",
+        desc: "Une carte mère est composée de plusieurs couches de circuits superposées. Si un choc casse les liaisons à l'intérieur de ces couches, une soudure en surface ne suffira pas à tout réparer.",
+        tip: "La réussite dépend de l'état réel de la structure interne.",
       },
       {
         id: "04",
-        title: "Contrainte thermique de l'intervention",
-        desc: "Toute intervention sur les circuits nécessite une exposition locale à des températures supérieures à 350°C. Sur un matériel déjà usé ou oxydé, cette chaleur indispensable peut révéler des faiblesses sur des composants proches.",
-        tip: "La chaleur est une condition technique nécessaire à toute réparation.",
+        title: "Chaleur de l'intervention (350°C)",
+        desc: "Pour réparer, nous devons chauffer localement les circuits à plus de 350°C. Sur un matériel déjà usé ou rouillé, cette chaleur nécessaire peut parfois révéler des faiblesses sur d'autres composants.",
+        tip: "La chaleur est une condition obligatoire pour toute soudure.",
       },
       {
         id: "05",
-        title: "Différence entre réparation et état neuf",
-        desc: "Une intervention restaure une connexion électrique précise, mais ne remplace pas une carte mère neuve. La durabilité dépend de l'état de santé résiduel des composants au moment de l'opération.",
-        tip: "Les propriétés des matériaux définissent la viabilité d'un circuit déjà sollicité.",
+        title: "Réparé vs État neuf",
+        desc: "Nous rétablissons une connexion électrique, mais nous ne remplaçons pas la carte mère entière. La durée de vie de la réparation dépend de la santé générale des composants restants.",
+        tip: "L'état de vos composants définit la viabilité de la réparation.",
       },
     ],
 
     alertTitle: "Note sur les limites matérielles",
     alertDesc:
-      "• Séquelles de choc : Un appareil ayant subi un impact garde des tensions internes pouvant générer de nouvelles fissures ultérieurement.\n\n" +
-      "• Oxydation : La corrosion chimique peut continuer à dégrader le métal de manière invisible après un nettoyage de surface.\n\n" +
-      "• État résiduel : Le succès d'une opération technique est conditionné par la résistance actuelle de vos composants électroniques.",
+      "• Traces de chocs : Un appareil tombé garde des tensions internes qui peuvent créer de nouvelles fissures plus tard.\n" +
+      "• Rouille (Oxydation) : La corrosion peut continuer à abîmer le métal de façon invisible, même après un nettoyage.\n" +
+      "• État général : Le succès d'une intervention dépend avant tout de la résistance actuelle de vos composants électroniques.",
   });
 
   return <RepairLayout data={content} />;

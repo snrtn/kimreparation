@@ -4,49 +4,48 @@ import RepairLayout from "./repairLayout";
 const RepairHardware = () => {
   const [content] = useState({
     subTitle: "Caméra & Son",
-    mainTitle: "Dysfonctionnement optique, audio ou capteurs.",
+    mainTitle: "Problèmes de caméra, de son ou de capteurs.",
     accentColor: "#f56300",
     criticalColor: "#ff3b30",
 
     steps: [
       {
         id: "01",
-        title: "Nettoyage des lentilles (Optique)",
-        desc: "Une image floue est souvent due à un dépôt gras invisible sur la vitre extérieure. Un nettoyage avec un chiffon microfibre sec permet de vérifier si le problème est logiciel ou lié au mécanisme interne.",
-        tip: "L'entretien extérieur règle une grande partie des défauts d'image.",
+        title: "Nettoyage de la caméra",
+        desc: "Une photo floue vient souvent de traces de doigts ou de gras sur la vitre. Un coup de chiffon microfibre permet de vérifier si c'est juste de la saleté ou une vraie panne interne.",
+        tip: "Un bon nettoyage règle souvent les problèmes d'image.",
       },
       {
         id: "02",
-        title: "Redémarrage forcé (Réinitialisation matérielle)",
-        desc: "Cette procédure relance électriquement les puces audio et les capteurs photo. Elle permet de vider les erreurs de communication entre le système et le matériel sans affecter vos données personnelles.",
-        tip: "Une réinitialisation électrique élimine les bugs de reconnaissance matérielle.",
+        title: "Redémarrage forcé",
+        desc: "Cette manipulation relance les puces du son et de la photo. Cela permet d'effacer les bugs entre le système et le matériel sans toucher à vos données personnelles.",
+        tip: "Un redémarrage peut éliminer les petits bugs de reconnaissance.",
       },
       {
         id: "03",
-        title: "Obstructions physiques (Coques et protections)",
-        desc: "Les accessoires de protection peuvent se déplacer après un choc et obstruer les micros secondaires ou les haut-parleurs. Un test sans accessoire est nécessaire pour isoler la panne réelle du matériel.",
-        tip: "Éliminer les obstacles externes avant tout diagnostic interne.",
+        title: "Coques et protections",
+        desc: "Une coque mal mise ou une protection d'écran peut boucher les micros ou les haut-parleurs. Nous devons tester l'appareil sans accessoires pour trouver la vraie panne.",
+        tip: "Enlevez vos accessoires avant de diagnostiquer le matériel.",
       },
       {
-        // ✅ 04번: 형님이 말씀하신 "수리 시 정상작동하지만 숨어있는 균열"에 대한 팩트
         id: "04",
-        title: "Micro-fissures et tests en atelier",
-        desc: "Lors d'une réparation basée sur les symptômes initiaux, l'appareil peut passer tous les tests de contrôle avec succès. Cependant, des micro-fissures invisibles peuvent laisser passer le courant normalement au début, avant de provoquer des pannes intermittentes suite à des variations de température ou des vibrations.",
-        tip: "Un composant peut fonctionner normalement en atelier malgré des failles internes.",
+        title: "Tests et fissures invisibles",
+        desc: "L'appareil peut passer tous nos tests avec succès après la réparation. Cependant, des micro-fissures invisibles dues au choc initial peuvent provoquer des pannes plus tard avec la chaleur ou les vibrations.",
+        tip: "Un composant peut fonctionner normalement malgré des failles cachées.",
       },
       {
         id: "05",
-        title: "Entretien des grilles (Audio)",
-        desc: "L'accumulation de poussière bloque le son. Il est impératif de ne jamais utiliser d'objet pointu (aiguille) ou d'air comprimé, car cela déchire les membranes des haut-parleurs et détruit l'étanchéité.",
-        tip: "Un nettoyage doux préserve les membranes sensibles des micros.",
+        title: "Nettoyage du son",
+        desc: "La poussière bloque le son. N'utilisez jamais d'objet pointu (aiguille) ou d'air comprimé : cela déchire les haut-parleurs et détruit l'étanchéité du téléphone.",
+        tip: "Un nettoyage doux protège les haut-parleurs fragiles.",
       },
     ],
 
-    alertTitle: "Réalités techniques à connaître",
+    alertTitle: "À savoir avant la réparation",
     alertDesc:
-      "• Vibrations mécaniques : L'exposition prolongée aux vibrations (supports moto/vélo) désaligne les aimants de stabilisation, rendant l'image floue ou instable de manière permanente.\n\n" +
-      "• Oxydation des micros : L'humidité ambiante pénètre par les grilles audio. Une fois les contacts oxydés, le son peut devenir grésillant ou s'éteindre totalement.\n\n" +
-      "• Capteurs de proximité : Une vitre d'écran rayée ou une protection mal posée bloque les capteurs de luminosité, empêchant l'écran de s'éteindre lors des appels.",
+      "• Vibrations (Moto) : L'exposition aux vibrations des moteurs de moto casse le stabilisateur de la caméra. L'image devient alors floue de façon permanente.\n" +
+      "• Rouille des micros : L'humidité entre par les grilles du son. Une fois les contacts oxydés (rouillés), le son grésille ou se coupe totalement.\n" +
+      "• Capteur de proximité : Une vitre rayée ou une protection mal posée bloque le capteur. L'écran ne s'éteint plus quand vous approchez le téléphone de votre oreille.",
   });
 
   return <RepairLayout data={content} />;

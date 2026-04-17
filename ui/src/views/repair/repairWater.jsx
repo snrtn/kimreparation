@@ -4,7 +4,7 @@ import RepairLayout from "./repairLayout";
 const RepairWater = () => {
   const [content] = useState({
     subTitle: "Tombé dans l'eau",
-    mainTitle: "Ce qui se passe quand un appareil prend l'eau.",
+    mainTitle: "Ce qui se passe quand l'eau entre dans le téléphone.",
     accentColor: "#0071e3",
     criticalColor: "#ff3b30",
 
@@ -12,41 +12,40 @@ const RepairWater = () => {
       {
         id: "01",
         title: "L'eau et la batterie",
-        desc: "L'eau conduit l'électricité là où elle ne devrait pas aller. Si l'appareil reste allumé, le courant de la batterie crée des micro-étincelles qui abîment les composants internes de la carte mère.",
-        tip: "Un appareil éteint limite la circulation du courant.",
+        desc: "L'eau fait circuler l'électricité là où il ne faut pas. Si l'appareil reste allumé, la batterie crée des micro-étincelles qui brûlent les composants de la carte mère.",
+        tip: "Éteindre l'appareil est la première chose à faire.",
       },
       {
         id: "02",
-        title: "Le risque du chargeur",
-        desc: "Brancher un appareil humide envoie une forte tension dans des circuits déjà fragilisés par l'eau. L'humidité reste souvent piégée sous les puces électroniques bien après que l'extérieur semble sec.",
-        tip: "L'énergie du chargeur peut aggrave les dommages invisibles.",
+        title: "Le danger du chargeur",
+        desc: "Ne branchez jamais un téléphone humide. Le courant du chargeur peut griller des circuits déjà fragilisés. L'eau reste souvent piégée sous les puces, même si l'extérieur est sec.",
+        tip: "Le chargeur peut aggraver des dégâts invisibles.",
       },
       {
         id: "03",
         title: "Le riz et le sèche-cheveux",
-        desc: "Le riz crée une poussière collante qui bouche les connecteurs, tandis que le sèche-cheveux pousse l'eau plus loin dans l'appareil et ramollit les colles qui maintiennent les pièces ensemble.",
-        tip: "L'air libre est la solution la plus respectueuse du matériel.",
+        desc: "Le riz crée une poussière collante qui bouche tout. Le sèche-cheveux, lui, pousse l'eau encore plus loin et fait fondre les colles internes. Laissez-le plutôt à l'air libre.",
+        tip: "Ces méthodes abîment souvent plus l'appareil.",
       },
       {
-        // ✅ 형님이 강조하신 4번째: 수리 후 잔고장 팩트
         id: "04",
         title: "Les pannes après réparation",
-        desc: "L'oxydation est une réaction chimique qui peut laisser des traces invisibles sous les composants. Même après un nettoyage, de petits dysfonctionnements peuvent apparaître plus tard à cause de ce contact initial avec l'eau.",
-        tip: "L'humidité initiale peut laisser des séquelles progressives.",
+        desc: "La rouille (oxydation) peut laisser des traces invisibles. Même après un nettoyage, de petits problèmes peuvent apparaître plus tard à cause du premier contact avec l'eau.",
+        tip: "L'humidité peut laisser des séquelles sur le long terme.",
       },
       {
         id: "05",
-        title: "L'extraction du tiroir SIM",
-        desc: "L'ouverture nécessite l'utilisation d'un outil d'extraction dédié (pin). Si le tiroir résiste, c'est que l'oxydation l'a bloqué ; forcer l'ouverture tord les broches de lecture internes de la carte mère.",
-        tip: "Une force excessive déforme définitivement le lecteur de carte.",
+        title: "Le tiroir SIM bloqué",
+        desc: "Si le tiroir SIM résiste, c'est que la rouille l'a collé à l'intérieur. Ne forcez surtout pas : vous risquez de casser définitivement le lecteur sur la carte mère.",
+        tip: "Forcer l'ouverture peut détruire le lecteur de carte.",
       },
     ],
 
     alertTitle: "Réalités techniques à connaître",
     alertDesc:
-      "L'étanchéité n'est pas éternelle : Les joints en silicone s'usent avec le temps, les chocs et la chaleur. La protection contre l'eau (IP68) diminue donc naturellement et ne garantit plus une sécurité totale.\n\n" +
-      "L'eau de mer et le chlore : Le sel et les produits chimiques attaquent le métal beaucoup plus vite que l'eau douce, créant une rouille (oxydation) immédiate sur les circuits.\n\n" +
-      "La stabilité de la batterie : Une batterie ayant été exposée à l'humidité peut devenir instable et gonfler avec le temps. Son remplacement est souvent une précaution nécessaire pour protéger l'écran de l'intérieur.",
+      "• L'étanchéité s'use : Les joints s'abîment avec le temps et la chaleur. Un téléphone n'est jamais étanche pour toujours, même avec l'indice IP68.\n" +
+      "• Eau de mer et chlore : Le sel et les produits chimiques attaquent le métal très vite. Ils font rouiller les circuits presque immédiatement.\n" +
+      "• Batterie instable : Une batterie qui a pris l'eau peut gonfler avec le temps. Nous recommandons souvent de la changer pour éviter qu'elle ne casse l'écran.",
   });
 
   return <RepairLayout data={content} />;

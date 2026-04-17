@@ -4,23 +4,23 @@ import { SCREEN_NAV } from "./screenNav";
 
 const ScreenFoldable = () => {
   const content = {
-    title: "Écran Pliable",
-    subtitle: "Technologie organique articulée haute précision",
+    title: "Pliable (Origine)",
+    subtitle: "Dalle flexible avec châssis et charnière",
     recommendation:
-      "Indispensable pour garantir la continuité du mouvement mécanique de votre appareil pliable.",
+      "La seule solution pour garantir le pliage et la solidité d'origine.",
     description:
-      "L'écran pliable repose sur une structure multicouche ultra-flexible conçue pour supporter des milliers de cycles d'ouverture et de fermeture. Contrairement aux dalles rigides, cette technologie utilise des polymères élastiques permettant à l'affichage de suivre précisément la courbure de la charnière. Le remplacement de ce composant exige une précision extrême pour assurer le maintien de la protection d'écran intégrée d'usine et la fluidité du mécanisme articulé sans créer de points de pression interne.",
+      "Les écrans pliables sont des pièces très complexes. Nous utilisons uniquement des dalles d'origine car elles sont les seules à supporter réellement des milliers d'ouvertures. La dalle flexible est indissociable de la charnière : nous remplaçons l'ensemble pour garantir que le mécanisme ne force pas et que l'écran ne se fissure pas à l'usage. C'est une réparation de haute précision qui redonne au téléphone son aspect neuf.",
     forWhom: [
-      "Propriétaires de smartphones à écran pliable (Type Z Fold, Z Flip, etc.)",
-      "Besoin de restaurer la flexibilité d'origine de l'affichage",
-      "Utilisateurs exigeant une intégration parfaite avec le mécanisme de charnière",
+      "Propriétaires de Galaxy Z Fold, Z Flip et autres modèles pliables",
+      "Besoin de retrouver un pliage fluide et sans bruit",
+      "Pour ceux qui veulent une garantie sur la durée de vie de l'écran",
     ],
     features: [
-      "Dalle à technologie organique flexible (Ultra-Thin Glass / Polymère)",
-      "Structure multicouche optimisée pour la répétition des flexions",
-      "Film de protection spécifique intégré pour la durabilité de la dalle",
-      "Résistance aux contraintes mécaniques liées au mouvement de la charnière",
-      "Coût élevé dû à la complexité technologique et à la rareté de la pièce",
+      "Dalle flexible officielle du constructeur",
+      "Châssis et charnière inclus pour un alignement parfait",
+      "Protection d'écran d'usine déjà posée sur la dalle",
+      "Prix élevé dû à la technologie complexe de la pièce",
+      "Réparation technique nécessitant un montage spécifique",
     ],
     color: "#5856d6",
   };
@@ -32,4 +32,5 @@ const ScreenFoldable = () => {
     />
   );
 };
+
 export default ScreenFoldable;

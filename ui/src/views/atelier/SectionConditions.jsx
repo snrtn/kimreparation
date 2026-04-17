@@ -17,17 +17,17 @@ const SectionConditions = () => {
         <Typography sx={labelStyle}>Conditions de Garantie</Typography>
 
         <Stack spacing={8}>
-          {/* Garantie Légale & Qualité */}
+          {/* 1. Couverture de garantie */}
           <Box>
             <Typography
               sx={{
                 fontWeight: 800,
                 fontSize: "1.5rem",
                 mb: 2,
-                letterSpacing: "-0.03em",
+                color: "#1d1d1f",
               }}
             >
-              Votre Sérénité : Garantie Légale & Qualité
+              Garantie Légale & Qualité
             </Typography>
             <Typography
               sx={{
@@ -37,51 +37,35 @@ const SectionConditions = () => {
                 whiteSpace: "pre-line",
               }}
             >
-              Conformément aux dispositions légales, nous garantissons la
-              conformité des pièces installées et notre main-d'œuvre.{"\n\n"}
-              Notre engagement de fiabilité :{"\n"}• Batterie : Les tests de
-              cycle et de tension permettent de valider le bon fonctionnement
-              dès la pose.{"\n"}• Écran : Grâce à un double contrôle technique
-              rigoureux avant installation, nous assurons une conformité totale
-              du matériel.
-              {"\n"}• Expertise Préalable : Un examen visuel systématique
-              détecte toute anomalie (choc, oxydation) avant intervention.{"\n"}
-              • Preuve Numérique : Chaque étape de l'ouverture et du montage est
-              photographiée.
+              {`Conformément à la loi, les pièces installées et la main-d'œuvre sont couvertes par notre garantie.\n\n• Batterie : Validation du bon fonctionnement dès la pose (tests de cycle).\n• Écran : Double contrôle technique avant installation.\n• Documentation : Chaque étape de l'intervention est photographiée pour assurer la traçabilité.`}
             </Typography>
           </Box>
 
-          {/* Étanchéité */}
+          {/* 2. Étanchéité */}
           <Box>
             <Typography
               sx={{
                 fontWeight: 800,
                 fontSize: "1.5rem",
                 mb: 2,
-                letterSpacing: "-0.03em",
+                color: "#1d1d1f",
               }}
             >
-              Préservation de l'Étanchéité
+              Étanchéité
             </Typography>
             <Typography
-              sx={{
-                color: "#424245",
-                lineHeight: 1.6,
-                fontSize: "1rem",
-                whiteSpace: "pre-line",
-              }}
+              sx={{ color: "#424245", lineHeight: 1.6, fontSize: "1rem" }}
             >
-              Lors de chaque fermeture, nous prenons soin d'installer un nouveau
-              joint d'étanchéité. Cependant, une fois ouvert, un appareil ne
-              peut plus garantir une imperméabilité identique aux normes
-              constructeur (IP67/68). Par précaution, évitez toute immersion.
+              Un nouveau joint est systématiquement installé. Toutefois, après
+              ouverture, l'étanchéité d'origine (IP67/68) n'est plus garantie.
+              Par précaution, toute immersion est à éviter.
             </Typography>
           </Box>
 
-          {/* Conseils 유지 보증 */}
+          {/* 3. Exclusions de garantie */}
           <Box sx={{ p: 4, bgcolor: "#f5f5f7", borderRadius: "20px" }}>
             <Typography sx={{ fontWeight: 800, fontSize: "1.3rem", mb: 2 }}>
-              Conseils pour maintenir votre Garantie
+              Exclusions de Garantie
             </Typography>
             <Typography
               sx={{
@@ -91,18 +75,7 @@ const SectionConditions = () => {
                 whiteSpace: "pre-line",
               }}
             >
-              Conditions d'Exclusion de Garantie :{"\n"}
-              La garantie couvre exclusivement les défauts de fabrication de la
-              pièce installée. Elle est de plein droit annulée dans les cas
-              suivants :{"\n"}• Détérioration Physique : Tout choc, fissure,
-              rayure profonde ou déformation du châssis.{"\n"}• Signes de
-              Pression Excessive : Apparition de lignes colorées, taches noires
-              (pixels morts) ou voile blanc (contrainte mécanique, même sans
-              bris de vitre).{"\n"}• Exposition aux Liquides : Toute trace
-              d'humidité ou d'oxydation. L'étanchéité constructeur n'est plus
-              garantie après ouverture.{"\n"}• Rupture d'Intégrité : Retrait du
-              sceau de garantie (Warranty Seal) ou toute tentative d'ouverture
-              par un tiers.
+              {`La garantie couvre uniquement les défauts de fabrication de la pièce. Elle est annulée en cas de :\n• Dommage physique : Choc, fissure, rayure ou déformation du châssis.\n• Pression interne : Taches noires, lignes colorées ou voile blanc (contrainte mécanique).\n• Humidité : Toute trace d'oxydation ou de liquide.\n• Intervention externe : Toute preuve d'ouverture ou de modification après la réparation à l'atelier.`}
             </Typography>
           </Box>
         </Stack>

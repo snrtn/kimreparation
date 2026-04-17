@@ -4,50 +4,50 @@ import RepairLayout from "./repairLayout";
 const Waterproof = () => {
   const [content] = useState({
     subTitle: "Étanchéité",
-    mainTitle: "WATERPROOF",
+    mainTitle: "La vérité sur l'étanchéité (Waterproof)",
     description:
-      "La réalité technique sur l'évolution de l'étanchéité et ses conséquences internes.",
+      "La réalité technique sur l'usure de la protection contre l'eau.",
     accentColor: "#0071e3",
     criticalColor: "#ff3b30",
 
     steps: [
       {
         id: "01",
-        title: "La nature adhésive du joint d'usine",
-        desc: "L'étanchéité repose sur un joint adhésif qui assure la liaison entre l'écran et le châssis. Ce n'est pas une soudure permanente, mais une colle qui possède une durée de vie limitée. Avec le temps, ce matériau perd naturellement son adhérence et sa capacité de scellage.",
-        tip: "L'étanchéité est une barrière temporaire, pas une structure figée.",
+        title: "Le joint d'usine",
+        desc: "L'étanchéité repose sur un joint adhésif entre l'écran et le châssis. Ce n'est pas une soudure, mais une colle qui a une durée de vie limitée. Avec le temps, elle perd naturellement son adhérence.",
+        tip: "L'étanchéité est une barrière temporaire, pas éternelle.",
       },
       {
         id: "02",
-        title: "L'impact de la chaleur et du quotidien",
-        desc: "La chaleur générée par l'écran et le processeur, ainsi que les manipulations quotidiennes, finissent par assécher l'adhésif. Une fois que la colle devient sèche ou poreuse, de micro-espaces invisibles se forment, laissant passer les molécules extérieures.",
-        tip: "La chaleur interne est le premier facteur de dégradation du scellage.",
+        title: "L'effet de la chaleur",
+        desc: "La chaleur de l'écran et l'utilisation quotidienne finissent par assécher la colle. Une fois que l'adhésif devient sec, de minuscules trous invisibles se forment et laissent passer l'air et l'humidité.",
+        tip: "La chaleur est le premier ennemi de l'étanchéité.",
       },
       {
         id: "03",
-        title: "La vulnérabilité face à l'humidité ambiante",
-        desc: "Même sans immersion, une atmosphère saturée (comme la vapeur d'eau d'une salle de bain) pénètre par ces micro-fissures. Les particules de vapeur, plus fines que les gouttes d'eau, s'infiltrent plus facilement à l'intérieur du châssis.",
-        tip: "La vapeur d'eau traverse souvent là où l'eau liquide s'arrête.",
+        title: "La vapeur d'eau",
+        desc: "Même sans faire tomber le téléphone dans l'eau, la vapeur (salle de bain) pénètre par ces micro-fissures. La vapeur est plus fine que les gouttes d'eau et s'infiltre partout dans le châssis.",
+        tip: "La vapeur d'eau passe là où l'eau liquide s'arrête.",
       },
       {
         id: "04",
-        title: "Micro-oxydation lente des circuits",
-        desc: "L'humidité piégée à l'intérieur déclenche une oxydation progressive. Ce processus chimique fragilise la conductivité des pistes de cuivre et affaiblit les points de contact sur la carte mère de manière invisible pour l'utilisateur.",
-        tip: "L'oxydation latente prépare le terrain pour des pannes futures.",
+        title: "Rouille lente des circuits",
+        desc: "L'humidité piégée à l'intérieur fait rouiller (oxyder) les composants petit à petit. Ce processus affaiblit les contacts sur la carte mère de façon invisible pour vous.",
+        tip: "La rouille prépare les pannes de demain.",
       },
       {
         id: "05",
-        title: "Rupture de soudure lors d'un choc",
-        desc: "Sur un circuit fragilisé par cette humidité, un choc mécanique même léger peut provoquer le décollement d'une soudure déjà instable. Cela entraîne un court-circuit ou un arrêt du système (écran figé, redémarrage), rendant l'appareil inopérant.",
-        tip: "Un impact extérieur révèle souvent une fragilité interne causée par l'usure du joint.",
+        title: "Soudure cassée après un choc",
+        desc: "Sur un circuit fragilisé par l'humidité, un petit choc peut suffire à détacher une soudure déjà instable. C'est souvent pour cela qu'un téléphone s'éteint ou se bloque après une chute légère.",
+        tip: "Un choc révèle souvent une fragilité interne causée par l'humidité.",
       },
     ],
 
-    alertTitle: "Précisions sur la durabilité et l'intervention",
+    alertTitle: "Précisions importantes sur la réparation",
     alertDesc:
-      "• Mesures techniques : Pour optimiser la fermeture, nous utilisons des protocoles de pressage thermique et des scellants liquides afin de combler les vides microscopiques.\n\n" +
-      "• Limites constructeur : Ces mesures constituent une protection renforcée mais ne permettent pas de restaurer l'indice d'étanchéité d'origine certifié en usine. Il s'agit d'une aide à l'isolation et non d'une garantie contre l'immersion.\n\n" +
-      "• Vigilance : Une attention constante est requise. Même après intervention, l'appareil doit être protégé des milieux humides et des liquides pour préserver la stabilité des soudures.",
+      "• Notre méthode : Pour fermer l'appareil, nous utilisons des presses thermiques et des scellants spéciaux pour boucher les vides microscopiques.\n" +
+      "• Limites techniques : Ces mesures renforcent la protection, mais il est impossible de retrouver l'étanchéité d'origine certifiée en usine. Nous ne garantissons pas l'immersion.\n" +
+      "• Vigilance : Même après notre intervention, protégez toujours votre appareil des milieux humides et des liquides pour éviter que les soudures ne lâchent.",
   });
 
   return <RepairLayout data={content} />;
