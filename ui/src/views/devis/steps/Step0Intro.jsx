@@ -364,7 +364,7 @@ const Step0Intro = ({ onUpdate, onNext }) => {
           elevation={0}
           sx={{
             p: 2,
-            px: 8,
+            pl: 6,
             bgcolor: "#f0f7ff",
             border: "1px solid #cce3ff",
             borderRadius: "14px",

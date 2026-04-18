@@ -145,6 +145,16 @@ const DevisPhone = () => {
         }
       }
       if (newData.touchWorks === "yes") nextState.touchIssues = [];
+      if (newData.touchWorks === "no") {
+        nextState.camera = ["unknown"];
+        nextState.audio = ["unknown"];
+        nextState.connection = ["unknown"];
+      }
+      if (newData.touchWorks === "yes") {
+        nextState.camera = [];
+        nextState.audio = [];
+        nextState.connection = [];
+      }
       return nextState;
     });
   };
@@ -168,7 +178,9 @@ const DevisPhone = () => {
       if (hasWater) steps.push("waterType", "waterDetails");
       steps.push("frame", "battery", "touchCheck");
       if (formData.touchWorks === "no") steps.push("touchIssues");
-      steps.push("camera", "audio", "connection", "storage", "environment");
+      if (formData.touchWorks !== "no")
+        steps.push("camera", "audio", "connection");
+      steps.push("storage", "environment");
     } else {
       steps.push("incident");
       if (hasWater) steps.push("waterType", "waterDetails");
