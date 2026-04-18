@@ -110,6 +110,7 @@ const StepContact = ({ data, onUpdate }) => {
               fullWidth
               placeholder="06 00 00 00 00"
               value={data.userPhone || ""}
+              slotProps={{ htmlInput: { inputMode: "numeric" } }}
               onChange={(e) => {
                 let val = e.target.value.replace(/\D/g, "");
                 if (val.length > 0 && val[0] !== "0") val = "0" + val;
