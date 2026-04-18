@@ -285,6 +285,8 @@ const HomeRepair = () => {
                       }}
                       component={RouterLink} // 💡 Redirection interne sans rechargement
                       to={slide.link}
+                      target="_blank" // 👈 새 탭(창)으로 열기
+                      rel="noopener noreferrer" // 👈 보안 및 성능을 위한 국룰
                     >
                       Consulter le guide
                     </Button>

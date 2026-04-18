@@ -9,11 +9,11 @@ const dropdownData = [
     desc: "Comprendre les qualités pour mieux choisir.",
     path: "/screen",
   },
-  // {
-  //   title: "Diagnostic",
-  //   desc: "Diagnostic complet et sur-mesure pour votre appareil.",
-  //   path: "/devis",
-  // },
+  {
+    title: "Diagnostic",
+    desc: "Diagnostic complet et sur-mesure pour votre appareil.",
+    path: "/devis",
+  },
   // {
   //   title: "Suivi de Dossier",
   //   desc: "Votre Devis & Factures",
